@@ -1,4 +1,4 @@
-console.log('preparo ossessionbot')
+console.log('avviando ossessionbot...')
 import { join, dirname } from 'path'
 import { createRequire } from "module";
 import { fileURLToPath } from 'url'
@@ -18,7 +18,7 @@ const rl = createInterface(process.stdin, process.stdout)
 // Aumenta il limite dei listener
 EventEmitter.defaultMaxListeners = 20;
 
-say('ossessionbot\n1.0', {
+say('ossessiom\nBot\n1.0', {
     font: 'chrome',
     align: 'center',
     gradient: ['red', 'magenta']})
