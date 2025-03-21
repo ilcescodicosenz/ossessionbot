@@ -1,25 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 let handler = async (m, { conn, command, text }) => {
     // Calcolo del cazzo in base alla volontà di Youns
     let length = Math.floor(Math.random() * 101);
