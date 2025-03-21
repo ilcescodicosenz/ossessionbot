@@ -178,7 +178,7 @@ menu_aiuto() {
 	read opzione
 	case $opzione in
             01|1)
-                am start -a android.intent.action.VIEW   &>> /dev/null
+                am start -a android.intent.action.VIEW https://chat.whatsapp.com/LChd7a5px3n3Jr83egpWvr &>> /dev/null
                 echo -e "${b}[${v1}++${b}]${v} Accesso al Gruppo Ufficiale\n"
                 
                 ;;
