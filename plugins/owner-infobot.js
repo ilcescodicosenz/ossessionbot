@@ -27,25 +27,25 @@ let handler = async (_0x4955de, { conn: _0x4b9a49, usedPrefix: _0xeb2cc9 }) => {
 ════════════════════
  *𝐈𝐧𝐟𝐨𝐁𝐨𝐭* 
 
-➤ 𝐂𝐫𝐞𝐚𝐭𝐨𝐫𝐞: +46 73 780 71 14
+➤ 𝐂𝐫𝐞𝐚𝐭𝐨𝐫𝐞: +39 375 585 3799
 
-➤ 𝐍𝐨𝐦𝐞 𝐁𝐨𝐭:     ꙰ 𝟥𝟥𝟥 ꙰ 𝔹𝕆𝕋 ꙰
+➤ 𝐍𝐨𝐦𝐞 𝐁𝐨𝐭: ossessionbot
 
-➤ 𝐋𝐢𝐧𝐤 𝐆𝐫𝐮𝐩𝐩𝐨: https://chat.whatsapp.com/JhrcigFtXpW4OzdhE9Jdq3
+➤ 𝐋𝐢𝐧𝐤 𝐆𝐫𝐮𝐩𝐩𝐨: 
 
-➤ 𝐋𝐢𝐧𝐤 𝐂𝐚𝐧𝐚𝐥𝐞: https://whatsapp.com/channel/0029VauhQviCsU9Ibrwlkb0h
+➤ 𝐋𝐢𝐧𝐤 𝐂𝐚𝐧𝐚𝐥𝐞: https://whatsapp.com/channel/0029Vb2xynG9MF8tPyNWoE35
 
 ➤ 𝐒𝐭𝐚𝐭𝐨 𝐁𝐨𝐭: ~Online~ *No Disturbare* 
 
 ➤ 𝐂𝐫𝐞𝐚𝐭𝐨 𝐢𝐥:  *01/09/2024*
 
-➤𝐆𝐢𝐭𝐡𝐮𝐛: *https://github.com/numerofoxi/Gab.git*
+➤𝐆𝐢𝐭𝐡𝐮𝐛: *https://github.com/ilcescodicosenz/ossessionbot*
 
  ꙰ 𝟥𝟥𝟥 ꙰ 𝔹𝕆𝕋 ꙰ 
 ════════════════════
 `.trim();
   
-  let _0xf5c7c0 = global.db.data.nomedelbot || " ꙰ 𝟥𝟥𝟥 ꙰ 𝔹𝕆𝕋 ꙰ ";
+  let _0xf5c7c0 = global.db.data.nomedelbot || "  ossessionbot ";
   
   // Invia il messaggio con una grafica migliorata
   _0x4b9a49.sendMessage(_0x4955de.chat, {
@@ -57,7 +57,7 @@ let handler = async (_0x4955de, { conn: _0x4b9a49, usedPrefix: _0xeb2cc9 }) => {
       'forwardedNewsletterMessageInfo': {
         'newsletterJid': "120363341274693350@newsletter",
         'serverMessageId': '',
-        'newsletterName': ' ꙰ 𝟥𝟥𝟥 ꙰ 𝔹𝕆𝕋 ꙰ ✦'
+        'newsletterName': ' ossessionbot '
       }
     }
   }, {
