@@ -52,10 +52,10 @@ END:VCARD`
 *instagram.com/momo_25125*
 
 ────────────────
- ꙰ 𝟥𝟥𝟥 ꙰ 𝔹𝕆𝕋 ꙰
+ ossessionbot
 `;
 
-  let _0x575cba = global.db.data.nomedelbot || " ꙰ 𝟥𝟥𝟥 ꙰ 𝔹𝕆𝕋 ꙰ ";
+  let _0x575cba = global.db.data.nomedelbot || " ossessionbot ";
   
   await _0x4d8805.sendMessage(_0x1ece27.chat, {
     text: _0x3f08c2,
