@@ -1,0 +1,48 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+let handler = async (m, { conn, command, text }) => {
+    // Calcolo del cazzo in base alla volontà di Youns
+    let length = Math.floor(Math.random() * 101);
+
+    // Frase finale basata sulla lunghezza
+    let finalPhrase = length >= 15 
+        ? "🍆 *Wow, decisamente impressionante!*"
+        : "😅 *Beh, si dice che la qualità conti più della quantità...*";
+
+    // Messaggio completo
+    let message = `
+━━━━━━━━━━━━━━━━━━━━━━━
+🤭 *CALCOLATORE DEL CAZZO* 🤭
+━━━━━━━━━━━━━━━━━━━━━━━
+🥵 *${text} ha un cazzo di lunghezza pari a:*  
+⚡ *${length} cm* di pura inutilità! ⚡
+━━━━━━━━━━━━━━━━━━━━━━━
+${finalPhrase}
+`.trim();
+
+    m.reply(message, null, { mentions: conn.parseMention(message) });
+};
+
+handler.command = /^(cazzo)$/i;
+
+export default handler;
