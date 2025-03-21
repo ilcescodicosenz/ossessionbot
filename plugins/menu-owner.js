@@ -77,10 +77,10 @@ END:VCARD`
 > ${_0x2b0a49}𝐛𝐚𝐧𝐠𝐡𝐨𝐬𝐭
 > ${_0x2b0a49}𝐨𝐟𝐟𝐮𝐬𝐜𝐚 <𝐭𝐞𝐬𝐭𝐨>
 ────────────────
- ꙰ 𝟥𝟥𝟥 ꙰ 𝔹𝕆𝕋 ꙰ 
+ossessionbot
 `;
 
-  let _0x575cba = global.db.data.nomedelbot || " ꙰ 𝟥𝟥𝟥 ꙰ 𝔹𝕆𝕋 ꙰ ";
+  let _0x575cba = global.db.data.nomedelbot || " ossessionbot ";
   
   await _0x4d8805.sendMessage(_0x1ece27.chat, {
     text: _0x3f08c2,
