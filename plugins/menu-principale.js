@@ -24,7 +24,7 @@ let handler = async (message, { conn, usedPrefix }) => {
     profilePicBuffer = await (await fetch("https://telegra.ph/file/22b3e3d2a7b9f346e21b3.png")).buffer();
   }
 
-  const botName = global.db.data.nomedelbot || " ꙰ 𝟥𝟥𝟥 ꙰ 𝔹𝕆𝕋 ꙰ ";
+  const botName = global.db.data.nomedelbot || "  ossessionbot ";
   
   // Comandi con formattazione stilizzata
   const commandList = `
@@ -40,7 +40,7 @@ let handler = async (message, { conn, usedPrefix }) => {
 ➤ ${usedPrefix}𝐛𝐨𝐭
 
 ────────────────────────
- ꙰ 𝟥𝟥𝟥 ꙰ 𝔹𝕆𝕋 ꙰   -  𝐕𝐞𝐫𝐬𝐢𝐨𝐧𝐞: ${vs}
+ ossessionbot -  𝐕𝐞𝐫𝐬𝐢𝐨𝐧𝐞: ${vs}
 `.trim();
 
   // Versione Origin Bot
