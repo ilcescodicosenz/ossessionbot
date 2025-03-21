@@ -38,11 +38,11 @@ https://t.me/Retedna
 
 *_Server Hosting Manager_*
 
- ꙰ 𝟥𝟥𝟥 ꙰ 𝔹𝕆𝕋 ꙰ 
+ cescobot
 ════════════════════
 `.trim();
   
-  let _0xf5c7c0 = global.db.data.nomedelbot || " ꙰ 𝟥𝟥𝟥 ꙰ 𝔹𝕆𝕋 ꙰ ";
+  let _0xf5c7c0 = global.db.data.nomedelbot || " cescobot";
   
   // Invia il messaggio con una grafica migliorata
   _0x4b9a49.sendMessage(_0x4955de.chat, {
@@ -54,7 +54,7 @@ https://t.me/Retedna
       'forwardedNewsletterMessageInfo': {
         'newsletterJid': "120363341274693350@newsletter",
         'serverMessageId': '',
-        'newsletterName': ' ꙰ 𝟥𝟥𝟥 ꙰ 𝔹𝕆𝕋 ꙰ ✦'
+        'newsletterName': ' cescobot '
       }
     }
   }, {
