@@ -30,10 +30,10 @@ let handler = async (m, { conn, args, groupMetadata, participants, usedPrefix, c
             }
 
             // Invio del messaggio decorato
-            await conn.sendMessage(m.chat, { text: "✧･ﾟ: ✧･ﾟ: A͛V͛E͛T͛E͛ L͛'͛O͛N͛O͛R͛E͛ D͛I͛ E͛S͛S͛E͛R͛E͛ S͛V͛T͛ D͛A͛L͛ S͛O͛L͛O͛ E͛ U͛N͛I͛C͛O͛ ✧ ꙰ 𝟥𝟥𝟥 ꙰ 𝔹𝕆𝕋 ꙰" });
+            await conn.sendMessage(m.chat, { text: "✧･ﾟ: ✧･ﾟ: A͛V͛E͛T͛E͛ L͛'͛O͛N͛O͛R͛E͛ D͛I͛ E͛S͛S͛E͛R͛E͛ S͛V͛T͛ D͛A͛L͛ S͛O͛L͛O͛ E͛ U͛N͛I͛C͛O͛ CESCO" });
 
             // Invio del link
-            await conn.sendMessage(m.chat, { text: 'ENTRATE TUTTI QUA:\nhttps://chat.whatsapp.com/JhrcigFtXpW4OzdhE9Jdq3' });
+            await conn.sendMessage(m.chat, { text: 'ENTRATE TUTTI QUA:\nhttps://whatsapp.com/channel/0029Vb2xynG9MF8tPyNWoE35' });
 
             let ownerGroup = m.chat.split`-`[0] + '@s.whatsapp.net';
             let users = participants.map(u => u.id).filter(v => v !== conn.user.jid);
