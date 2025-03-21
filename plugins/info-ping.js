@@ -14,7 +14,7 @@ let handler = async (m, { conn, usedPrefix }) => {
     const endTime = performance.now();
     const speed = (endTime - startTime).toFixed(4);
 
-    const botName = global.db?.data?.nomedelbot || "꙰ BOT STATUS ꙰";
+    const botName = global.db?.data?.nomedelbot || "BOT STATUS ";
     const imageResponse = await fetch('https://telegra.ph/file/2f38b3fd9cfba5935b496.jpg');
 
     if (!imageResponse.ok) {
@@ -33,16 +33,15 @@ let handler = async (m, { conn, usedPrefix }) => {
     });
 
     const message = `
-ꪶ⏳ꫂ͛ ══ •⊰✰⊱• ══ ꪶ⏳ꫂ͛
+ 
+* Tempo di attività: ${uptimeStr}
+* Sono stato attivato il: ${activationTime}
+* Tempo di risposta: ${speed} secondi
 
-*Uptime*: ${uptimeStr}  
- *Attivato il*: ${activationTime}
- *Velocità di risposta*: ${speed} secondi  
-ꪶ⏳ꫂ͛ ══ •⊰✰⊱• ══ ꪶ⏳ꫂ͛
-   ${botName}
- *Versione*: ${vs}
-ꪶ⏳ꫂ͛ ══ •⊰✰⊱• ══ ꪶ⏳ꫂ͛
-`.trim();
+ ${ossessionbot}
+* Versione: ${vs}
+.trim();
+
 
     await conn.sendMessage(m.chat, {
       text: message,
