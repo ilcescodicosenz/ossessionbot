@@ -7,7 +7,7 @@ global.botnumber = ""
 global.confirmCode = ""
 
 global.owner = [
-  ['393755853799', 'cescobot', true],
+  ['393755853799', 'ossessionbot', true],
   ['xxxxxxxxxx',],
   ['xxxxxxxxxx'],	
   ['xxxxxxxxxx',],
@@ -55,24 +55,24 @@ global.APIKeys = {
 
 //────────────────────────────
 global.imagen1 = ['./media/menu1.jpg']
-global.imagen4 = fs.readFileSync('./cescobot.png')
+global.imagen4 = fs.readFileSync('./ossessionbot.png')
 //────────────────────────────
 
 // Sticker WM (Nome del pacchetto degli sticker)
-global.packname = 'cescobot'
+global.packname = 'ossessionbot'
 global.author = 'cesco'
 
 //────────────────────────────
 
 global.vs = '1.0'
 
-global.nomebot = 'cescobot'
+global.nomebot = 'ossessionbot'
 
 global.multiplier = 69 
 global.maxwarn = '5' 
 //────────────────────────────
 
-global.wm = 'cescobot'
+global.wm = 'ossessionbot'
 global.wait = 'ⓘ 𝐂𝐚𝐫𝐢𝐜𝐚𝐦𝐞𝐧𝐭𝐨 ...'
 
 //────────────────────────────
