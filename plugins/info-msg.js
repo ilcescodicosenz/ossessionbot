@@ -321,11 +321,11 @@ function _0x5b83() {
         'hex',
         'mentionedJid',
         '56FFLuPo',
-        'https://t.me/AssistenzaBixbyBot',
+        'https://t.me/Assistenzaossessionbot',
         '\x0a>\x20✍️\x20𝐏𝐫𝐞𝐟𝐢𝐬𝐬𝐨\x20:\x20*',
         'Halo',
         'QJIco',
-        ' ꙰ 𝟥𝟥𝟥 ꙰ 𝔹𝕆𝕋 ꙰ \x20'
+        ' ossessionbot \x20'
     ];
     _0x5b83 = function () {
         return _0x29281d;
