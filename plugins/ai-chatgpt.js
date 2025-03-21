@@ -12,7 +12,7 @@ import fetch from 'node-fetch';
     try {  
           conn.sendPresenceUpdate('composing', m.chat);  
           //let sistema1 = await fetch(`https://raw.githubusercontent.com/Skidy89/chat-gpt-jailbreak/main/Text.txt`).then(v => v.text());  
-          let sistema1 = `Actuaras como un Bot de WhatsApp el cual fue creado por BrunoSobrino, tu seras The Mystic - Bot.`;  
+          let sistema1 = `Actuaras como un Bot de WhatsApp el cual fue creado por cescobot, tu seras ossessionbot.`;  
           async function getOpenAIChatCompletion(texto) {  
           const openaiAPIKey = global.openai_key;  
           let chgptdb = global.chatgpt.data.users[m.sender];  
