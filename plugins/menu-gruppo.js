@@ -104,9 +104,9 @@ let handler = async (_0x316f52, { conn: _0x4a2566, usedPrefix: _0x238280 }) => {
 - ${_0x238280}𝐨𝐛𝐛𝐥𝐢𝐠𝐨
 - ${_0x238280}𝐚𝐝𝐨𝐭𝐭𝐚 @
 ──────────────
-꙰ 𝟥𝟥𝟥 ꙰ 𝔹𝕆𝕋 ꙰`.trim();
+ossessionbot`.trim();
 
-  let _0x18f634 = global.db.data.nomedelbot || " ꙰ 𝟥𝟥𝟥 ꙰ 𝔹𝕆𝕋 ꙰ ";
+  let _0x18f634 = global.db.data.nomedelbot || " ossessionbot ";
 
   _0x4a2566.sendMessage(_0x316f52.chat, {
     'text': _0x52ca99,
