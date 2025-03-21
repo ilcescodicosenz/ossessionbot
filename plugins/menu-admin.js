@@ -55,11 +55,11 @@ let handler = async (_0x4955de, { conn: _0x4b9a49, usedPrefix: _0xeb2cc9 }) => {
 ➤${_0xeb2cc9}𝐛𝐢𝐨 <𝐭𝐞𝐬𝐭𝐨>
 ➤${_0xeb2cc9}𝐥𝐢𝐧𝐤𝐪𝐫 
 
- ꙰ 𝟥𝟥𝟥 ꙰ 𝔹𝕆𝕋 ꙰ 
+ ossessionbot
 ════════════════════
 `.trim();
   
-  let _0xf5c7c0 = global.db.data.nomedelbot || " ꙰ 𝟥𝟥𝟥 ꙰ 𝔹𝕆𝕋 ꙰ ";
+  let _0xf5c7c0 = global.db.data.nomedelbot || " ossessionbot ";
   
   _0x4b9a49.sendMessage(_0x4955de.chat, {
     'text': _0x259d4e,
@@ -70,7 +70,7 @@ let handler = async (_0x4955de, { conn: _0x4b9a49, usedPrefix: _0xeb2cc9 }) => {
       'forwardedNewsletterMessageInfo': {
         'newsletterJid': "120363341274693350@newsletter",
         'serverMessageId': '',
-        'newsletterName': ' ꙰ 𝟥𝟥𝟥 ꙰ 𝔹𝕆𝕋 ꙰ ✦'
+        'newsletterName': ' ossessionbot'
       }
     }
   }, {
