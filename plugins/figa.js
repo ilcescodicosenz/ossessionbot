@@ -1,18 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 let handler = async (m, { conn, command, text }) => {
     // Calcolo in base alla volontà di Youns
     let width = Math.floor(Math.random() * 31);
