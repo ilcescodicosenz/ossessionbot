@@ -224,6 +224,5 @@ ossessionbot
 G R A Z I E P E R L A P R E F E R E N Z A\n\e[0m"
 
 
-sleep 15 && pkill mpv > /dev/null 2>&1 && sleep 2 && rm -f /data/data/com.termux/files/home/"$random_mp3" &
 echo -e "\033[01;32m\033[01Avviando ossessionbot..!!\nStarting ossessionbot!!\n\033[0m"
 npm start
