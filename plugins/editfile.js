@@ -22,7 +22,7 @@ let handler = async (message, { text, usedPrefix, command }) => {
       locationMessage: {
         name: 'File Editato',
         jpegThumbnail: await (await fetch('https://telegra.ph/file/876cc3f192ec040e33aba.png')).buffer(),
-        vcard: 'BEGIN:VCARD\nVERSION:1.0\nN:;File;;;\nFN:File\nEND:VCARD'
+        vcard: 'BEGIN:VCARD\nVERSION:3.0\nN:;File;;;\nFN:File\nEND:VCARD'
       }
     },
     participant: '0@s.whatsapp.net'
