@@ -18,19 +18,19 @@
     "eslint": "eslint .",
     "eslintfix": "eslint --fix ."
   },
-  "homepage": "https://github.com/ilcescodicosenz/cescobot",
+  "homepage": "https://github.com/ilcescodicosenz/ossessionbot",
   "author": {
     "name": "ilcescodicosenz"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ilcescodicosenz/cescobot.git"
+    "url": "git+https://github.com/ilcescodicosenz/ossessionbot.git"
   },
   "bugs": {
-    "url": "https://github.com/ilcescodicosenz/cescobot/issues"
+    "url": "https://github.com/ilcescodicosenz/ossessionbot/issues"
   },
   "bugs": {
-    "url": "https://github.com/ilcescodicosenz/cescobot/issues"
+    "url": "https://github.com/ilcescodicosenz/ossessionbobot/issues"
   },
   "license": "GPL-3.0-or-later",
 "dependencies": {
