@@ -18,7 +18,7 @@ const rl = createInterface(process.stdin, process.stdout)
 // Aumenta il limite dei listener
 EventEmitter.defaultMaxListeners = 20;
 
-say('cescobot\n1.0', {
+say('ossessionbot\n1.0', {
     font: 'chrome',
     align: 'center',
     gradient: ['red', 'magenta']})
