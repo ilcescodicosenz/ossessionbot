@@ -46,16 +46,16 @@ async function handler(m, { conn, usedPrefix }) {
   const speed = (end - start).toFixed(4);  
 
   const info = `
-ꪶ⏳ꫂ͛ ══ •⊰✰⊱• ══ ꪶ⏳ꫂ͛
 
-  ꙰ 𝟥𝟥𝟥 ꙰ ꪶ⏳ꫂ͛ 𝐁𝐎𝐓 ꙰
+
+  ossessionbot
 
   **𝐀𝐓𝐓𝐈𝐕𝐈𝐓𝐀':** ${uptime}
   **𝐕𝐄𝐋𝐎𝐂𝐈𝐓𝐀':** ${speed} ms
   **𝐔𝐓𝐄𝐍𝐓𝐈 𝐑𝐄𝐆𝐈𝐒𝐓𝐑𝐀𝐓𝐈:** ${totalreg}
   **𝐆𝐑𝐔𝐏𝐏𝐈:** ${groups}
 
-  ꪶ⏳ꫂ͛ ══ •⊰✰⊱• ══ ꪶ⏳ꫂ͛
+
   `.trim();
 
   conn.reply(m.chat, info, m);
