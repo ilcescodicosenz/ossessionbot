@@ -1,84 +1,75 @@
-const { makeWASocket, useMultiFileAuthState, MessageType } = require('@whiskeysockets/baileys');
-const axios = require('axios');
-const cheerio = require('cheerio');
+const { makeWASocket, useMultiFileAuthState, DisconnectReason } = require('@whiskeysockets/baileys');
 
-// Funzione per eseguire il scraping su Pinterest
-const searchPinterest = async (query) => {
-    const url = `https://www.pinterest.com/search/pins/?q=${encodeURIComponent(query)}&rs=typed`;
-    const response = await axios.get(url);
-    const $ = cheerio.load(response.data);
-    
-    let images = [];
-    $('img').each((i, element) => {
-        let imgSrc = $(element).attr('src');
-        if (imgSrc && imgSrc.startsWith('https://')) {
-            images.push(imgSrc);
-        }
-    });
-
-    return images.slice(0, 5); // Limita a 5 immagini
-};
-
-// Funzione per inviare immagini in sequenza con un effetto di "slide"
-const sendImagesSlide = async (sock, to, images) => {
-    for (let imgUrl of images) {
-        await sock.sendMessage(to, {
-            image: { url: imgUrl },
-            caption: 'Ecco un’immagine trovata su Pinterest!',
-        });
-        await new Promise(resolve => setTimeout(resolve, 1500)); // Pausa di 1.5 secondi tra le immagini
-    }
-};
-
-// Handler per il comando .immagine
-const handleImmageCommand = async (sock, message, to) => {
-    const text = message.text;
-    
-    if (text.startsWith('.immagine')) {
-        const query = text.replace('.immagine', '').trim();
-        if (!query) {
-            await sock.sendMessage(to, { text: 'Per favore, inserisci un titolo per la ricerca.' });
-            return;
-        }
-
-        try {
-            const images = await searchPinterest(query);
-            if (images.length === 0) {
-                await sock.sendMessage(to, { text: 'Nessuna immagine trovata su Pinterest.' });
-                return;
-            }
-
-            await sendImagesSlide(sock, to, images);
-        } catch (error) {
-            console.error('Errore durante la ricerca su Pinterest:', error);
-            await sock.sendMessage(to, { text: 'Si è verificato un errore durante la ricerca delle immagini.' });
-        }
-    }
-};
-
-// Main function per configurare il bot
-const startBot = async () => {
-    const { state, saveState } = await useMultiFileAuthState('./auth_info');
+// Funzione per inizializzare il client Baileys
+const startClient = async () => {
+    const { state, saveCreds } = await useMultiFileAuthState('./auth_info'); // Percorso dove salviamo lo stato di autenticazione
     const sock = makeWASocket({
         auth: state,
+        printQRInTerminal: true, // Mostra il QR Code per accedere
     });
 
-    // Handler per i messaggi
-    sock.ev.on('messages.upsert', async (m) => {
-        const message = m.messages[0];
-        if (message.key.fromMe) return; // Ignora i messaggi inviati dal bot stesso
-        
-        if (message.message.conversation) {
-            await handleImmageCommand(sock, message.message.conversation, message.key.remoteJid);
+    // Funzione per inviare il tag di un utente
+    const tagUser = async (groupId, number) => {
+        const userId = `${number}@s.whatsapp.net`; // Format del numero WhatsApp
+        try {
+            await sock.sendMessage(groupId, {
+                text: `@${number}`,
+                mentions: [userId], // Menzione dell'utente nel messaggio
+            });
+            console.log(`Utente taggato con successo: ${number}`);
+        } catch (error) {
+            console.error(`Errore durante il tagging dell'utente: ${error}`);
+        }
+    };
+
+    // Funzione per gestire i comandi
+    const handleCommand = async (message, from) => {
+        const command = message.trim().split(' ')[0]; // Estrai il comando
+        const args = message.trim().split(' ').slice(1).join(' '); // Estrai gli argomenti
+
+        console.log(`Comando ricevuto: ${command}`); // Debug per verificare se il comando è correttamente letto
+
+        if (command === '.tagga') {
+            const number = args.trim();
+            if (!number) {
+                await sock.sendMessage(from, { text: 'Errore: Devi fornire un numero. Usa `.tagga <numero>`.' });
+                return;
+            }
+            await tagUser(from, number);
+        } else {
+            await sock.sendMessage(from, { text: 'Comando non riconosciuto.' });
+        }
+    };
+
+    // Ascolta i messaggi in arrivo
+    sock.ev.on('messages.upsert', async (messageUpdate) => {
+        const message = messageUpdate.messages[0];
+        if (!message.message || message.key.fromMe) return; // Ignora i messaggi inviati dal bot stesso
+
+        const from = message.key.remoteJid; // ID del gruppo o chat privata
+        const messageText = message.message.conversation;
+
+        console.log(`Messaggio ricevuto: ${messageText}`); // Debug per vedere il messaggio
+
+        // Gestisci i comandi
+        if (messageText) {
+            await handleCommand(messageText, from);
         }
     });
 
-    // Salva lo stato dell'autenticazione ogni volta che cambia
     sock.ev.on('connection.update', (update) => {
-        if (update.connection === 'close') {
-            saveState();
+        const { connection, lastDisconnect } = update;
+        if (connection === 'close') {
+            const shouldReconnect = lastDisconnect.error?.output?.statusCode !== DisconnectReason.loggedOut;
+            console.log('Connessione chiusa, riconnettere:', shouldReconnect);
+            if (shouldReconnect) startClient();
+        } else if (connection === 'open') {
+            console.log('Connessione stabilita!');
         }
     });
+
+    sock.authState = { creds: state.creds, keys: state.keys };
 };
 
-startBot();
+// Avvia il client
+startClient();
