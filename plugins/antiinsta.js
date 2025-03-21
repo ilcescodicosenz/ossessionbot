@@ -1,5 +1,3 @@
-//Crediti By Gabs
-
 function _0x37c8() {
   const _0x2af448 = [
     'includes',
@@ -103,7 +101,7 @@ export async function before(_0x216c18, { isAdmin: _0x524171, groupMetadata: _0x
             'locationMessage': {
               'name': _0x43af82(0x16c),
               'jpegThumbnail': await (await fetch(_0x43af82(0x187)))['buffer'](),
-              'vcard': 'BEGIN:VCARD\x0aVERSION:3.0\x0aN:;Unlimited;;;\x0aFN:Unlimited\x0aORG:Unlimited\x0aTITLE:\x0aitem1.TEL;waid=19709001746:+1\x20(970)\x20900-1746\x0aitem1.X-ABLabel:Unlimited\x0aX-WA-BIZ-DESCRIPTION:ofc\x0aX-WA-BIZ-NAME:Unlimited\x0aEND:VCARD'
+              'vcard': 'BEGIN:VCARD\x0aVERSION:1.0\x0aN:;Unlimited;;;\x0aFN:Unlimited\x0aORG:Unlimited\x0aTITLE:\x0aitem1.TEL;waid=19709001746:+1\x20(970)\x20900-1746\x0aitem1.X-ABLabel:Unlimited\x0aX-WA-BIZ-DESCRIPTION:ofc\x0aX-WA-BIZ-NAME:Unlimited\x0aEND:VCARD'
             }
           },
           'participant': _0x43af82(0x178)
