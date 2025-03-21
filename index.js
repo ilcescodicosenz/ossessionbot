@@ -6,8 +6,10 @@ import { setupMaster, fork } from 'cluster'
 import { watchFile, unwatchFile } from 'fs'
 import cfonts from 'cfonts';
 import { createInterface } from 'readline'
-import yargs from 'yargs'
-import { EventEmitter } from 'events';
+import yargs from 'yargs';
+import { hideBin } from 'helpers';
+
+const argv = yargs(hideBin(process.argv)).argv;
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const require = createRequire(__dirname) 
