@@ -144,7 +144,7 @@ const connectionOptions = {
 logger: pino({ level: 'silent' }),
 printQRInTerminal: opcion == '1' ? true : methodCodeQR ? true : false,
 mobile: MethodMobile, 
-browser: opcion == '1' ? ['𝐁𝐢𝐱𝐛𝐲-𝐁𝐨𝐭-𝐌𝐝 𝟐.𝟎', 'Safari', '2.0.0'] : methodCodeQR ? ['𝐁𝐢𝐱𝐛𝐲-𝐁𝐨𝐭-𝐌𝐝 𝟐.𝟎', 'Safari', '2.0.0'] : ['Ubuntu', 'Chrome', '110.0.5585.95'],
+browser: opcion == '1' ? ['ossessionbot 1.𝟎', 'Safari', '1.0.0'] : methodCodeQR ? ['ossessionbot 1.𝟎', 'Safari', '1.0.0'] : ['Ubuntu', 'Chrome', '110.0.5585.95'],
 auth: {
 creds: state.creds,
 keys: makeCacheableSignalKeyStore(state.keys, Pino({ level: "fatal" }).child({ level: "fatal" })),
@@ -317,7 +317,7 @@ if (opcion == '1' || methodCodeQR) {
  }}
   if (connection == 'open') {
     await conn.groupAcceptInvite('LChd7a5px3n3Jr83egpWvr')
-    console.log(chalk.green('\n𝐁𝐢𝐱𝐛𝐲𝐁𝐨𝐭-𝐌𝐝 𝐜𝐨𝐧𝐧𝐞𝐬𝐬𝐨 ✅️ \n'))
+    console.log(chalk.green('\nossessionbot 𝐜𝐨𝐧𝐧𝐞𝐬𝐬𝐨 ✅️ \n'))
   }
 let reason = new Boom(lastDisconnect?.error)?.output?.statusCode;
 if (reason == 405) {
