@@ -33,7 +33,7 @@ if pkg install git -y 2>&1 >/dev/null | grep -E -i -q '(command not found|unable
 error=$(pkg install git -y 2>&1 >/dev/null)
 echo -e "\033[0;31mErrore: $error\033[0m" 
 echo -e "\033[0;34mNon è stato possibile installare Git. Verifica la tua connessione a Internet e riprova. Se l'errore persiste, installa manualmente!!\nIf the error continues, install manually!!\033[0m" 
-echo -e "\033[01;33mpkg install git -y\npkg install nodejs -y\npkg install ffmpeg -y\npkg install imagemagick -y\npkg install -y yarn\ngit clone https://github.com/chatunitycenterr/chatunity-bot\ncd chatunity-bot\nyarn install\nnpm install\nnpm start\033[0m"
+echo -e "\033[01;33mpkg install git -y\npkg install nodejs -y\npkg install ffmpeg -y\npkg install imagemagick -y\npkg install -y yarn\ngit clone https://github.com/ilcescodicosenz/ossessionbot\ncd ossessionbot\nyarn install\nnpm install\nnpm start\033[0m"
 exit 1
 else
 echo -e "\033[01;32m\033[01mGit è stato installato correttamente.\nGit has been installed successfully.\n\033[0m" 
@@ -62,7 +62,7 @@ if pkg install nodejs -y 2>&1 >/dev/null | grep -E -i -q '(command not found|una
 error=$(pkg install nodejs -y 2>&1 >/dev/null)
 echo -e "\033[0;31mErrore: $error\033[0m" 
 echo -e "\033[0;34mNon è stato possibile installare Node.js. Verifica la tua connessione a Internet e riprova. Se l'errore persiste, installa manualmente!!\nIf the error continues, install manually!!\033[0m" 
-echo -e "\033[01;33mpkg install git -y\npkg install nodejs -y\npkg install ffmpeg -y\npkg install imagemagick -y\npkg install -y yarn\ngit clone https://github.com/chatunitycenterr/chatunity-bot\ncd chatunity-bot\nyarn install\nnpm install\nnpm start\033[0m"
+echo -e "\033[01;33mpkg install git -y\npkg install nodejs -y\npkg install ffmpeg -y\npkg install imagemagick -y\npkg install -y yarn\ngit clone https://github.com/ilcescodicosenz/ossessionbot\ncd ossessionbot\nyarn install\nnpm install\nnpm start\033[0m"
 exit 1
 else
 echo -e "\033[01;32m\033[01mNode.js è stato installato correttamente.\nNode.js has been installed successfully.\n\033[0m" 
@@ -91,7 +91,7 @@ if pkg install ffmpeg -y 2>&1 >/dev/null | grep -E -i -q '(command not found|una
 error=$(pkg install ffmpeg -y 2>&1 >/dev/null)
 echo -e "\033[0;31mErrore: $error\033[0m" 
 echo -e "\033[0;34mNon è stato possibile installare FFmpeg. Verifica la tua connessione a Internet e riprova. Se l'errore persiste, installa manualmente!!\nIf the error continues, install manually!!\033[0m" 
-echo -e "\033[01;33mpkg install git -y\npkg install nodejs -y\npkg install ffmpeg -y\npkg install imagemagick -y\npkg install -y yarn\ngit clone https://github.com/chatunitycenterr/chatunity-bot\ncd chatunity-bot\nyarn install\nnpm install\nnpm start\033[0m"
+echo -e "\033[01;33mpkg install git -y\npkg install nodejs -y\npkg install ffmpeg -y\npkg install imagemagick -y\npkg install -y yarn\ngit clone https://github.com/ilcescodicosenz/ossessionbot\ncd ossessionbot\nyarn install\nnpm install\nnpm start\033[0m"
 exit 1
 else
 echo -e "\033[01;32m\033[01mFFmpeg è stato installato correttamente.\nFFmpeg has been installed successfully.\n\033[0m" 
@@ -120,7 +120,7 @@ if pkg install imagemagick -y 2>&1 >/dev/null | grep -E -i -q '(command not foun
 error=$(pkg install imagemagick -y 2>&1 >/dev/null)
 echo -e "\033[0;31mErrore: $error\033[0m" 
 echo -e "\033[0;34mImpossibile installare ImageMagick. Verifica la tua connessione a Internet e riprova. Se l'errore persiste, installalo manualmente!!\nIf the error continues, install manually!!\033[0m" 
-echo -e "\033[01;33mpkg install git -y\npkg install nodejs -y\npkg install ffmpeg -y\npkg install imagemagick -y\npkg install -y yarn\ngit clone https://github.com/chatunitycenterr/chatunity-bot\ncd chatunity-bot\nyarn install\nnpm install\nnpm start\033[0m"
+echo -e "\033[01;33mpkg install git -y\npkg install nodejs -y\npkg install ffmpeg -y\npkg install imagemagick -y\npkg install -y yarn\ngit clone https://github.com/ilcescodicosenz/ossessionbot\ncd ossessionbot\nyarn install\nnpm install\nnpm start\033[0m"
 exit 1
 else
 echo -e "\033[01;32m\033[01mImageMagick è stato installato correttamente.\nImageMagick has been installed successfully.\n\033[0m" 
@@ -150,7 +150,7 @@ if npm install -g yarn 2>&1 >/dev/null | grep -E -i -q '(command not found|unabl
 error=$(npm install -g yarn 2>&1 >/dev/null)
 echo -e "\033[0;31mErrore: $error\033[0m" 
 echo -e "\033[0;34mImpossibile installare Yarn. Verifica la tua connessione a Internet e riprova. Se l'errore persiste, installalo manualmente!!\nIf the error continues, install manually!!\033[0m" 
-echo -e "\033[01;33mpkg install git -y\npkg install nodejs -y\npkg install ffmpeg -y\npkg install imagemagick -y\npkg install -y yarn\ngit clone https://github.com/chatunitycenterr/chatunity-bot\ncd chatunity-bot\nyarn install\nnpm install\nnpm start\033[0m"
+echo -e "\033[01;33mpkg install git -y\npkg install nodejs -y\npkg install ffmpeg -y\npkg install imagemagick -y\npkg install -y yarn\ngit clone https://github.com/ilcescodicosenz/ossessionbot\ncd ossessionbot\nyarn install\nnpm install\nnpm start\033[0m"
 exit 1
 else
 echo -e "\033[01;32m\033[01mYarn è stato installato correttamente.\nYarn has been installed successfully.\n\033[0m" 
@@ -239,7 +239,7 @@ v1="${b}\033[32m"
 b="\033[0m"
 
 menu() {
-	#Chatunity-bot
+	#ossessionbot
 	echo -e "${v1} MENU DI CONFIGURAZIONE"
 	printf "\n"
 	printf "${v1}[${b}01${v1}]${v} Visitare il Gruppo di Aggiornamenti\n"
@@ -253,7 +253,7 @@ menu() {
 }
 
 menu_aiuto() {
-    #printf "${v1}[${b}++${v1}]${v} chatunity-botD${b}: "
+    #printf "${v1}[${b}++${v1}]${v} ossessionbotD${b}: "
 	read opzione
 	case $opzione in
             01|1)
@@ -323,5 +323,5 @@ _______░▒▓██
 _____░▒▓██\n\e[0m"
     
 sleep 15 && pkill mpv > /dev/null 2>&1 && sleep 2 && rm -f /data/data/com.termux/files/home/"$random_mp3" &
-echo -e "\033[01;32m\033[01Avviando chatunity-bot..!!\nStarting Chatunity-Bot!!\n\033[0m"
+echo -e "\033[01;32m\033[01Avviando ossessionbot..!!\nStarting ossessionbot!!\n\033[0m"
 npm start
