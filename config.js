@@ -16,7 +16,8 @@ global.defaultLenguaje = 'it'; // Aggiunto da config2.js
 
 global.owner = [
   ['393755853799', 'ossessionbot', true],
-  ['xxxxxxxxxx'],
+  ['xxxxxxxxxx']
+]; // Corretto errore di sintassi (mancava la chiusura dell'array)
 
 global.suittag = ['393755853799']; // Aggiunto da config2.js
 global.prems = ['xxxxxxxxxx', 'xxxxxxxxxx', '393755853799']; // Aggiunto 51995386439 da config2.js
@@ -25,7 +26,6 @@ global.prems = ['xxxxxxxxxx', 'xxxxxxxxxx', '393755853799']; // Aggiunto 5199538
 global.BASE_API_DELIRIUS = "https://delirius-apiofc.vercel.app"; // Aggiunto da config2.js
 global.BASE_API_SKYNEX = "https://skynex.boxmine.xyz"; // Aggiunto da config2.js
 
-global.mods = ['xxxxxxxxxx']; // Mantenuto da config.js
 global.mods = []; // Sovrascritto da config2.js (vuoto)
 
 global.keysZens = ['c2459db922', '37CC845916', '6fb0eff124'];
@@ -47,8 +47,7 @@ global.APIs = {
   neoxr: 'https://api.neoxr.my.id',
   zenzapis: 'https://zenzapis.xyz',
   akuari: 'https://api.akuari.my.id',
-  akuari2: 'https://apimu.my.id',
-  fgmods: 'https://api-fgmods.ddns.net'
+  akuari2: 'https://apimu.my.id'
 };
 global.APIKeys = {
   'https://api.xteam.xyz': `${keysxteam}`,
@@ -60,9 +59,7 @@ global.APIKeys = {
 global.imagen1 = ['./media/menu1.jpg'];
 global.imagen4 = fs.readFileSync('./ossessionbot.png');
 
-global.packname = 'ossessionbot'; // Mantenuto da config.js
 global.packname = 'Sticker'; // Sovrascritto da config2.js.
-global.author = 'cesco'; // Mantenuto da config.js
 global.author = 'ilcescodicosenz'; // Sovrascritto da config2.js.
 
 global.vs = '1.0';
@@ -71,18 +68,16 @@ global.nomebot = 'ossessionbot';
 
 //────────────────────────────
 
-global.wm = 'ossessionbo𝐭'
-global.wait = 'ⓘ 𝐂𝐚𝐫𝐢𝐜𝐚𝐦𝐞𝐧𝐭𝐨 ...'
+global.wm = 'ossessionbot';
+global.wait = 'ⓘ 𝐂𝐚𝐫𝐢𝐜𝐚𝐦𝐞𝐧𝐭𝐨 ...';
 
 global.multiplier = 69;
 global.maxwarn = '5';
 
 global.flaaa = [
-'https://flamingtext.com/net-fu/proxy_form.cgi?&imageoutput=true&script=water-logo&script=water-logo&fontsize=90&doScale=true&scaleWidth=800&scaleHeight=500&fontsize=100&fillTextColor=%23000&shadowGlowColor=%23000&backgroundColor=%23000&text=',
-'https://flamingtext.com/net-fu/proxy_form.cgi?&imageoutput=true&script=crafts-logo&fontsize=90&doScale=true&scaleWidth=800&scaleHeight=500&text=',
-'https://flamingtext.com/net-fu/proxy_form.cgi?&imageoutput=true&script=amped-logo&doScale=true&scaleWidth=800&scaleHeight=500&text=',
-'https://www6.flamingtext.com/net-fu/proxy_form.cgi?&imageoutput=true&script=sketch-name&doScale=true&scaleWidth=800&scaleHeight=500&fontsize=100&fillTextType=1&fillTextPattern=Warning!&text=',
-'https://www6.flamingtext.com/net-fu/proxy_form.cgi?&imageoutput=true&script=sketch-name&doScale=true&scaleWidth=800&scaleHeight=500&fontsize=100&fillTextType=1&fillTextPattern=Warning!&fillColor1Color=%23f2aa4c&fillColor2Color=%23f2aa4c&fillColor3Color=%23f2aa4c&fillColor4Color=%23f2aa4c&fillColor5Color=%23f2aa4c&fillColor6Color=%23f2aa4c&fillColor7Color=%23f2aa4c&fillColor8Color=%23f2aa4c&fillColor9Color=%23f2aa4c&fillColor10Color=%23f2aa4c&fillOutlineColor=%23f2aa4c&fillOutline2Color=%23f2aa4c&backgroundColor=%23101820&text=']
-
-
-global.wm = 'ossessionbot'; // Mantenuto da config.js
+  'https://flamingtext.com/net-fu/proxy_form.cgi?&imageoutput=true&script=water-logo&script=water-logo&fontsize=90&doScale=true&scaleWidth=800&scaleHeight=500&fontsize=100&fillTextColor=%23000&shadowGlowColor=%23000&backgroundColor=%23000&text=',
+  'https://flamingtext.com/net-fu/proxy_form.cgi?&imageoutput=true&script=crafts-logo&fontsize=90&doScale=true&scaleWidth=800&scaleHeight=500&text=',
+  'https://flamingtext.com/net-fu/proxy_form.cgi?&imageoutput=true&script=amped-logo&doScale=true&scaleWidth=800&scaleHeight=500&text=',
+  'https://www6.flamingtext.com/net-fu/proxy_form.cgi?&imageoutput=true&script=sketch-name&doScale=true&scaleWidth=800&scaleHeight=500&fontsize=100&fillTextType=1&fillTextPattern=Warning!&text=',
+  'https://www6.flamingtext.com/net-fu/proxy_form.cgi?&imageoutput=true&script=sketch-name&doScale=true&scaleWidth=800&scaleHeight=500&fontsize=100&fillTextType=1&fillTextPattern=Warning!&fillColor1Color=%23f2aa4c&fillColor2Color=%23f2aa4c&fillColor3Color=%23f2aa4c&fillColor4Color=%23f2aa4c&fillColor5Color=%23f2aa4c&fillColor6Color=%23f2aa4c&fillColor7Color=%23f2aa4c&fillColor8Color=%23f2aa4c&fillColor9Color=%23f2aa4c&fillColor10Color=%23f2aa4c&fillOutlineColor=%23f2aa4c&fillOutline2Color=%23f2aa4c&backgroundColor=%23101820&text='
+];

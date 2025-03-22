@@ -1,4 +1,4 @@
-Console.log('avviando...')
+console.log('Preparo bixby...')
 import { join, dirname } from 'path'
 import { createRequire } from "module";
 import { fileURLToPath } from 'url'
@@ -7,25 +7,16 @@ import { watchFile, unwatchFile } from 'fs'
 import cfonts from 'cfonts';
 import { createInterface } from 'readline'
 import yargs from 'yargs'
-import { EventEmitter } from 'events';
-
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const require = createRequire(__dirname) 
 const { name, author } = require(join(__dirname, './package.json')) 
 const { say } = cfonts
 const rl = createInterface(process.stdin, process.stdout)
 
-// Aumenta il limite dei listener
-EventEmitter.defaultMaxListeners = 20;
-
-say('ossession\nbot\n1.0', {
-    font: 'chrome',
-    align: 'center',
-    gradient: ['red', 'magenta']})
-    say(`developed by cesco', {
-    font: 'console',
-    align: 'center',
-    gradient: ['red', 'magenta']})
+say('\nossession\nbot', {
+font: 'block',
+align: 'center',
+color: ['cyan', 'green']})
 
 var isRunning = false
 /**
@@ -37,6 +28,10 @@ if (isRunning) return
 isRunning = true
 let args = [join(__dirname, file), ...process.argv.slice(2)]
 
+say('ediz cesco', {
+font: 'console',
+align: 'center',
+color: ['cyan', 'blue']})
   
 setupMaster({
 exec: args[0],
@@ -53,9 +48,9 @@ break
 case 'uptime':
 p.send(process.uptime())
 break }})
-p.on('exit', (code, signal) => {
+p.on('exit', (_, code) => {
 isRunning = false
-console.error(`Errore inaspettato (code: ${code}, signal: ${signal})`)
+console.error('Errore inaspettato', code)
   
 p.process.kill()
 isRunning = false
