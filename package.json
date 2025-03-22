@@ -1,7 +1,7 @@
 {
   "name": "ossessionbot",
   "version": "1.0.0",
-  "description": "Un chatbot automatizado para WhatsApp basado en Node.js, que permite realizar múltiples funciones y personalizaciones en la plataforma.",
+  "description": "il bot migliore di whatsapp.",
   "main": "index.js",
   "type": "module",
   "directories": {
