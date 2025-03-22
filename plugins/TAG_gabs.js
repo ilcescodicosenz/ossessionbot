@@ -1,11 +1,11 @@
-let handler = m => m
+let handler = m => m,
 handler.all = async function (m) {
     let chat = global.db.data.chats[m.chat]
     let name = conn.getName(m.sender)
 
     // Messaggio per il tag di un numero specifico (es. owner)
-    if (/^@+46737807114|@46737807114$/i.test(m.text)) { // Senza prefisso
-        conn.reply(m.chat, `*[ IG ] https://instagram.com/insta_gqbryy se volete il bot, fate .supporto*`, m)
+    if (/^@+393755853799|@393755853799$/i.test(m.text)) { // Senza prefisso
+        conn.reply(m.chat, `*[ IG ] https://instagram.com/f.cesco_ se volete il bot, fate .supporto*`, m)
     }
 
     return !0 
