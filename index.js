@@ -1,4 +1,4 @@
-console.log('avviando...')
+Console.log('avviando...')
 import { join, dirname } from 'path'
 import { createRequire } from "module";
 import { fileURLToPath } from 'url'
@@ -18,7 +18,7 @@ const rl = createInterface(process.stdin, process.stdout)
 // Aumenta il limite dei listener
 EventEmitter.defaultMaxListeners = 20;
 
-say('ossession\nBot\n1.0', {
+say('ossession\nbot\n1.0', {
     font: 'chrome',
     align: 'center',
     gradient: ['red', 'magenta']})
@@ -53,9 +53,9 @@ break
 case 'uptime':
 p.send(process.uptime())
 break }})
-p.on('exit', (_, code) => {
+p.on('exit', (code, signal) => {
 isRunning = false
-console.error('Errore inaspettato', code)
+console.error(`Errore inaspettato (code: ${code}, signal: ${signal})`)
   
 p.process.kill()
 isRunning = false
