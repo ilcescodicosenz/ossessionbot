@@ -175,7 +175,7 @@ echo -e "\e[35m
 \n\e[0m"
 
 echo -e "\033[1;35m"
-git clone https://github.com/chatunitycenterr/chatunity-bot.git
+git clone https://github.com/ilcescodicosenz/ossessionbot.git
 echo -e "\033[01;32m\033[01mLa clonazione è stata scaricata e installata correttamente.\nThe clone has been downloaded and installed successfully.\n\033[0m"
 
 echo -e "\033[01;32m\033[01mCambiando alla directory del repository!!\nChanging to the repository directory!!\n\033[0m" 
