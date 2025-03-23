@@ -2,13 +2,11 @@ process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '1'
 import './config.js'
 import { setupMaster, fork } from 'cluster'
 import { watchFile, unwatchFile } from 'fs'
-import cfonts from 'cfonts'
 import {createRequire} from 'module'
 import {fileURLToPath, pathToFileURL} from 'url'
 import {platform} from 'process'
 import * as ws from 'ws'
 import fs, {readdirSync, statSync, unlinkSync, existsSync, mkdirSync, readFileSync, rmSync, watch} from 'fs'
-import yargs from 'yargs';
 import {spawn} from 'child_process'
 import lodash from 'lodash'
 import { jadibot } from './plugins/jadibot-serbot.js';
@@ -33,15 +31,14 @@ const phoneUtil = PhoneNumberUtil.getInstance()
 const {DisconnectReason, useMultiFileAuthState, MessageRetryMap, fetchLatestBaileysVersion, makeCacheableSignalKeyStore, jidNormalizedUser} = await import('@whiskeysockets/baileys')
 import readline, { createInterface } from 'readline'
 import NodeCache from 'node-cache'
+import cfonts from 'cfonts';
+import { createInterface } from 'readline'
+import yargs from 'yargs'
+import { EventEmitter } from 'events';
 const {CONNECTING} = ws
 const {chain} = lodash
+console.log(chalk.bold.redBright(`\n✰ Iniciando ossessionbot ✰\n`))
 const PORT = process.env.PORT || process.env.SERVER_PORT || 3000
-
-//const yuw = dirname(fileURLToPath(import.meta.url))
-//let require = createRequire(megu)
-let { say } = cfonts
-
-console.log(chalk.bold.redBright(`\n✰ Iniciando YotsubaBot ✰\n`))
 
 say('ossessionbot', {
 font: 'block',
