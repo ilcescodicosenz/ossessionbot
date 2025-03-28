@@ -1,4 +1,4 @@
-console.log('avviando...')
+console.log('avviando ossession...')
 import { join, dirname } from 'path'
 import { createRequire } from "module";
 import { fileURLToPath } from 'url'
@@ -22,7 +22,7 @@ say('ossessionbot\nBot\n1.0', {
     font: 'chrome',
     align: 'center',
     gradient: ['red', 'magenta']})
-    say(`developed by chatunity`, {
+    say(`developed by cesco`, {
     font: 'console',
     align: 'center',
     gradient: ['red', 'magenta']})
