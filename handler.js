@@ -406,7 +406,7 @@ export async function handler(chatUpdate) {
                             console.error(e)
                         }
                         if (m.money) 
-                         m.reply(+m.money + ' OSSESSIONC𝙊𝙄𝙉𝙎 🐱 𝙐𝙎𝘼𝘿𝙊(𝙎)') 
+                         m.reply(+m.money + ' ⟆ 𝑶𝑺𝑺𝑬𝑺𝑺𝑰𝑶𝑵𝑩𝑶𝑻C𝙊𝙄𝙉𝙎 🐱 𝙐𝙎𝘼𝘿𝙊(𝙎)') 
                          break                    }
                     if (m.limit)
                         m.reply(+m.limit + ' diamante usato')
@@ -509,8 +509,8 @@ export async function participantsUpdate({ id, participants, action }) {
                     } catch (e) {
                     } finally {
                         let apii = await this.getFile(pp)
-                        let nomeDelBot = global.db.data.nomedelbot || `cescobot`
-                        text = (action === 'add' ? (chat.sWelcome || this.welcome || conn.welcome || 'Benvenuto, @user!').replace('@subject', await this.getName(id)).replace('@desc', groupMetadata.desc?.toString() || 'bot') :
+                        let nomeDelBot = global.db.data.nomedelbot || `⟆ 𝑶𝑺𝑺𝑬𝑺𝑺𝑰𝑶𝑵𝑩𝑶𝑻 ⟇ ✦`
+                        text = (action === 'add' ? (chat.sWelcome || this.welcome || conn.welcome || 'Benvenutx grazie per essere entratx, @user!').replace('@subject', await this.getName(id)).replace('@desc', groupMetadata.desc?.toString() || 'bot') :
                             (chat.sBye || this.bye || conn.bye || 'Addio, @user!')).replace('@user', '@' + user.split('@')[0])
                         this.sendMessage(id, { 
                             text: text, 
@@ -550,8 +550,8 @@ export async function participantsUpdate({ id, participants, action }) {
                     } finally {
                         let nomeDelBot = global.db.data.nomedelbot || `cescobot`
                         let apii = await this.getFile(pp)
-                        text = (action === 'promote' ? (chat.sPromote || this.spromote || conn.spromote || '@user ```è ora admin```') :
-                            (chat.sDemote || this.sdemote || conn.sdemote || '@user ```non è più admin```')).replace('@user', '@' + user.split('@')[0])
+                        text = (action === 'promote' ? (chat.sPromote || this.spromote || conn.spromote || '@user ```sei statx messx admin```') :
+                            (chat.sDemote || this.sdemote || conn.sdemote || '@user ```sei statx toltx admin```')).replace('@user', '@' + user.split('@')[0])
                         this.sendMessage(id, { 
                             text: text, 
                             contextInfo:{ 
@@ -589,7 +589,7 @@ export async function groupsUpdate(groupsUpdate) {
         if (!id) continue
         let chats = global.db.data.chats[id], text = ''
         if (groupUpdate.icon) text = (chats.sIcon || this.sIcon || conn.sIcon || '```immagine modificata```').replace('@icon', groupUpdate.icon)
-        if (groupUpdate.revoke) text = (chats.sRevoke || this.sRevoke || conn.sRevoke || '```link reimpostato, nuovo link:```\n@revoke').replace('@revoke', groupUpdate.revoke)
+        if (groupUpdate.revoke) text = (chats.sRevoke || this.sRevoke || conn.sRevoke || '```link reimpostato, ora genero nuovo link:```\n@revoke').replace('@revoke', groupUpdate.revoke)
         if (!text) continue
         await this.sendMessage(id, { text, mentions: this.parseMention(text) })
     }
@@ -645,7 +645,7 @@ global.dfail = (type, m, conn) => {
         premium: '𝐐𝐮𝐞𝐬𝐭𝐨 𝐜𝐨𝐦𝐚𝐧𝐝𝐨 𝐞̀ 𝐩𝐞𝐫 𝐦𝐞𝐦𝐛𝐫𝐢 𝐩𝐫𝐞𝐦𝐢𝐮𝐦 ✅',
         group: '𝐐𝐮𝐞𝐬𝐭𝐨 𝐜𝐨𝐦𝐚𝐧𝐝𝐨 𝐩𝐮𝐨𝐢 𝐮𝐭𝐢𝐥𝐢𝐳𝐳𝐚𝐫𝐥𝐨 𝐢𝐧 𝐮𝐧 𝐠𝐫𝐮𝐩𝐩𝐨 👥',
         private: '𝐐𝐮𝐞𝐬𝐭𝐨 𝐜𝐨𝐦𝐚𝐧𝐝𝐨 𝐩𝐮𝐨𝐢 𝐮𝐭𝐢𝐥𝐢𝐳𝐳𝐚𝐫𝐥𝐨 𝐢𝐧 𝐜𝐡𝐚𝐭 𝐩𝐫𝐢𝐯𝐚𝐭𝐚 👤',
-        admin: '𝐐𝐮𝐞𝐬𝐭𝐨 𝐜𝐨𝐦𝐚𝐧𝐝𝐨 𝐞̀ 𝐝𝐢𝐬𝐩𝐨𝐧𝐢𝐛𝐢𝐥𝐞 𝐩𝐞𝐫 𝐬𝐨𝐥𝐢 𝐚𝐝𝐦𝐢𝐧 👑',
+        admin: '𝐌𝐢 𝐝𝐢𝐬𝐩𝐢𝐚𝐜𝐞, 𝐪𝐮𝐞𝐬𝐭𝐨 𝐜𝐨𝐦𝐚𝐧𝐝𝐨 𝐞̀ 𝐝𝐢𝐬𝐩𝐨𝐧𝐢𝐛𝐢𝐥𝐞 𝐩𝐞𝐫 𝐬𝐨𝐥𝐢 𝐚𝐝𝐦𝐢𝐧👑',
         botAdmin: '𝐃𝐞𝐯𝐢 𝐝𝐚𝐫𝐞 𝐚𝐝𝐦𝐢𝐧 𝐚𝐥 𝐛𝐨𝐭 👑',
         restrict: '🔐 𝐑𝐞𝐬𝐭𝐫𝐢𝐜𝐭 𝐞 𝐝𝐢𝐬𝐚𝐭𝐭𝐢𝐯𝐚𝐭𝐨 🔐'}[type]
     if (msg) return conn.sendMessage(m.chat, { text: ' ', contextInfo:{
