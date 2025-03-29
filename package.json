@@ -1,6 +1,6 @@
 { 
-"name": "chatunity",
-"version": "3.0",
+"name": "⟆ 𝑶𝑺𝑺𝑬𝑺𝑺𝑰𝑶𝑵𝑩𝑶𝑻 ⟇ ✦",
+"version": "1.0",
 "description": "Nada",
 "main": "index.js",
 "type": "module",
@@ -16,16 +16,16 @@
 "eslint": "eslint .",
 "eslintfix": "eslint --fix ."
 },
-"homepage": "https://github.com/chatunitycenter/chatunity-bot",
+"homepage": "https://github.com/ilcescodicosenz/ossessionbot",
 "author": {
 "name": "chatunity"
 },
 "repository": {
 "type": "git",
-"url": "git+https://github.com/chatunitycenter/chatunity-bot.git"
+"url": "git+https://github.com/ilcescodiocsenz/ossessionbot.git"
 },
 "bugs": {
-"url": "https://github.com/chatunitycenter/chatunity-bot/issues"
+"url": "https://github.com/ilcescodicosenz/ossessionbot/issues"
 },
 "license": "GPL-3.0-or-later",
 "dependencies": {
