@@ -52,7 +52,7 @@ const __dirname = global.__dirname(import.meta.url);
 global.opts = new Object(yargs(process.argv.slice(2)).exitProcess(false).parse());
 global.prefix = new RegExp('^[' + (opts['prefix'] || '*/i!#$%+£¢€¥^°=¶∆×÷π√✓©®:;?&.\\-.@').replace(/[|\\{}()[\]^$+*?.\-\^]/g, '\\$&') + ']');
 
-global.db = new Low(/https?:\/\//.test(opts['db'] || '') ? new cloudDBAdapter(opts['db']) : new JSONFile(`${opts._[0] ? opts._[0] + '_' : ''}database.json`));
+global.db = new Low(/https?:\/\//.test(opts['db'] || '') ? new cloudDBAdapter(opts['db']) : new JSONFile(`${opts._[0] ? opts._[0] + '_' : ''}database.js`));
 
 global.DATABASE = global.db; 
 global.loadDatabase = async function loadDatabase() {
@@ -81,8 +81,6 @@ global.loadDatabase = async function loadDatabase() {
 };
 loadDatabase();
 
-/* Creditos a Otosaka (https://wa.me/51993966345) */
-
 global.chatgpt = new Low(new JSONFile(path.join(__dirname, '/db/chatgpt.json')));
 global.loadChatgptDB = async function loadChatgptDB() {
   if (global.chatgpt.READ) {
@@ -106,8 +104,6 @@ global.loadChatgptDB = async function loadChatgptDB() {
 };
 loadChatgptDB();
 
-/* ------------------------------------------------*/
-
 global.authFile = `Sessioni`;
 const {state, saveState, saveCreds} = await useMultiFileAuthState(global.authFile);
 const msgRetryCounterMap = (MessageRetryMap) => { };
@@ -121,7 +117,6 @@ const MethodMobile = process.argv.includes("mobile")
 const rl = readline.createInterface({ input: process.stdin, output: process.stdout })
 const question = (texto) => new Promise((resolver) => rl.question(texto, resolver))
 
-//Código adaptado para la compatibilidad de ser bot con el código de 8 digitos. Hecho por: https://github.com/GataNina-Li
 let opcion
 if (methodCodeQR) {
 opcion = '1'
@@ -130,9 +125,7 @@ if (!methodCodeQR && !methodCode && !fs.existsSync(`./${authFile}/creds.json`)) 
 do {
 let lineM = '⋯ ⋯ ⋯ ⋯ ⋯ ⋯ ⋯ ⋯ ⋯ ⋯ ⋯ 》'
 opcion = await question(chalk.greenBright(`🔮 𝐒𝐞𝐥𝐞𝐳𝐢𝐨𝐧𝐚 𝐮𝐧𝐚 𝐨𝐩𝐳𝐢𝐨𝐧𝐞 𝐩𝐞𝐫 𝐜𝐨𝐥𝐥𝐞𝐠𝐚𝐫𝐞 𝐢𝐥 𝐭𝐮𝐨 𝐛𝐨𝐭 :\n1. 𝐓𝐫𝐚𝐦𝐢𝐭𝐞 𝐐𝐑\n2. 𝐓𝐫𝐚𝐦𝐢𝐭𝐞 𝐜𝐨𝐝𝐢𝐜𝐞 𝐚 𝟖 𝐜𝐢𝐟𝐫𝐞 \n---> `))
-//if (fs.existsSync(`./${authFile}/creds.json`)) {
-//console.log(chalk.bold.redBright(`PRIMERO BORRE EL ARCHIVO ${chalk.bold.greenBright("creds.json")} QUE SE ENCUENTRA EN LA CARPETA ${chalk.bold.greenBright(authFile)} Y REINICIE.`))
-//process.exit()
+  
 if (!/^[1-2]$/.test(opcion)) {
 console.log(`𝐒𝐞𝐥𝐞𝐳𝐢𝐨𝐧𝐚 𝐬𝐨𝐥𝐨 𝟏 𝐨 𝟐.\n`)
 }} while (opcion !== '1' && opcion !== '2' || fs.existsSync(`./${authFile}/creds.json`))
@@ -144,7 +137,7 @@ const connectionOptions = {
 logger: pino({ level: 'silent' }),
 printQRInTerminal: opcion == '1' ? true : methodCodeQR ? true : false,
 mobile: MethodMobile, 
-browser: opcion == '1' ? ['ossessionbot 1.𝟎', 'Safari', '1.0.0'] : methodCodeQR ? ['ossessionbot 1.𝟎', 'Safari', '1.0.0'] : ['Ubuntu', 'Chrome', '110.0.5585.95'],
+browser: opcion == '1' ? [' ⟆ 𝑶𝑺𝑺𝑬𝑺𝑺𝑰𝑶𝑵𝑩𝑶𝑻 ⟇ ✦ 1.𝟎', 'Safari', '1.0.0'] : methodCodeQR ? [' ⟆ 𝑶𝑺𝑺𝑬𝑺𝑺𝑰𝑶𝑵𝑩𝑶𝑻 ⟇ ✦ 1.𝟎', 'Safari', '1.0.0'] : ['Ubuntu', 'Chrome', '110.0.5585.95'],
 auth: {
 creds: state.creds,
 keys: makeCacheableSignalKeyStore(state.keys, Pino({ level: "fatal" }).child({ level: "fatal" })),
@@ -167,10 +160,7 @@ global.conn = makeWASocket(connectionOptions);
 
 if (!fs.existsSync(`./${authFile}/creds.json`)) {
 if (opcion === '2' || methodCode) {
-//if (fs.existsSync(`./${authFile}/creds.json`)) {
-//console.log(chalk.bold.redBright(`PRIMERO BORRE EL ARCHIVO ${chalk.bold.greenBright("creds.json")} QUE SE ENCUENTRA EN LA CARPETA ${chalk.bold.greenBright(authFile)} Y REINICIE.`))
-//process.exit()
-//}
+
 opcion = '2'
 if (!conn.authState.creds.registered) {  
 if (MethodMobile) throw new Error(`Impossibile utilizzare un codice di accoppiamento con l'API mobile`)
@@ -197,7 +187,7 @@ rl.close()
         setTimeout(async () => {
             let codigo = await conn.requestPairingCode(numeroTelefono)
             codigo = codigo?.match(/.{1,4}/g)?.join("-") || codigo
-            console.log(chalk.yellowBright('🔮 𝐂𝐨𝐥𝐥𝐞𝐠𝐚 𝐢𝐥 𝐭𝐮𝐨 𝐛𝐨𝐭...'));
+            console.log(chalk.yellowBright('🔮 𝐂𝐨𝐥𝐥𝐞𝐠𝐚 ⟆ 𝑶𝑺𝑺𝑬𝑺𝑺𝑰𝑶𝑵𝑩𝑶𝑻 ⟇ ✦...'));
             console.log(chalk.black(chalk.bgCyanBright(`𝐈𝐍𝐒𝐄𝐑𝐈𝐒𝐂𝐈 𝐐𝐔𝐄𝐒𝐓𝐎 𝐂𝐎𝐃𝐈𝐂𝐄:`)), chalk.black(chalk.bgGreenBright(codigo)))
         }, 3000)
 }}
@@ -205,7 +195,7 @@ rl.close()
 
 conn.isInit = false;
 conn.well = false;
-conn.logger.info(`🔮 𝐂𝐚𝐫𝐢𝐜𝐚𝐦𝐞𝐧𝐭𝐨 ...\n`);
+conn.logger.info(`Sono in 𝐂𝐚𝐫𝐢𝐜𝐚𝐦𝐞𝐧𝐭𝐨 ...\n`);
 
 if (!opts['test']) {
   if (global.db) {
@@ -218,24 +208,6 @@ if (!opts['test']) {
 
 if (opts['server']) (await import('./server.js')).default(global.conn, PORT);
 
-
-/* Y ese fue el momazo mas bueno del mundo
-        Aunque no dudara tan solo un segundo
-        Mas no me arrepiento de haberme reido
-        Por que la grasa es un sentimiento
-        Y ese fue el momazo mas bueno del mundo
-        Aunque no dudara tan solo un segundo
-        que me arrepiento de ser un grasoso
-        Por que la grasa es un sentimiento
-        - El waza 👻👻👻👻 (Aiden)            
-        
-   Yo tambien se hacer momazos Aiden...
-        ahi te va el ajuste de los borrados
-        inteligentes de las sesiones y de los sub-bot
-        By (Rey Endymion 👺👍🏼) 
-        
-   Ninguno es mejor que tilin god
-        - atte: sk1d             */
 
 function clearTmp() {
   const tmp = [join(__dirname, './tmp')];
