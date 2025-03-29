@@ -253,11 +253,11 @@ menu() {
 }
 
 menu_aiuto() {
-    #printf "${v1}[${b}++${v1}]${v} ossessionbotD${b}: "
+    #printf "${v1}[${b}++${v1}]${v} ossessionbot${b}: "
 	read opzione
 	case $opzione in
             01|1)
-                am start -a android.intent.action.VIEW https://chat.whatsapp.com/BWEz1ymSkoaLFu8FtZ0Q3h &>> /dev/null
+                am start -a android.intent.action.VIEW  &>> /dev/null
                 echo -e "${b}[${v1}++${b}]${v} Accesso al Gruppo Ufficiale\n"
                 
                 ;;
