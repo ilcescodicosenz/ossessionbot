@@ -18,11 +18,11 @@
 },
 "homepage": "https://github.com/ilcescodicosenz/ossessionbot",
 "author": {
-"name": "chatunity"
+"name": "ossessionbot"
 },
 "repository": {
 "type": "git",
-"url": "git+https://github.com/ilcescodiocsenz/ossessionbot.git"
+"url": "git+https://github.com/ilcescodicosenz/ossessionbot.git"
 },
 "bugs": {
 "url": "https://github.com/ilcescodicosenz/ossessionbot/issues"
