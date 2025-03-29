@@ -1,4 +1,3 @@
-⊹⊗ 𝓞𝓢𝓢𝓔𝓢𝓢𝓘𝓞𝓝 𝓢𝓤𝓟𝓟𝓞𝓡𝓣𝓞 ⊗⊹ 
 import fs from 'fs'
 import path, { dirname } from 'path'
 import assert from 'assert'
