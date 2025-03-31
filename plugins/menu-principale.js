@@ -54,7 +54,7 @@ let handler = async (message, { conn, usedPrefix }) => {
       forwardingScore: 1,
       isForwarded: true,
       forwardedNewsletterMessageInfo: {
-        newsletterJid: '120363341274693350@newsletter',
+        newsletterJid: '0029Vb2xynG9MF8tPyNWoE35@newsletter',
         serverMessageId: '',
         newsletterName: botName
       },
