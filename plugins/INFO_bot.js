@@ -1,41 +1,76 @@
-const handler = async (m, { conn, usedPrefix, command }) => {
-  let message = "";
-for (const [ownerNumber] of global.owner) {
-    message += `\nwa.me/${ownerNumber}`;
-  }
-const mention = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : m.quoted;
-  const who = mention ? mention : m.sender;
-  const user = global.db.data.users[who] || {};
-const chats = Object.entries(conn.chats).filter(([id, data]) => id && data.isChats)
-const groupsIn = chats.filter(([id]) => id.endsWith('@g.us'))
-let totalreg = Object.keys(global.db.data.users).length;
-  let rtotalreg = Object.values(global.db.data.users).filter(user => user.instagram).length;
-const totalPlugins = Object.keys(global.plugins).length;
- let prova = {
-    "key": {"participants":"0@s.whatsapp.net", "fromMe": false, "id": "Halo" },
-    "message": {
-      "locationMessage": {
-        name: `𝐈𝐧𝐟𝐨 ${global.nomebot}`,
-        "jpegThumbnail": await (await fetch('https://qu.ax/cSqEs.jpg')).buffer(),
-        "vcard": `BEGIN:VCARD\nVERSION:3.0\nN:Sy;Bot;;;\nFN:y\nitem1.TEL;waid=${m.sender.split('@')[0]}:${m.sender.split('@')[0]}\nitem1.X-ABLabel:Ponsel\nEND:VCARD`
-      }
-    },
-    "participant": "0@s.whatsapp.net"
-  };
-conn.sendMessage(m.chat, {
-    text: `══════•⊰✦⊱•══════
-𝐏𝐞𝐫 𝐯𝐞𝐝𝐞𝐫𝐞 𝐢 𝐜𝐨𝐦𝐚𝐧𝐝𝐢 𝐮𝐬𝐚𝐫𝐞 ${usedPrefix}𝐦𝐞𝐧𝐮
+import os from 'os';
+import { execSync } from 'child_process';
 
-➣ 𝐆𝐫𝐮𝐩𝐩𝐢: ${groupsIn.length}
-➣ 𝐂𝐡𝐚𝐭 𝐩𝐫𝐢𝐯𝐚𝐭𝐞: ${chats.length - groupsIn.length}
-➣ 𝐂𝐡𝐚𝐭 𝐭𝐨𝐭𝐚𝐥𝐢: ${chats.length}
-➣ 𝐔𝐭𝐞𝐧𝐭𝐢 𝐫𝐞𝐠𝐢𝐬𝐭𝐫𝐚𝐭𝐢: ${totalreg}
-➣ 𝐈𝐠 𝐫𝐞𝐠𝐢𝐬𝐭𝐫𝐚𝐭𝐢: ${rtotalreg}/${totalreg} 
-➣ 𝐏𝐥𝐮𝐠𝐢𝐧𝐬: ${totalPlugins}
-➣ 𝐎𝐰𝐧𝐞𝐫: ${message}
-══════•⊰✦⊱•══════`,
-}, { quoted: prova });
+const formatBytes = (bytes, decimals = 2) => {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const dm = decimals < 0 ? 0 : decimals;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
 };
 
-handler.command = ['infobot','bot'];
+const getDiskSpace = () => {
+    try {
+        const stdout = execSync('df -h | grep -E "^/dev/root|^/dev/sda1"').toString();
+        const [ , size, used, available, usePercent ] = stdout.split(/\s+/);
+        return { size, used, available, usePercent };
+    } catch (error) {
+        console.error('❌ Errore nel recupero dello spazio su disco:', error);
+        return null;
+    }
+};
+
+const handler = async (m, { conn }) => {
+    const totalMem = os.totalmem();
+    const freeMem = os.freemem();
+    const usedMem = totalMem - freeMem;
+    const _muptime = process.uptime() * 1000;
+    const muptime = clockString(_muptime);
+    const hostname = os.hostname();
+    const platform = os.platform();
+    const arch = os.arch();
+    const nodeUsage = process.memoryUsage();
+    const diskSpace = getDiskSpace();
+
+    const message = `✅ *STATO DEL SISTEMA*
+
+🚩 *Host ⪼* ${hostname}
+🏆 *Sistema Operativo ⪼* ${platform}
+💫 *Architettura ⪼* ${arch}
+🥷 *RAM Totale ⪼* ${formatBytes(totalMem)}
+🚀 *RAM Libera ⪼* ${formatBytes(freeMem)}
+⌛ *RAM Usata ⪼* ${formatBytes(usedMem)}
+🕒 *Uptime ⪼* ${muptime}
+
+🪴 *Memoria Node.js:* 
+→ RSS: ${formatBytes(nodeUsage.rss)}
+→ Heap Totale: ${formatBytes(nodeUsage.heapTotal)}
+→ Heap Usata: ${formatBytes(nodeUsage.heapUsed)}
+→ Externa: ${formatBytes(nodeUsage.external)}
+→ ArrayBuffer: ${formatBytes(nodeUsage.arrayBuffers)}
+${diskSpace ? `
+
+☁️ *Spazio su Disco:*
+→ Totale: ${diskSpace.size}
+→ Usato: ${diskSpace.used}
+→ Disponibile: ${diskSpace.available}
+→ Percentuale di Uso: ${diskSpace.usePercent}` : '❌ Errore nel recupero dello spazio su disco.'}
+`;
+
+    await conn.reply(m.chat, message.trim(), m);
+};
+
+handler.help = ['sistema'];
+handler.tags = ['info'];
+handler.command = ['system', 'sistema'];
+
+
 export default handler;
+
+function clockString(ms) {
+    let h = isNaN(ms) ? '--' : Math.floor(ms / 3600000);
+    let m = isNaN(ms) ? '--' : Math.floor(ms / 60000) % 60;
+    let s = isNaN(ms) ? '--' : Math.floor(ms / 1000) % 60;
+    return [h, m, s].map(v => v.toString().padStart(2, 0)).join(':');
+}
