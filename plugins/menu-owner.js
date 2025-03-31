@@ -6,7 +6,7 @@ let handler = async (m, { conn }) => {
     const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
     let settingsImagePath = path.join(__dirname, 'icone', 'settings.png');
-    let adminImagePath = path.join(__dirname, 'icone', 'admin.jpg');
+    let adminImagePath = path.join(__dirname, 'icone', 'admins.jpg');
 
     let settingsImageBuffer = fs.existsSync(settingsImagePath) ? fs.readFileSync(settingsImagePath) : null;
     let adminImageBuffer = fs.existsSync(adminImagePath) ? fs.readFileSync(adminImagePath) : null;
