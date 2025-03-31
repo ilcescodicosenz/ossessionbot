@@ -1,72 +1,86 @@
-import { existsSync, promises as fsPromises } from 'fs';
-import path from 'path';
+import { getDevice } from '@whiskeysockets/baileys';
+import PhoneNumber from 'awesome-phonenumber';
 
-const handler = async (message, { conn, usedPrefix }) => {
-  if (global.conn.user.jid !== conn.user.jid) {
-    return conn.sendMessage(message.chat, {
-      text: "* 𝐔𝐭𝐢𝐥𝐢𝐳𝐳𝐢 𝐪𝐮𝐞𝐬𝐭𝐨 𝐜𝐨𝐦𝐚𝐧𝐝𝐨 𝐝𝐢𝐫𝐞𝐭𝐭𝐚𝐦𝐞𝐧𝐭𝐞 𝐧𝐞𝐥 𝐧𝐮𝐦𝐞𝐫𝐨 𝐝𝐞𝐥 𝐛𝐨𝐭.*"
-    }, { quoted: message });
-  }
-
-  await conn.sendMessage(message.chat, {
-    text: "𝐑𝐢𝐩𝐫𝐢𝐬𝐭𝐢𝐧𝐨 𝐝𝐞𝐥𝐥𝐞 𝐬𝐞𝐬𝐬𝐢𝐨𝐧𝐢 𝐢𝐧 𝐜𝐨𝐫𝐬𝐨... ⏳"
-  }, { quoted: message });
-
+const handler = async (m, { conn }) => {
   try {
-    const sessionFolder = "./ossessionbotSession/";
+    const mention = m.mentionedJid?.[0] || m.quoted?.sender || m.sender;
 
-    if (!existsSync(sessionFolder)) {
-      return await conn.sendMessage(message.chat, {
-        text: "*❌ 𝐋𝐚 𝐜𝐚𝐫𝐭𝐞𝐥𝐥𝐚 𝐝𝐞𝐥𝐥𝐞 𝐬𝐞𝐬𝐬𝐢𝐨𝐧𝐢 𝐞̀ 𝐯𝐮𝐨𝐭𝐚 o 𝐧𝐨𝐧 𝐞𝐬𝐢𝐬𝐭𝐞.*"
-      }, { quoted: message });
+    if (!global.db.data.users[mention]) {
+      global.db.data.users[mention] = { 
+        name: "Sconosciuto",
+        messaggi: 0,
+        warn: 0,
+        warnlink: 0,
+        muto: false,
+        banned: false,
+        command: 0,
+        age: "👶🏼🍼",
+        gender: "Non specificato",
+        instagram: "",
+        bio: "Nessuna bio impostata.",
+        categoria: "Utente",
+        lastSeen: null
+      };
+    }
+    const userData = global.db.data.users[mention];
+
+    let bio = "";
+    try {
+      const status = await conn.fetchStatus(mention);
+      bio = status?.status || userData.bio || "Nessuna bio impostata.";
+    } catch {
+      bio = userData.bio || "Nessuna bio impostata.";
     }
 
-    const sessionFiles = await fsPromises.readdir(sessionFolder);
-    let deletedCount = 0;
+    const nome = userData.name || "Sconosciuto";
+    const numero = PhoneNumber(mention.split("@")[0], "IT").getNumber("international");
+    const dispositivo = await getDevice(m.key.id) || "Sconosciuto";
 
-    for (const file of sessionFiles) {
-      if (file !== "creds.json") {
-        await fsPromises.unlink(path.join(sessionFolder, file));
-        deletedCount++;
+    const categoria = userData.categoria || "Nessuna categoria";
+    const stato = userData.muto ? "🔇 Muto" : userData.banned ? "🚫 Bannato" : "✅ Attivo";
+    const lastAccess = userData.lastSeen ? new Date(userData.lastSeen).toLocaleString('it-IT') : "Non disponibile";
+    const instagramLink = userData.instagram ? `📸 *Instagram:* [@${userData.instagram}](https://instagram.com/${userData.instagram})\n` : '';
+
+    let profilo;
+    try {
+      profilo = await conn.profilePictureUrl(mention, 'image');
+    } catch {
+      profilo = 'https://telegra.ph/file/560f1667a55ecf09650cd.png';
+    }
+
+    const messaggio = `╭───〔 📌 *USER INFO* 📌 〕───╮\n` +
+      `📛 *Nome:* ${nome}\n` +
+      `🏷️ *Numero:* ${numero}\n` +
+      `📱 *Dispositivo:* ${dispositivo}\n` +
+      `🏆 *Categoria:* ${categoria}\n` +
+      `🛡️ *Stato:* ${stato}\n` +
+      `📊 *Messaggi:* ${userData.messaggi}\n` +
+      `⚠️ *Warn:* ${userData.warn} / 5\n` +
+      `📆 *Età:* ${userData.age}\n` +
+      `🚻 *Genere:* ${userData.gender}\n` +
+      `📝 *Bio:* ${bio}\n` +
+      `⏱️ *Ultimo accesso:* ${lastAccess}\n` +
+      instagramLink +
+      `╰───────────────────────╯`;
+
+    await conn.sendMessage(m.chat, {
+      text: messaggio,
+      contextInfo: {
+        mentionedJid: [mention],
+        externalAdReply: {
+          title: `${nome} | ${userData.age} | ${userData.gender} | ${categoria}`,
+          body: bio,
+          sourceUrl: "https://wa.me/" + mention.split("@")[0],
+          thumbnail: await (await fetch(profilo)).buffer()
+        }
       }
-    }
-
-    const responseText = deletedCount === 0
-      ? "❗ 𝐋𝐞 𝐬𝐞𝐬𝐬𝐢𝐨𝐧𝐢 𝐬𝐨𝐧𝐨 𝐯𝐮𝐨𝐭𝐞 ‼️"
-      : `🔥 𝐒𝐨𝐧𝐨 𝐞𝐥𝐢𝐦𝐢𝐧𝐚𝐭𝐢 ${deletedCount} 𝐚𝐫𝐜𝐡𝐢𝐯𝐢 𝐝𝐞𝐥𝐥𝐞 𝐬𝐞𝐬𝐬𝐢𝐨𝐧𝐢!`;
-
-    await conn.sendMessage(message.chat, { text: responseText }, { quoted: message });
+    }, { quoted: m });
 
   } catch (error) {
-    console.error('⚠️ Errore:', error);
-    await conn.sendMessage(message.chat, { text: "❌ 𝐄𝐫𝐫𝐨𝐫𝐞 𝐝𝐢 𝐞𝐥𝐢𝐦𝐢𝐧𝐚𝐳𝐢𝐨𝐧𝐞!" }, { quoted: message });
+    console.error("Errore in USERINFO:", error);
+    await conn.sendMessage(m.chat, { text: "❌ Errore nel recuperare le informazioni dell'utente." }, { quoted: m });
   }
-
-  const botName = global.db.data.nomedelbot || "⟆ 𝑶𝑺𝑺𝑬𝑺𝑺𝑰𝑶𝑵𝑩𝑶𝑻 ⟇ ✦";
-  const quotedMessage = {
-    key: {
-      participants: "0@s.whatsapp.net",
-      fromMe: false,
-      id: 'Halo'
-    },
-    message: {
-      locationMessage: {
-        name: botName,
-        jpegThumbnail: await (await fetch("https://qu.ax/cSqEs.jpg")).buffer(),
-        vcard: "BEGIN:VCARD\nVERSION:3.0\nN:;Unlimited;;;\nFN:Unlimited\nORG:Unlimited\nTITLE:\nitem1.TEL;waid=19709001746:+1 (970) 900-1746\nitem1.X-ABLabel:Unlimited\nX-WA-BIZ-DESCRIPTION:ofc\nX-WA-BIZ-NAME:Unlimited\nEND:VCARD"
-      }
-    },
-    participant: '0@s.whatsapp.net'
-  };
-
-  await conn.sendMessage(message.chat, {
-    text: "💌 𝐎𝐫𝐚 𝐬𝐚𝐫𝐚𝐢 𝐢𝐧 𝐠𝐫𝐚𝐝𝐨 𝐝𝐢 𝐥𝐞𝐠𝐠𝐞𝐫𝐞 𝐢 𝐦𝐞𝐬𝐬𝐚𝐠𝐠𝐢 𝐝𝐞𝐥 𝐛𝐨𝐭 🚀"
-  }, { quoted: quotedMessage });
 };
 
-handler.help = ['del_reg_in_session_owner'];
-handler.tags = ["owner"];
-handler.command = /^(deletession|ds|clearallsession)$/i;
-handler.admin = true;
-
+handler.command = /^(userinfo|infoutente|profilo)$/i;
 export default handler;
