@@ -1,6 +1,6 @@
 
 
-const xpPerUniticoin = 450 // XP necessari per 1 Uniticoin
+const xpPerOssessioncoin = 450 
 
 let handler = async (m, { conn, command, args }) => {
   let quantita = command.replace(/^compra/i, '')
