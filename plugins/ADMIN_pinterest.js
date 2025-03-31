@@ -1,96 +1,76 @@
-import _0x36ae01 from 'axios';
-const {
-  generateWAMessageContent,
-  generateWAMessageFromContent,
-  proto
-} = (await import("@whiskeysockets/baileys"))["default"];
-let handler = async (_0x10bd40, {
-  conn: _0x9c7141,
-  text: _0x27db11,
-  usedPrefix: _0x55e61b,
-  command: _0x5ad406
-}) => {
-  if (!_0x27db11) {
-    return _0x9c7141.reply(_0x10bd40.chat, "[❗] *𝐂𝐎𝐒𝐀 𝐕𝐔𝐎𝐈 𝐂𝐄𝐑𝐂𝐀𝐑𝐄 𝐒𝐔 𝐏𝐈𝐍𝐓𝐑𝐄𝐒𝐓?*", _0x10bd40);
-  }
-  async function _0x3f3fc7(_0x5f4723) {
-    const {
-      imageMessage: _0x14a396
-    } = await generateWAMessageContent({
-      'image': {
-        'url': _0x5f4723
-      }
-    }, {
-      'upload': _0x9c7141.waUploadToServer
-    });
-    return _0x14a396;
-  }
-  function _0x2af019(_0x27693a) {
-    for (let _0x5ce07a = _0x27693a.length - 1; _0x5ce07a > 0; _0x5ce07a--) {
-      const _0x4d6146 = Math.floor(Math.random() * (_0x5ce07a + 1));
-      [_0x27693a[_0x5ce07a], _0x27693a[_0x4d6146]] = [_0x27693a[_0x4d6146], _0x27693a[_0x5ce07a]];
-    }
-  }
-  let _0x51323f = [];
-  let {
-    data: _0x4fc489
-  } = await _0x36ae01.get("https://www.pinterest.com/resource/BaseSearchResource/get/?source_url=%2Fsearch%2Fpins%2F%3Fq%3D" + _0x27db11 + "&data=%7B%22options%22%3A%7B%22isPrefetch%22%3Afalse%2C%22query%22%3A%22" + _0x27db11 + "%22%2C%22scope%22%3A%22pins%22%2C%22no_fetch_context_on_resource%22%3Afalse%7D%2C%22context%22%3A%7B%7D%7D&_=1619980301559");
-  let _0x5f34cb = _0x4fc489.resource_response.data.results.map(_0x33ba1c => _0x33ba1c.images.orig.url);
-  _0x2af019(_0x5f34cb);
-  let _0x3b2637 = _0x5f34cb.splice(0, 5);
-  let _0x2913ed = 1;
-  for (let _0x47c48a of _0x3b2637) {
-    _0x51323f.push({
-      'body': proto.Message.InteractiveMessage.Body.fromObject({
-        'text': "𝐈𝐌𝐆 -" + (" " + _0x2913ed++)
-      }),
-      'footer': proto.Message.InteractiveMessage.Footer.fromObject({
-        'text': wm
-      }),
-      'header': proto.Message.InteractiveMessage.Header.fromObject({
-        'title': '',
-        'hasMediaAttachment': true,
-        'imageMessage': await _0x3f3fc7(_0x47c48a)
-      }),
-      'nativeFlowMessage': proto.Message.InteractiveMessage.NativeFlowMessage.fromObject({
-        'buttons': [{
-          'name': "cta_url",
-          'buttonParamsJson': "{\"display_text\":\"𝐋𝐈𝐍𝐊\",\"Url\":\"https://www.pinterest.com/search/pins/?rs=typed&q=" + _0x27db11 + "\",\"merchant_url\":\"https://www.pinterest.com/search/pins/?rs=typed&q=" + _0x27db11 + "\"}"
-        }]
-      })
-    });
-  }
-  const _0x1ca5c6 = generateWAMessageFromContent(_0x10bd40.chat, {
-    'viewOnceMessage': {
-      'message': {
-        'messageContextInfo': {
-          'deviceListMetadata': {},
-          'deviceListMetadataVersion': 0x2
-        },
-        'interactiveMessage': proto.Message.InteractiveMessage.fromObject({
-          'body': proto.Message.InteractiveMessage.Body.create({
-            'text': "𝐑𝐈𝐒𝐔𝐋𝐓𝐀𝐓𝐎 𝐃𝐈: " + _0x27db11
-          }),
-          'footer': proto.Message.InteractiveMessage.Footer.create({
-            'text': "𝐏𝐈𝐍𝐓𝐑𝐄𝐒𝐓 𝐒𝐄𝐀𝐑𝐂𝐇"
-          }),
-          'header': proto.Message.InteractiveMessage.Header.create({
-            'hasMediaAttachment': false
-          }),
-          'carouselMessage': proto.Message.InteractiveMessage.CarouselMessage.fromObject({
-            'cards': [..._0x51323f]
-          })
-        })
-      }
-    }
-  }, {
-    'quoted': _0x10bd40
-  });
-  await _0x9c7141.relayMessage(_0x10bd40.chat, _0x1ca5c6.message, {
-    'messageId': _0x1ca5c6.key.id
-  });
+import { pinterest } from '@bochilteam/scraper';
+import axios from 'axios';
+
+// Definizione di lenguajeGB
+const lenguajeGB = {
+  smsAvisoMG: () => "Per favore, inserisci un testo valido.",
+  smsAvisoEG: () => "Avviso:",
+  smsMensError2: () => "Si è verificato un errore durante l'elaborazione della richiesta.",
+  // Aggiungi altre chiavi e funzioni necessarie qui
 };
-handler.help = ["pinterest"];
-handler.tags = ["downloader"];
-handler.command = /^(pinterest)$/i;
+
+// Definizione di mid
+const mid = {
+  smsMalused7: "Utilizzo errato del comando. Esempio:",
+  buscador: "Risultati della ricerca",
+  // Aggiungi altre chiavi necessarie qui
+};
+
+// Definizione di apis
+const apis = "https://api.siputzx.my.id/api/s/pinterest?query="; // Sostituisci con l'URL base corretto per le API
+
+let handler = async (m, { conn, text, usedPrefix, command }) => {
+  if (!text) throw `${lenguajeGB['smsAvisoMG']()} ${mid.smsMalused7}\n*${usedPrefix + command} gatta | gatto*`;
+  m.react("🚀");
+
+  try {
+    let response = await axios.get(`https://api.dorratz.com/v2/pinterest?q=${text}`);
+    let searchResults = response.data;
+    let selectedResults = searchResults.slice(0, 9);
+
+    if (m.isWABusiness) {
+      const medias = selectedResults.map(result => ({ image: { url: result.image }, caption: result.fullname || text }));
+      await conn.sendAlbumMessage(m.chat, medias, { quoted: m, delay: 2000, caption: `${lenguajeGB['smsAvisoEG']()} 💞 ${mid.buscador}: ${text}` });
+    } else {
+      let message = `${lenguajeGB['smsAvisoEG']()} 💞 ${mid.buscador}: ${text}\n\n`;
+      selectedResults.forEach(result => {
+        message += `*${result.fullname || text}*\n💞 *Autore:* ${result.upload_by}\n💞 *Seguaci:* ${result.followers}\n🔗 ${result.image}\n\n`;
+      });
+      await m.reply(message.trim());
+      m.react("✅️");
+    }
+  } catch {
+    try {
+      let response = await axios.get(`https://api.siputzx.my.id/api/s/pinterest?query=${encodeURIComponent(text)}`);
+      if (!response.data.status) return await m.reply("❌ Nessun risultato trovato.");
+      let searchResults = response.data.data;
+      let selectedResults = searchResults.slice(0, 6);
+      let message = `${lenguajeGB['smsAvisoEG']()} 💞 ${mid.buscador}: ${text}\n\n`;
+      selectedResults.forEach(result => {
+        message += `*${result.grid_title || text}*\n🔗 ${result.images_url}\n\n`;
+      });
+      await m.reply(message.trim());
+    } catch {
+      try {
+        let { data: response } = await axios.get(`${apis}/search/pinterestv2?text=${encodeURIComponent(text)}`);
+        if (!response.status || !response.data || response.data.length === 0) return m.reply(`❌ Nessun risultato trovato per "${text}".`);
+        let searchResults = response.data;
+        let selectedResults = searchResults.slice(0, 6);
+        let message = `${lenguajeGB['smsAvisoEG']()} 💞 ${mid.buscador}: ${text}\n\n`;
+        selectedResults.forEach(result => {
+          message += `*${result.description || text}*\n🔎 *Autore:* ${result.name} (@${result.username})\n🔗 ${result.image}\n\n`;
+        });
+        await m.reply(message.trim());
+      } catch (e) {
+        console.log(`❗❗ ${lenguajeGB['smsMensError2']()} ${usedPrefix + command} ❗❗`);
+        console.log(e);
+        handler.money = false;
+      }
+    }
+  }
+};
+
+handler.help = ['pinterest <keyword>'];
+handler.tags = ['internet'];
+handler.command = /^(pinterest|dlpinterest|pinterestdl)$/i;
 export default handler;
