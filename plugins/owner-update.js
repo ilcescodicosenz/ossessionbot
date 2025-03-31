@@ -10,7 +10,7 @@ let handler = async (m, { conn, text }) => {
     }
 }
 
-handler.help = ['update']
+handler.help = ['aggiornabot']
 handler.tags = ['owner']
 handler.command = ['update', 'aggiorna', 'fix', 'correggi']
 handler.rowner = true
