@@ -3,7 +3,7 @@ const time = async (ms) => {
 }
 let handler = async (m, { conn, text, args, groupMetadata, usedPrefix, command }) => {
 if (command == 'warn' || command == "ammonisci") {
-    let war = '4'
+    let war = '2'
     let who;
 if (m.isGroup) who = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : true;
 else who = m.chat;
@@ -31,10 +31,10 @@ let warn = global.db.data.users[who].warn;
     const reason = text ? '❓ » ' + text.replace(m.sender, '') : ''
 if (warn < war) {
       global.db.data.users[who].warn += 1;
-      conn.reply(m.chat, `👤 » @${who.split('@')[0]}\n⚠️ » *${user.warn} / 4*\n${reason.capitalize()}`, prova, { mentions: [who]});
+      conn.reply(m.chat, `👤 » @${who.split('@')[0]}\n⚠️ » *${user.warn} / 3*\n${reason.capitalize()}`, prova, { mentions: [who]});
     } else if (warn == war) {
       global.db.data.users[who].warn = 0;
-     conn.reply(m.chat,`𝐔𝐭𝐞𝐧𝐭𝐞 𝐫𝐢𝐦𝐨𝐬𝐬𝐨 𝐝𝐨𝐩𝐨 5 𝐚𝐯𝐯𝐞𝐫𝐭𝐢𝐦𝐞𝐧𝐭𝐢`, prova);
+     conn.reply(m.chat,`𝐔𝐭𝐞𝐧𝐭𝐞 𝐫𝐢𝐦𝐨𝐬𝐬𝐨 𝐝𝐨𝐩𝐨 𝟑 𝐚𝐯𝐯𝐞𝐫𝐭𝐢𝐦𝐞𝐧𝐭𝐢`, prova);
       await time(1000);
       await conn.groupParticipantsUpdate(m.chat, [who], 'remove');
     }
