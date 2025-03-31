@@ -1,92 +1,54 @@
-import 'os';
-import 'util';
-import 'human-readable';
-import '@whiskeysockets/baileys';
-import 'fs';
-import 'perf_hooks';
+import fetch from 'node-fetch';
+import axios from 'axios';
+//import instagramGetUrl from 'instagram-url-direct';
+//import {instagram} from '@xct007/frieren-scraper';
+//import {instagramdl} from '@bochilteam/scraper';
 
-let handler = async (_0x1ece27, { conn: _0x4d8805, usedPrefix: _0x2b0a49 }) => {
-  
-  let _0x2d215f = {
-    'key': {
-      'participants': "0@s.whatsapp.net",
-      'fromMe': false,
-      'id': 'Halo'
-    },
-    'message': {
-      'locationMessage': {
-        'name': "Menu instagram  ",
-        'jpegThumbnail': await (await fetch("https://qu.ax/cSqEs.jpg")).buffer(),
-        'vcard': `BEGIN:VCARD
-VERSION:3.0
-N:;Unlimited;;;
-FN:Unlimited
-ORG:Unlimited
-TITLE:
-item1.TEL;waid=19709001746:+1 (970) 900-1746
-item1.X-ABLabel:Unlimited
-X-WA-BIZ-DESCRIPTION:ofc
-X-WA-BIZ-NAME:Unlimited
-END:VCARD`
-      }
-    },
-    'participant': "0@s.whatsapp.net"
-  };
+const handler = async (m, { conn, args, command, usedPrefix }) => {
+    if (!args[0]) throw `⚠️ Per favore, inserisci un link di Instagram!\nUsa il comando: *${usedPrefix + command} Link Instagram foto o video*`;
 
-  // Menu owner (miglior owner = Youns 😜)
-  let _0x3f08c2 = `
-────────────────
-> *Insta Time*
-────────────────
-☞︎︎︎𝗶𝗴 𝗮𝗱𝗺𝗶𝗻☜︎︎︎
-*instagram.com/insta_gqbryy*
-*instagram.com/antwfetxmjnaa*
-*instagram.com/benzhinaa*
-*instagram.com/theliloxy*
-*instagram.com/effyforreal*
-*instagram.com/savvyaki*
-*instagram.com/kitxgioo*
-*instagram.com/st.avra*
-*instagram.com/14settembree*
-*instagram.com/occisjo*
-*instagram.com/momo_25125*
+    const { key } = await conn.sendMessage(m.chat, { text: "⏳ Attendere..." }, { quoted: m });
+    
+    try {
+        const res = await fetch(`https://api.siputzx.my.id/api/d/igdl?url=${args[0]}`);
+        const data = await res.json();
+        const fileType = data.data[0].url.includes('.webp') ? 'image' : 'video'; 
+        const downloadUrl = data.data[0].url;
 
-────────────────
- ossessionbot
-`;
+        if (fileType === 'image') {
+            await conn.sendFile(m.chat, downloadUrl, 'instagram.jpg', "📷 Ecco la tua immagine!", m);
+        } else if (fileType === 'video') {
+            await conn.sendFile(m.chat, downloadUrl, 'instagram.mp4', "🎥 Ecco il tuo video!", m);
+        }
+    } catch {
+        try {
+            const apiUrl = `https://api.betabotz.org/api/download/igdowloader?url=${encodeURIComponent(args[0])}&apikey=bot-secx3`;
+            const response = await axios.get(apiUrl);
+            const result = response.data;
 
-  let _0x575cba = global.db.data.nomedelbot || " ossessionbot ";
-  
-  await _0x4d8805.sendMessage(_0x1ece27.chat, {
-    text: _0x3f08c2,
-    contextInfo: {
-      mentionedJid: _0x4d8805.parseMention(wm),
-      forwardingScore: 1,
-      isForwarded: true,
-      forwardedNewsletterMessageInfo: {
-        newsletterJid: "120363341274693350@newsletter",
-        serverMessageId: '',
-        newsletterName: _0x575cba
-      }
+            for (const item of result.message) {
+                const shortUrl = await (await fetch(`https://tinyurl.com/api-create.php?url=${item.thumbnail}`)).text();
+                let text = `🔗 *Link:* ${shortUrl}\n\n📥 Download in corso...`;
+                await conn.sendFile(m.chat, item._url, null, text, m);
+            }
+        } catch {
+            try {
+                const instagramData = await fetch(`https://api.lolhuman.xyz/api/instagram?apikey=${lolkeysapi}&url=${args[0]}`);
+                const json = await instagramData.json();
+                const videoUrl = json.result;
+                await conn.sendFile(m.chat, videoUrl, 'instagram.mp4', "🎥 Ecco il tuo video!", m);
+            } catch (e) {
+                conn.sendMessage(m.chat, { text: `❌ Errore nel download. Riprova più tardi!`, edit: key });
+                console.log(`❗ Errore durante il download di Instagram ❗`);
+                console.log(e);
+            }
+        }
     }
-  }, {
-    quoted: _0x2d215f
-  });
 };
 
-handler.help = ["menu"];
-handler.tags = ['menu'];
-handler.command = /^(instagram)$/i;
-handler.admin = true;
+handler.help = ['instagram <link ig>'];
+handler.tags = ['downloader'];
+handler.command = /^(instagram|ig(dl)?)$/i;
+handler.limit = 2;
+
 export default handler;
-
-// Formattazione del tempo (il tempo non esiste per Youns perche lui è immortale)
-function clockString(_0xd0d91e) {
-  let _0x27c45a = Math.floor(_0xd0d91e / 3600000);
-  let _0x42617d = Math.floor(_0xd0d91e / 60000) % 60;
-  let _0x1bf8dc = Math.floor(_0xd0d91e / 1000) % 60;
-  return [_0x27c45a, _0x42617d, _0x1bf8dc].map(_0x2d1849 => _0x2d1849.toString().padStart(2, '0')).join(':');
-}
-
-
-
