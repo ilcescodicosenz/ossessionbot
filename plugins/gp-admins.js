@@ -1,22 +1,29 @@
 const handler = async (m, { conn, participants, groupMetadata, args }) => {
     const groupAdmins = participants.filter(p => p.admin);
     const listAdmin = groupAdmins
-        .map((v, i) => `✧👑‌ ${i + 1}. @${v.id.split('@')[0]}`)
+        .map((v, i) => `✧👑 ${i + 1}. @${v.id.split('@')[0]}`)
         .join('\n');
     const owner = groupMetadata.owner || 
         groupAdmins.find(p => p.admin === 'superadmin')?.id || 
         `${m.chat.split`-`[0]}@s.whatsapp.net`;
 
     let pesan = args.join(' ');
-    let message = pesan ? pesan : 'Nessun messaggio fornito';
-    let text = `
-══════ •⊰✦⊱• ══════
-⚠️ 𝐒𝐕𝐄𝐆𝐋𝐈𝐀 𝐀𝐃𝐌𝐈𝐍 ⚠️
-𝐌𝐞𝐬𝐬𝐚𝐠𝐠𝐢𝐨: ${message}
+    let message = pesan ? pesan : '❌ Nessun messaggio fornito';
 
-𝐀𝐝𝐦𝐢𝐧:
+    let text = `
+╭════════════════════════╮
+│ ⚠️ 𝐒𝐕𝐄𝐆𝐋𝐈𝐀 𝐀𝐃𝐌𝐈𝐍 ⚠️ │
+╰════════════════════════╯
+
+✎ *Messaggio:*  
+➥ ${message}
+
+♔ *Lista Admin:*  
 ${listAdmin}
-══════ •⊰✦⊱• ══════
+
+╭════════════════════════╮
+│⟆ 𝑶𝑺𝑺𝑬𝑺𝑺𝑰𝑶𝑵𝑩𝑶𝑻 ⟇ ✦   │
+╰════════════════════════╯
 `.trim();
 
     conn.reply(m.chat, text, m, { mentions: [...groupAdmins.map(v => v.id), owner] });
