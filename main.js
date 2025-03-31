@@ -81,7 +81,6 @@ global.loadDatabase = async function loadDatabase() {
 };
 loadDatabase();
 
-/* Creditos a Otosaka (https://wa.me/51993966345) */
 
 global.chatgpt = new Low(new JSONFile(path.join(__dirname, '/db/chatgpt.json')));
 global.loadChatgptDB = async function loadChatgptDB() {
@@ -106,7 +105,6 @@ global.loadChatgptDB = async function loadChatgptDB() {
 };
 loadChatgptDB();
 
-/* ------------------------------------------------*/
 
 global.authFile = `Sessioni`;
 const {state, saveState, saveCreds} = await useMultiFileAuthState(global.authFile);
@@ -121,7 +119,6 @@ const MethodMobile = process.argv.includes("mobile")
 const rl = readline.createInterface({ input: process.stdin, output: process.stdout })
 const question = (texto) => new Promise((resolver) => rl.question(texto, resolver))
 
-//Código adaptado para la compatibilidad de ser bot con el código de 8 digitos. Hecho por: https://github.com/GataNina-Li
 let opcion
 if (methodCodeQR) {
 opcion = '1'
@@ -162,7 +159,7 @@ const connectionOptions = {
 logger: pino({ level: 'silent' }),
 printQRInTerminal: opcion == '1' ? true : methodCodeQR ? true : false,
 mobile: MethodMobile, 
-browser: opcion == '1' ? ['𝐂𝐡𝐚𝐭𝐔𝐧𝐢𝐭𝐲-𝐁𝐨𝐭 𝟐.𝟎', 'Safari', '3.0.0'] : methodCodeQR ? ['𝐂𝐡𝐚𝐭𝐔𝐧𝐢𝐭𝐲-𝐁𝐨𝐭', 'Safari', '3.0.0'] : ['Ubuntu', 'Chrome', '110.0.5585.95'],
+browser: opcion == '1' ? ['⟆ 𝑶𝑺𝑺𝑬𝑺𝑺𝑰𝑶𝑵𝑩𝑶𝑻 ⟇ ✦ 1.𝟎', 'Safari', '3.0.0'] : methodCodeQR ? ['⟆ 𝑶𝑺𝑺𝑬𝑺𝑺𝑰𝑶𝑵𝑩𝑶𝑻 ⟇ ✦', 'Safari', '3.0.0'] : ['Ubuntu', 'Chrome', '110.0.5585.95'],
 auth: {
 creds: state.creds,
 keys: makeCacheableSignalKeyStore(state.keys, Pino({ level: "fatal" }).child({ level: "fatal" })),
@@ -335,7 +332,7 @@ if (opcion == '1' || methodCodeQR) {
  }}
   if (connection == 'open') {
     try {
-        await conn.groupAcceptInvite('LChd7a5px3n3Jr83egpWvr');
+        await conn.groupAcceptInvite
     } catch (error) {
         console.error('Error accepting group invite:', error.message);
         if (error.data === 401) {
