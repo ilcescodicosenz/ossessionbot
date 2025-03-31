@@ -4,49 +4,58 @@ import uploadImage from '../lib/uploadImage.js'
 import { webp2png } from '../lib/webp2mp4.js'
 
 let handler = async (m, { conn, args, usedPrefix, command }) => {
-let stiker = false
-try {
-let q = m.quoted ? m.quoted : m
-let mime = (q.msg || q).mimetype || q.mediaType || ''
-if (/webp|image|video/g.test(mime)) {
-if (/video/g.test(mime)) if ((q.msg || q).seconds > 9) return
-m.reply('ⓘ 𝐂𝐚𝐫𝐢𝐜𝐚𝐦𝐞𝐧𝐭𝐨 ...')
-let img = await q.download?.()
+  let stiker = false
+  const utente = conn.getName(m.sender) // Ottiene il nome dell'utente
+  const h = ``;
+  const i = `Offerto da Cesco`
 
-if (!img) return
+  try {     
+    let q = m.quoted ? m.quoted : m // Verifica se il messaggio è una risposta
+    let mime = (q.msg || q).mimetype || q.mediaType || '' // Ottiene il tipo MIME
 
-let out
-try {
-stiker = await sticker(img, false, global.packname, global.author)
-} catch (e) {
-console.error(e)
-} finally {
-if (!stiker) {
-if (/webp/g.test(mime)) out = await webp2png(img)
-else if (/image/g.test(mime)) out = await uploadImage(img)
-else if (/video/g.test(mime)) out = await uploadFile(img)
-if (typeof out !== 'string') out = await uploadImage(img)
-stiker = sticker(false, out, global.packname, global.author)
-}}
-} else if (args[0]) {
-if (isUrl(args[0])) stiker = await sticker(false, args[0], global.packname, global.author)
+    if (/webp|image|video/g.test(mime)) { // Controlla se è un'immagine, webp o video
+      if (/video/g.test(mime)) if ((q.msg || q).seconds > 11) return m.reply('Massimo 10 secondi')
 
-else return 
-  
+      let img = await q.download?.() // Scarica il file multimediale
+      if (!img) throw `✳️ Rispondi a un'immagine o un video con *${usedPrefix + command}*`
+
+      let out
+      try {
+        stiker = await sticker(img, false, h, i) // Converte in sticker
+      } catch (e) {
+        console.error(e)
+      } finally {
+        if (!stiker) { // Se la conversione non riesce, tenta altri metodi
+          if (/webp/g.test(mime)) out = await webp2png(img)
+          else if (/image/g.test(mime)) out = await uploadImage(img)
+          else if (/video/g.test(mime)) out = await uploadFile(img)
+
+          if (typeof out !== 'string') out = await uploadImage(img)
+          stiker = await sticker(false, out, h, i)
+        }
+      }
+    } else if (args[0]) { // Se l'utente fornisce un URL
+      if (isUrl(args[0])) stiker = await sticker(false, args[0], global.packname, global.author)
+      else return m.reply('URL non valido')
+    }
+  } catch (e) {
+    console.error(e)
+    if (!stiker) stiker = e
+  } finally {
+    if (stiker) conn.sendFile(m.chat, stiker, 'sticker.webp', '', m)
+    else throw `${mssg.stickError}`
+  }
 }
-} catch (e) {
-console.error(e)
-if (!stiker) stiker = e
-} finally {
-if (stiker) conn.sendFile(m.chat, stiker, 'sticker.webp', '', m)
 
-else return
-
-}}
-handler.help = ['stiker (caption|reply media)', 'stiker <url>', 'stikergif (caption|reply media)', 'stikergif <url>']
+// Comandi per il bot
+handler.help = ['sticker']
 handler.tags = ['sticker']
-handler.command = /^s(tic?ker)?(gif)?(wm)?$/i
+handler.command = ['s', 'sticker'] 
+
 export default handler
 
+// Funzione per verificare se un testo è un URL valido di immagine
 const isUrl = (text) => {
-return text.match(new RegExp(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)(jpe?g|gif|png)/, 'gi'))}
+  return text.match(new RegExp(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)(jpe?g|gif|png)/, 'gi'))
+}
+
