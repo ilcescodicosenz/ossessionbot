@@ -99,7 +99,7 @@
 <link crossorigin="anonymous" media="all" rel="stylesheet" href="https://github.githubassets.com/assets/react-code-view.91744b0963019bd58290.module.css" />
 
 
-  <title>chatunity-bot/plugins/rpg-dona.js at main · chatunitycenter/chatunity-bot</title>
+  <title>⟆ 𝑶𝑺𝑺𝑬𝑺𝑺𝑰𝑶𝑵𝑩𝑶𝑻 ⟇ ✦/plugins/rpg-dona.js at main · ilcescodicosenz/⟆ 𝑶𝑺𝑺𝑬𝑺𝑺𝑰𝑶𝑵𝑩𝑶𝑻 ⟇ ✦</title>
 
 
 
@@ -142,7 +142,7 @@
 
     
 
-      <meta name="description" content="Contribute to chatunitycenter/chatunity-bot development by creating an account on GitHub.">
+      <meta name="description" content="Contribute to ilcescodicosenz/ossessionbot development by creating an account on GitHub.">
 
       <link rel="search" type="application/opensearchdescription+xml" href="/opensearch.xml" title="GitHub">
 
@@ -179,7 +179,7 @@
       <meta name="turbo-cache-control" content="no-cache" data-turbo-transient>
 
     <meta data-hydrostats="publish">
-  <meta name="go-import" content="github.com/chatunitycenter/chatunity-bot git https://github.com/chatunitycenter/chatunity-bot.git">
+  <meta name="go-import" content="github.com/ilcescodicosenz/ossessionbot git https://github.com/ilcescodicosenz/ossessionbot.git">
 
   <meta name="octolytics-dimension-user_id" content="114757102" /><meta name="octolytics-dimension-user_login" content="chatunitycenter" /><meta name="octolytics-dimension-repository_id" content="957063192" /><meta name="octolytics-dimension-repository_nwo" content="chatunitycenter/chatunity-bot" /><meta name="octolytics-dimension-repository_public" content="true" /><meta name="octolytics-dimension-repository_is_fork" content="false" /><meta name="octolytics-dimension-repository_network_root_id" content="957063192" /><meta name="octolytics-dimension-repository_network_root_nwo" content="chatunitycenter/chatunity-bot" />
 
@@ -614,7 +614,7 @@
               
 
 
-<qbsearch-input class="search-input" data-scope="repo:chatunitycenter/chatunity-bot" data-custom-scopes-path="/search/custom_scopes" data-delete-custom-scopes-csrf="4CoDyFyamaOr5SXTzGJienFiArZrBaJ53aA6LJHGMmBrfcnx9un3XHtLpuPAdaetH4V2qfTCBb-vMG9Fd2WTcA" data-max-custom-scopes="10" data-header-redesign-enabled="true" data-initial-value="" data-blackbird-suggestions-path="/search/suggestions" data-jump-to-suggestions-path="/_graphql/GetSuggestedNavigationDestinations" data-current-repository="chatunitycenter/chatunity-bot" data-current-org="" data-current-owner="chatunitycenter" data-logged-in="true" data-copilot-chat-enabled="true" data-nl-search-enabled="false">
+<qbsearch-input class="search-input" data-scope="repo:ilcescodicosenz/ossessionbot" data-custom-scopes-path="/search/custom_scopes" data-delete-custom-scopes-csrf="4CoDyFyamaOr5SXTzGJienFiArZrBaJ53aA6LJHGMmBrfcnx9un3XHtLpuPAdaetH4V2qfTCBb-vMG9Fd2WTcA" data-max-custom-scopes="10" data-header-redesign-enabled="true" data-initial-value="" data-blackbird-suggestions-path="/search/suggestions" data-jump-to-suggestions-path="/_graphql/GetSuggestedNavigationDestinations" data-current-repository="chatunitycenter/chatunity-bot" data-current-org="" data-current-owner="chatunitycenter" data-logged-in="true" data-copilot-chat-enabled="true" data-nl-search-enabled="false">
   <div
     class="search-input-container search-with-dialog position-relative d-flex flex-row flex-items-center height-auto color-bg-transparent border-0 color-fg-subtle mx-0"
     data-action="click:qbsearch-input#searchInputContainerClicked"
@@ -1337,7 +1337,7 @@
         <li hidden="hidden" data-menu-item="i0code-tab" data-targets="action-list.items" role="none" data-view-component="true" class="ActionListItem">
     
     
-    <a tabindex="-1" id="item-04ada6c2-6f98-4d76-8414-49b5745dbfec" href="/chatunitycenter/chatunity-bot" role="menuitem" data-view-component="true" class="ActionListContent ActionListContent--visual16">
+    <a tabindex="-1" id="item-04ada6c2-6f98-4d76-8414-49b5745dbfec" href="/ilcescodicosenz/ossessionbot" role="menuitem" data-view-component="true" class="ActionListContent ActionListContent--visual16">
         <span class="ActionListItem-visual ActionListItem-visual--leading">
           <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-code">
     <path d="m11.28 3.22 4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734L13.94 8l-3.72-3.72a.749.749 0 0 1 .326-1.275.749.749 0 0 1 .734.215Zm-6.56 0a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042L2.06 8l3.72 3.72a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215L.47 8.53a.75.75 0 0 1 0-1.06Z"></path>
@@ -1353,7 +1353,7 @@
         <li hidden="hidden" data-menu-item="i1issues-tab" data-targets="action-list.items" role="none" data-view-component="true" class="ActionListItem">
     
     
-    <a tabindex="-1" id="item-fff4835f-df59-4170-9941-7fb063e9d17f" href="/chatunitycenter/chatunity-bot/issues" role="menuitem" data-view-component="true" class="ActionListContent ActionListContent--visual16">
+    <a tabindex="-1" id="item-fff4835f-df59-4170-9941-7fb063e9d17f" href="/ilcescodicosenz/ossessionbot/issues" role="menuitem" data-view-component="true" class="ActionListContent ActionListContent--visual16">
         <span class="ActionListItem-visual ActionListItem-visual--leading">
           <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-issue-opened">
     <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"></path><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.5 8a6.5 6.5 0 1 0 13 0 6.5 6.5 0 0 0-13 0Z"></path>
@@ -1369,7 +1369,7 @@
         <li hidden="hidden" data-menu-item="i2pull-requests-tab" data-targets="action-list.items" role="none" data-view-component="true" class="ActionListItem">
     
     
-    <a tabindex="-1" id="item-1cf8fe31-5155-434a-a473-b82c618b0cfd" href="/chatunitycenter/chatunity-bot/pulls" role="menuitem" data-view-component="true" class="ActionListContent ActionListContent--visual16">
+    <a tabindex="-1" id="item-1cf8fe31-5155-434a-a473-b82c618b0cfd" href="/ilcescodicosenz/ossessionbot/pulls" role="menuitem" data-view-component="true" class="ActionListContent ActionListContent--visual16">
         <span class="ActionListItem-visual ActionListItem-visual--leading">
           <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-git-pull-request">
     <path d="M1.5 3.25a2.25 2.25 0 1 1 3 2.122v5.256a2.251 2.251 0 1 1-1.5 0V5.372A2.25 2.25 0 0 1 1.5 3.25Zm5.677-.177L9.573.677A.25.25 0 0 1 10 .854V2.5h1A2.5 2.5 0 0 1 13.5 5v5.628a2.251 2.251 0 1 1-1.5 0V5a1 1 0 0 0-1-1h-1v1.646a.25.25 0 0 1-.427.177L7.177 3.427a.25.25 0 0 1 0-.354ZM3.75 2.5a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5Zm0 9.5a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5Zm8.25.75a.75.75 0 1 0 1.5 0 .75.75 0 0 0-1.5 0Z"></path>
@@ -1385,7 +1385,7 @@
         <li hidden="hidden" data-menu-item="i3actions-tab" data-targets="action-list.items" role="none" data-view-component="true" class="ActionListItem">
     
     
-    <a tabindex="-1" id="item-c0cef3d7-fa85-4c55-b286-d2a0439dfede" href="/chatunitycenter/chatunity-bot/actions" role="menuitem" data-view-component="true" class="ActionListContent ActionListContent--visual16">
+    <a tabindex="-1" id="item-c0cef3d7-fa85-4c55-b286-d2a0439dfede" href="/ilcescodicosenz/ossessionbot/actions" role="menuitem" data-view-component="true" class="ActionListContent ActionListContent--visual16">
         <span class="ActionListItem-visual ActionListItem-visual--leading">
           <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-play">
     <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.5 8a6.5 6.5 0 1 0 13 0 6.5 6.5 0 0 0-13 0Zm4.879-2.773 4.264 2.559a.25.25 0 0 1 0 .428l-4.264 2.559A.25.25 0 0 1 6 10.559V5.442a.25.25 0 0 1 .379-.215Z"></path>
@@ -1401,7 +1401,7 @@
         <li hidden="hidden" data-menu-item="i4projects-tab" data-targets="action-list.items" role="none" data-view-component="true" class="ActionListItem">
     
     
-    <a tabindex="-1" id="item-7ec70161-a90d-4178-99ef-e004b87fb1f3" href="/chatunitycenter/chatunity-bot/projects" role="menuitem" data-view-component="true" class="ActionListContent ActionListContent--visual16">
+    <a tabindex="-1" id="item-7ec70161-a90d-4178-99ef-e004b87fb1f3" href="/ilcescodicosenz/ossessionbot/projects" role="menuitem" data-view-component="true" class="ActionListContent ActionListContent--visual16">
         <span class="ActionListItem-visual ActionListItem-visual--leading">
           <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-table">
     <path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v12.5A1.75 1.75 0 0 1 14.25 16H1.75A1.75 1.75 0 0 1 0 14.25ZM6.5 6.5v8h7.75a.25.25 0 0 0 .25-.25V6.5Zm8-1.5V1.75a.25.25 0 0 0-.25-.25H6.5V5Zm-13 1.5v7.75c0 .138.112.25.25.25H5v-8ZM5 5V1.5H1.75a.25.25 0 0 0-.25.25V5Z"></path>
@@ -1417,7 +1417,7 @@
         <li hidden="hidden" data-menu-item="i5security-tab" data-targets="action-list.items" role="none" data-view-component="true" class="ActionListItem">
     
     
-    <a tabindex="-1" id="item-44286c1e-0135-44dc-8659-231975f40c3b" href="/chatunitycenter/chatunity-bot/security" role="menuitem" data-view-component="true" class="ActionListContent ActionListContent--visual16">
+    <a tabindex="-1" id="item-44286c1e-0135-44dc-8659-231975f40c3b" href="/ilcescodicosenz/ossessionbot/security" role="menuitem" data-view-component="true" class="ActionListContent ActionListContent--visual16">
         <span class="ActionListItem-visual ActionListItem-visual--leading">
           <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-shield">
     <path d="M7.467.133a1.748 1.748 0 0 1 1.066 0l5.25 1.68A1.75 1.75 0 0 1 15 3.48V7c0 1.566-.32 3.182-1.303 4.682-.983 1.498-2.585 2.813-5.032 3.855a1.697 1.697 0 0 1-1.33 0c-2.447-1.042-4.049-2.357-5.032-3.855C1.32 10.182 1 8.566 1 7V3.48a1.75 1.75 0 0 1 1.217-1.667Zm.61 1.429a.25.25 0 0 0-.153 0l-5.25 1.68a.25.25 0 0 0-.174.238V7c0 1.358.275 2.666 1.057 3.86.784 1.194 2.121 2.34 4.366 3.297a.196.196 0 0 0 .154 0c2.245-.956 3.582-2.104 4.366-3.298C13.225 9.666 13.5 8.36 13.5 7V3.48a.251.251 0 0 0-.174-.237l-5.25-1.68ZM8.75 4.75v3a.75.75 0 0 1-1.5 0v-3a.75.75 0 0 1 1.5 0ZM9 10.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path>
@@ -1433,7 +1433,7 @@
         <li hidden="hidden" data-menu-item="i6insights-tab" data-targets="action-list.items" role="none" data-view-component="true" class="ActionListItem">
     
     
-    <a tabindex="-1" id="item-ece534dd-b829-4fbf-ba6f-1c65e4c20c22" href="/chatunitycenter/chatunity-bot/pulse" role="menuitem" data-view-component="true" class="ActionListContent ActionListContent--visual16">
+    <a tabindex="-1" id="item-ece534dd-b829-4fbf-ba6f-1c65e4c20c22" href="/ilcescodicosenz/ossessionbot/pulse" role="menuitem" data-view-component="true" class="ActionListContent ActionListContent--visual16">
         <span class="ActionListItem-visual ActionListItem-visual--leading">
           <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-graph">
     <path d="M1.5 1.75V13.5h13.75a.75.75 0 0 1 0 1.5H.75a.75.75 0 0 1-.75-.75V1.75a.75.75 0 0 1 1.5 0Zm14.28 2.53-5.25 5.25a.75.75 0 0 1-1.06 0L7 7.06 4.28 9.78a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042l3.25-3.25a.75.75 0 0 1 1.06 0L10 7.94l4.72-4.72a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042Z"></path>
@@ -1567,7 +1567,7 @@
 
 <react-app
   app-name="react-code-view"
-  initial-path="/chatunitycenter/chatunity-bot/blob/main/plugins/rpg-dona.js"
+  initial-path="/ilcescodicosenz/ossessionbot/blob/main/plugins/rpg-dona.js"
     style="display: block; min-height: calc(100vh - 64px);"
   data-attempted-ssr="true"
   data-ssr="true"
