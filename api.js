@@ -2,7 +2,7 @@ import { watchFile, unwatchFile } from 'fs'
 import chalk from 'chalk'
 import { fileURLToPath } from 'url'
 import fs from 'fs'
-import * as cheerio from 'cheerio';
+import cheerio from 'cheerio'
 import fetch from 'node-fetch'
 import axios from 'axios'
 import moment from 'moment-timezone' 
@@ -80,7 +80,7 @@ let emot = {
       pointxp: '📧 Puntos Exp',
       gold: '👑 Oro',
       trash: '🗑 Basura',
-      crystal: '💬 Cristal',
+      crystal: '🔮 Cristal',
       intelligence: '🧠 Inteligencia',
       string: '🕸️ Cuerda',
       keygold: '🔑 Llave de Oro',
@@ -173,7 +173,7 @@ string = string.toLowerCase()
       pointxp: '📧',
       gold: '👑',
       trash: '🗑',
-      crystal: '💬',
+      crystal: '🔮',
       intelligence: '🧠',
       string: '🕸️',
       keygold: '🔑',
@@ -402,6 +402,11 @@ if (!results.length) return ''
 else return emotttt[results[0][0]]
 }}	
 	
+let file = fileURLToPath(import.meta.url)
+watchFile(file, () => {
+unwatchFile(file)
+console.log(chalk.redBright("Update 'config.js'"))
+import(`${file}?update=${Date.now()}`)})
 let file = fileURLToPath(import.meta.url)
 watchFile(file, () => {
 unwatchFile(file)
