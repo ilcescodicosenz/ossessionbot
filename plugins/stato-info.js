@@ -39,7 +39,7 @@ const handler = async (m, { conn }) => {
     const categoria = userData.categoria || "Nessuna categoria";
     const stato = userData.muto ? "🔇 Muto" : userData.banned ? "🚫 Bannato" : "✅ Attivo";
     const lastAccess = userData.lastSeen ? new Date(userData.lastSeen).toLocaleString('it-IT') : "Non disponibile";
-    const instagramLink = userData.instagram ? `📸 *Instagram:* [@${userData.instagram}](https://instagram.com/${userData.instagram})\n` : '';
+    const instagramLink = userData.instagram ? `\n📸 *Instagram:* [@${userData.instagram}](https://instagram.com/${userData.instagram})` : '';
 
     let profilo;
     try {
@@ -59,9 +59,9 @@ const handler = async (m, { conn }) => {
       `📆 *Età:* ${userData.age}\n` +
       `🚻 *Genere:* ${userData.gender}\n` +
       `📝 *Bio:* ${bio}\n` +
-      `⏱️ *Ultimo accesso:* ${lastAccess}\n` +
+      `⏱️ *Ultimo accesso:* ${lastAccess}` +
       instagramLink +
-      `╰───────────────────────╯`;
+      `\n╰───────────────────────╯`;
 
     await conn.sendMessage(m.chat, {
       text: messaggio,
