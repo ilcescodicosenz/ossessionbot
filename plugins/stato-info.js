@@ -1,5 +1,5 @@
-import { getDevice } from '@whiskeysockets/baileys'
-import PhoneNumber from 'awesome-phonenumber'
+import { getDevice } from '@whiskeysockets/baileys';
+import PhoneNumber from 'awesome-phonenumber';
 
 const handler = async (m, { conn }) => {
   try {
@@ -27,8 +27,8 @@ const handler = async (m, { conn }) => {
     let bio = "";
     try {
       const status = await conn.fetchStatus(mention);
-      bio = status && status.status ? status.status : userData.bio || "Nessuna bio impostata.";
-    } catch (e) {
+      bio = status?.status || userData.bio || "Nessuna bio impostata.";
+    } catch {
       bio = userData.bio || "Nessuna bio impostata.";
     }
 
@@ -36,10 +36,10 @@ const handler = async (m, { conn }) => {
     const numero = PhoneNumber(mention.split("@")[0], "IT").getNumber("international");
     const dispositivo = await getDevice(m.key.id) || "Sconosciuto";
 
-    // Recupera la categoria impostata dall'admin con setcategoria
     const categoria = userData.categoria || "Nessuna categoria";
     const stato = userData.muto ? "🔇 Muto" : userData.banned ? "🚫 Bannato" : "✅ Attivo";
     const lastAccess = userData.lastSeen ? new Date(userData.lastSeen).toLocaleString('it-IT') : "Non disponibile";
+    const instagramLink = userData.instagram ? `📸 *Instagram:* [@${userData.instagram}](https://instagram.com/${userData.instagram})\n` : '';
 
     let profilo;
     try {
@@ -60,7 +60,7 @@ const handler = async (m, { conn }) => {
       `🚻 *Genere:* ${userData.gender}\n` +
       `📝 *Bio:* ${bio}\n` +
       `⏱️ *Ultimo accesso:* ${lastAccess}\n` +
-      (userData.instagram ? `📸 *Instagram:* instagram.com/${userData.instagram}\n` : '') +
+      instagramLink +
       `╰───────────────────────╯`;
 
     await conn.sendMessage(m.chat, {
@@ -69,8 +69,8 @@ const handler = async (m, { conn }) => {
         mentionedJid: [mention],
         externalAdReply: {
           title: `${nome} | ${userData.age} | ${userData.gender} | ${categoria}`,
-          body: bio || "Nessuna bio impostata.",
-          sourceUrl: "https://wa.me/" + mention.split("@")[0],
+          body: bio,
+          sourceUrl: userData.instagram ? `https://instagram.com/${userData.instagram}` : "https://wa.me/" + mention.split("@")[0],
           thumbnail: await (await fetch(profilo)).buffer()
         }
       }
