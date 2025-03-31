@@ -1,9 +1,9 @@
 import { webp2mp4 } from '../lib/webp2mp4.js'
 import { ffmpeg } from '../lib/converter.js'
 let handler = async (m, { conn, usedPrefix, command }) => {
-if (!m.quoted) throw `rispondi a uno sticker ${usedPrefix + command}`
+if (!m.quoted) return
 let mime = m.quoted.mimetype || ''
-if (!/webp/.test(mime)) throw `rispondi a uno sticker ${usedPrefix + command}`
+if (!/webp/.test(mime)) return
 let media = await m.quoted.download()
 let out = Buffer.alloc(0)
 if (/webp/.test(mime)) {
@@ -17,7 +17,12 @@ out = await ffmpeg(media, [
 '-shortest'
 ], 'mp3', 'mp4')
 }
-await conn.sendFile(m.chat, out, 'error.mp4', 'Completato', m, 0, { thumbnail: out })
+await conn.sendFile(m.chat, out, 'error.mp4', '*DONE*', m, 0, { thumbnail: out })
+}
+handler.help = ['tovideo']
+handler.tags = ['sticker']
+handler.command = ['tovideo', 'tomp4', 'mp4', 'togif']
+export default handler
 }
 handler.help = ['tovideo']
 handler.tags = ['sticker']
