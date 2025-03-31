@@ -1,6 +1,5 @@
 import 'os';
 import 'util';
-import 'human-readable';
 import '@whiskeysockets/baileys';
 import 'fs';
 import fetch from 'node-fetch';
@@ -9,17 +8,14 @@ import { performance } from 'perf_hooks';
 let handler = async (m, { conn, usedPrefix }) => {
   try {
     const uptimeMs = process.uptime() * 1000;
-    const uptimeStr = clockString(uptimeMs);
+    const uptimeStr = formatTime(uptimeMs);
     const startTime = performance.now();
     const endTime = performance.now();
     const speed = (endTime - startTime).toFixed(4);
 
-    const botName = global.db?.data?.nomedelbot || "BOT STATUS ";
-    const imageResponse = await fetch('https://telegra.ph/file/2f38b3fd9cfba5935b496.jpg');
-
-    if (!imageResponse.ok) {
-      throw new Error(`Errore durante la richiesta immagine: ${imageResponse.status}`);
-    }
+    const botName = global.db?.data?.nomedelbot || "BOT STATUS";
+    const botVersion = global.db?.data?.versione || "1.0.0";
+    const ossessionBot = global.db?.data?.ossessionbot || "Nessuna descrizione disponibile";
 
     const botStartTime = new Date(Date.now() - uptimeMs);
     const activationTime = botStartTime.toLocaleString('it-IT', {
@@ -32,16 +28,12 @@ let handler = async (m, { conn, usedPrefix }) => {
       year: 'numeric',
     });
 
-    const message = `
- 
-* Tempo di attività: ${uptimeStr}
-* Sono stato attivato il: ${activationTime}
-* Tempo di risposta: ${speed} secondi
-
- ${ossessionbot}
-* Versione: ${vs}
-.trim();
-
+    const message = `🌐 *${botName}* 🌐\n\n` +
+      `⏳ *Tempo di attività:* ${uptimeStr}\n` +
+      `🕒 *Attivato il:* ${activationTime}\n` +
+      `⚡ *Tempo di risposta:* ${speed} secondi\n` +
+      `📌 *Descrizione:* ${ossessionBot}\n` +
+      `🛠 *Versione:* ${botVersion}`;
 
     await conn.sendMessage(m.chat, {
       text: message,
@@ -56,13 +48,11 @@ let handler = async (m, { conn, usedPrefix }) => {
   }
 };
 
-function clockString(ms) {
+function formatTime(ms) {
   let h = Math.floor(ms / 3600000);
   let m = Math.floor((ms % 3600000) / 60000);
   let s = Math.floor((ms % 60000) / 1000);
-  return [h, m, s]
-    .map(v => v.toString().padStart(2, '0'))
-    .join(':');
+  return `${h}h ${m}m ${s}s`;
 }
 
 handler.help = ['ping'];
