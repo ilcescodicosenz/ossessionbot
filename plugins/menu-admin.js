@@ -1,50 +1,28 @@
-import { performance } from 'perf_hooks';
-import fetch from 'node-fetch'; // Assicurati di avere node-fetch installato
+import 'os';
+import 'util';
+import 'human-readable';
+import '@whiskeysockets/baileys';
+import 'fs';
+import 'perf_hooks';
 
-const handler = async (message, { conn, usedPrefix }) => {
-    const userCount = Object.keys(global.db.data.users).length;
-    const botName = global.db.data.nomedelbot || '⟆ 𝑶𝑺𝑺𝑬𝑺𝑺𝑰𝑶𝑵𝑩𝑶𝑻 ⟇ ✦';
+let handler = async (_0x4955de, { conn: _0x4b9a49, usedPrefix: _0xeb2cc9 }) => {
+  let _0x414c2d = {
+    'key': {
+      'participants': "0@s.whatsapp.net",
+      'fromMe': false,
+      'id': 'Halo'
+    },
+    'message': {
+      'locationMessage': {
+        'name': "𝐌𝐞𝐧𝐮 𝐀𝐝𝐦𝐢𝐧",
+        'jpegThumbnail': fs.readFileSync('./icone/admin.png'), // Immagine dalla cartella Icone
+        'vcard': "BEGIN:VCARD\nVERSION:3.0\nN:;Unlimited;;;\nFN:Unlimited\nORG:Unlimited\nTITLE:\nitem1.TEL;waid=19709001746:+1 (970) 900-1746\nitem1.X-ABLabel:Unlimited\nX-WA-BIZ-DESCRIPTION:ofc\nX-WA-BIZ-NAME:Unlimited\nEND:VCARD"
+      }
+    },
+    'participant': "0@s.whatsapp.net"
+  };
 
-    const menuText = generateMenuText(usedPrefix, botName, userCount);
-    
-    const messageOptions = {
-        contextInfo: {
-            forwardingScore: 1,
-            isForwarded: true,
-            forwardedNewsletterMessageInfo: {
-                serverMessageId: '',
-                newsletterName: `${botName}`
-            },
-        }
-    };
-
-    // Invia la foto con il menu
-    const imagePath = './menu/menuadmin.jpeg';
-    await conn.sendMessage(message.chat, { image: { url: imagePath }, caption: menuText, ...messageOptions }, { quoted: message });
-};
-
-async function fetchThumbnail(url) {
-    try {
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const arrayBuffer = await response.arrayBuffer();
-        return new Uint8Array(arrayBuffer);
-    } catch (error) {
-        console.error('Errore durante il fetch della thumbnail:', error);
-        return 'default-thumbnail'; // Fallback thumbnail in caso di errore
-    }
-}
-
-handler.help = ['menuadmin'];
-handler.tags = ['menuadmin'];
-handler.command = /^(menuadmin|comandi)$/i;
-
-export default handler;
-
-function generateMenuText(prefix, botName, userCount) {
-    return `
+  let _0x259d4e = `
 ╔══════════════════════════╗  
 ║  🚀  𝐌 𝐄 𝐍 𝐔   𝐀 𝐃 𝐌 𝐈 𝐍  🚀  ║  
 ╚══════════════════════════╝  
@@ -77,8 +55,43 @@ function generateMenuText(prefix, botName, userCount) {
 ┃ ⚡ ${_0xeb2cc9}𝗕𝗜𝗢 <𝗧𝗘𝗦𝗧𝗢>  
 ┃ ⚡ ${_0xeb2cc9}𝗟𝗜𝗡𝗞𝗤𝗥  
 ╰━━━━━━━━━━━━━━━━━━━╯  
-}
-> © ᴘᴏᴡᴇʀᴇᴅ ʙʏ ${botName}
-*•────────────•⟢*
+
+🔥 *꙰ 𝟥𝟥𝟥 ꙰ 𝔹𝕆𝕋 ꙰* 🔥
 `.trim();
+
+  let _0xf5c7c0 = global.db.data.nomedelbot || " ꙰ 𝟥𝟥𝟥 ꙰ 𝔹𝕆𝕋 ꙰ ";
+
+  _0x4b9a49.sendMessage(_0x4955de.chat, {
+    'text': _0x259d4e,
+    'contextInfo': {
+      'mentionedJid': _0x4b9a49.parseMention(wm),
+      'forwardingScore': 0x1,
+      'isForwarded': true,
+      'forwardedNewsletterMessageInfo': {
+        'newsletterJid': "120363341274693350@newsletter",
+        'serverMessageId': '',
+        'newsletterName': ' ꙰ 𝟥𝟥𝟥 ꙰ 𝔹𝕆𝕋 ꙰ ✦'
+      }
+    }
+  }, {
+    'quoted': _0x414c2d
+  });
+};
+
+handler.help = ["menu"];
+handler.tags = ["menu"];
+handler.command = /^(menuadm|admin)$/i;
+export default handler;
+
+function clockString(_0x5dad08) {
+  let _0x233c78 = Math.floor(_0x5dad08 / 3600000);
+  let _0x2b10bc = Math.floor(_0x5dad08 / 60000) % 60;
+  let _0x2c7d73 = Math.floor(_0x5dad08 / 1000) % 60;
+  console.log({
+    'ms': _0x5dad08,
+    'h': _0x233c78,
+    'm': _0x2b10bc,
+    's': _0x2c7d73
+  });
+  return [_0x233c78, _0x2b10bc, _0x2c7d73].map(_0x4bd0ef => _0x4bd0ef.toString().padStart(2, 0)).join(':');
 }
