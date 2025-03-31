@@ -519,7 +519,7 @@ export async function participantsUpdate({ id, participants, action }) {
                                 forwardingScore: 99,
                                 isForwarded: true, 
                                forwardedNewsletterMessageInfo: {
-                               newsletterJid: '120363259442839354@newsletter',
+                               newsletterJid: '0029Vb2xynG9MF8tPyNWoE35@newsletter',
                                serverMessageId: '', newsletterName: `${nomeDelBot}` },
                                externalAdReply: {
                                     "title": `${action === 'add' ? '𝐌𝐞𝐬𝐬𝐚𝐠𝐠𝐢𝐨 𝐝𝐢 𝐛𝐞𝐧𝐯𝐞𝐧𝐮𝐭𝐨' : '𝐌𝐞𝐬𝐬𝐚𝐠𝐠𝐢𝐨 𝐝𝐢 𝐚𝐝𝐝𝐢𝐨'}`,
@@ -559,7 +559,7 @@ export async function participantsUpdate({ id, participants, action }) {
                                 forwardingScore: 99,
                                 isForwarded: true, 
                                forwardedNewsletterMessageInfo: {
-                               newsletterJid: '120363259442839354@newsletter',
+                               newsletterJid: '0029Vb2xynG9MF8tPyNWoE35@newsletter',
                                serverMessageId: '', newsletterName: `${nomeDelBot}` },
                                externalAdReply: {
                                     "title": `${action === 'promote' ? '𝐌𝐞𝐬𝐬𝐚𝐠𝐠𝐢𝐨 𝐝𝐢 𝐩𝐫𝐨𝐦𝐨𝐳𝐢𝐨𝐧𝐞 👑' : '𝐌𝐞𝐬𝐬𝐚𝐠𝐠𝐢𝐨 𝐝𝐢 𝐫𝐞𝐭𝐫𝐨𝐜𝐞𝐬𝐬𝐢𝐨𝐧𝐞 🙇🏻‍♂️'}`,
