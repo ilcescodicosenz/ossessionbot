@@ -22,7 +22,7 @@ global.keysxteammm = ['29d4b59a4aa687ca', '5LTV57azwaid7dXfz5fzJu', 'cb15ed422c7
 global.keysxteam = keysxteammm[Math.floor(keysxteammm.length * Math.random())]
 global.keysneoxrrr = ['5VC9rvNx', 'cfALv5']
 global.keysneoxr = keysneoxrrr[Math.floor(keysneoxrrr.length * Math.random())]
-global.lolkeysapi = ['cesco']
+global.lolkeysapi = ['BrunoSobrino']
 global.itsrose = ['4b146102c4d500809da9d1ff']
 
 global.APIs = { 
@@ -402,11 +402,6 @@ if (!results.length) return ''
 else return emotttt[results[0][0]]
 }}	
 	
-let file = fileURLToPath(import.meta.url)
-watchFile(file, () => {
-unwatchFile(file)
-console.log(chalk.redBright("Update 'config.js'"))
-import(`${file}?update=${Date.now()}`)})
 let file = fileURLToPath(import.meta.url)
 watchFile(file, () => {
 unwatchFile(file)
