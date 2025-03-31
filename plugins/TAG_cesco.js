@@ -19,7 +19,7 @@ handler.all = async function (m) {
 
     const image = fs.readFileSync('./icone/instagram.png'); // Assicurati che il file esista nella cartella "icone"
     
-    const whatsappGroupLink = "https://chat.whatsapp.com/XXXXXXXXXXXXXX"; // 🔗 Sostituisci con il link reale del tuo gruppo
+    const whatsappGroupLink = "https://chat.whatsapp.com/Byqp7IRGhsz8p6eGpB58yx"; // 🔗 Sostituisci con il link reale del tuo gruppo
 
     let prova = {
       key: { participants: "0@s.whatsapp.net", fromMe: false, id: "Halo" },
