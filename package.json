@@ -81,6 +81,7 @@
         "got": "^14.4.2",
         "groq-sdk": "latest",
         "human-readable": "^0.2.1",
+        "imagemaker.js": "^2.0.4",
         "input": "^1.0.1",
         "instagram-url-direct": "^1.0.20",
         "javascript-obfuscator": "^4.1.1",
