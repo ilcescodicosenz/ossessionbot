@@ -1,5 +1,5 @@
 
-let war = '2'
+let war = '4'
 let handler = async (m, { conn, text, args, groupMetadata, usedPrefix, command }) => {      
         let who
         if (m.isGroup) who = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : true
