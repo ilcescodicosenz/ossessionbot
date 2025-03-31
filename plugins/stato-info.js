@@ -55,7 +55,7 @@ const handler = async (m, { conn }) => {
       `🏆 *Categoria:* ${categoria}\n` +
       `🛡️ *Stato:* ${stato}\n` +
       `📊 *Messaggi:* ${userData.messaggi}\n` +
-      `⚠️ *Warn:* ${userData.warn} / 3\n` +
+      `⚠️ *Warn:* ${userData.warn} / 5\n` +
       `📆 *Età:* ${userData.age}\n` +
       `🚻 *Genere:* ${userData.gender}\n` +
       `📝 *Bio:* ${bio}\n` +
