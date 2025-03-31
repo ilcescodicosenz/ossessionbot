@@ -3,7 +3,7 @@ import fetch from 'node-fetch'; // Assicurati di avere node-fetch installato
 
 const handler = async (message, { conn, usedPrefix }) => {
     const userCount = Object.keys(global.db.data.users).length;
-    const botName = global.db.data.nomedelbot || 'ChatUnity';
+    const botName = global.db.data.nomedelbot || '⟆ 𝑶𝑺𝑺𝑬𝑺𝑺𝑰𝑶𝑵𝑩𝑶𝑻 ⟇ ✦';
 
     const menuText = generateMenuText(usedPrefix, botName, userCount);
     
@@ -77,4 +77,8 @@ function generateMenuText(prefix, botName, userCount) {
 ┃ ⚡ ${_0xeb2cc9}𝗕𝗜𝗢 <𝗧𝗘𝗦𝗧𝗢>  
 ┃ ⚡ ${_0xeb2cc9}𝗟𝗜𝗡𝗞𝗤𝗥  
 ╰━━━━━━━━━━━━━━━━━━━╯  
+}
+> © ᴘᴏᴡᴇʀᴇᴅ ʙʏ ${botName}
+*•────────────•⟢*
+`.trim();
 }
