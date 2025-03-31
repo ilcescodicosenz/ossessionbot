@@ -28,7 +28,7 @@ let handler = async (m, { conn, usedPrefix }) => {
       year: 'numeric',
     });
 
-    const message = `🌐 *${botName}* 🌐\n\n` +
+    const message = `🌐 *${⟆ 𝑶𝑺𝑺𝑬𝑺𝑺𝑰𝑶𝑵𝑩𝑶𝑻 ⟇ ✦}* 🌐\n\n` +
       `⏳ *Tempo di attività:* ${uptimeStr}\n` +
       `🕒 *Attivato il:* ${activationTime}\n` +
       `⚡ *Tempo di risposta:* ${speed} secondi\n` +
