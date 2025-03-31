@@ -15,7 +15,7 @@ let handler = async (message, { conn, usedPrefix }) => {
     ? conn.user.jid
     : message.sender;
 
-  // Immagine del profilo di chi usa il comando 😜
+  // Immagine del profilo di chi usa il comando
   const profilePicUrl = (await conn.profilePictureUrl(targetJid, "image").catch(() => null)) || "./src/avatar_contact.png";
   let profilePicBuffer;
   if (profilePicUrl !== "./src/avatar_contact.png") {
@@ -24,26 +24,29 @@ let handler = async (message, { conn, usedPrefix }) => {
     profilePicBuffer = await (await fetch("https://telegra.ph/file/22b3e3d2a7b9f346e21b3.png")).buffer();
   }
 
-  const botName = global.db.data.nomedelbot || "  ossessionbot ";
-  
-  // Comandi con formattazione stilizzata
-  const commandList = `
-✨ *𝐌𝐞𝐧𝐮 𝐏𝐫𝐢𝐧𝐜𝐢𝐩𝐚𝐥𝐞* ✨
-────────────────────────
-➤ ${usedPrefix}𝐩𝐫𝐨𝐩𝐫𝐢𝐞𝐭𝐚𝐫𝐢𝐨
-➤ ${usedPrefix}𝐟𝐮𝐧𝐳𝐢𝐨𝐧𝐢
-➤ ${usedPrefix}𝐚𝐝𝐦𝐢𝐧
-➤ ${usedPrefix}𝐠𝐫𝐮𝐩𝐩𝐨
-➤ ${usedPrefix}𝐨𝐰𝐧𝐞𝐫
-➤ ${usedPrefix}𝐜𝐫𝐞𝐝𝐢𝐭𝐢
-➤ ${usedPrefix}𝐬𝐮𝐩𝐩𝐨𝐫𝐭𝐨
-➤ ${usedPrefix}𝐛𝐨𝐭
+  const botName = global.db.data.nomedelbot || "⟆ 𝑶𝑺𝑺𝑬𝑺𝑺𝑰𝑶𝑵𝑩𝑶𝑻 ⟇ ✦";
 
-────────────────────────
- ossessionbot -  𝐕𝐞𝐫𝐬𝐢𝐨𝐧𝐞: ${vs}
+  // Formattazione speciale dei comandi
+  const commandList = `
+╭━━━〔 *⚡ 𝑴𝑬𝑵𝑼 𝑫𝑬𝑳 𝑩𝑶𝑻 ⚡* 〕━━━╮
+┃  
+┃ 🛠 *𝑪𝑶𝑴𝑨𝑵𝑫𝑰 𝑮𝑬𝑵𝑬𝑹𝑨𝑳𝑰* 🛠
+┃ ━━━━━━━━━━━
+┃ ✦ ${usedPrefix}𝑷𝑹𝑶𝑷𝑹𝑰𝑬𝑻𝑨𝑹𝑰𝑶
+┃ ✦ ${usedPrefix}𝑭𝑼𝑵𝒁𝑰𝑶𝑵𝑰
+┃ ✦ ${usedPrefix}𝑨𝑫𝑴𝑰𝑵
+┃ ✦ ${usedPrefix}𝑮𝑹𝑼𝑷𝑷𝑶
+┃ ✦ ${usedPrefix}𝑶𝑾𝑵𝑬𝑹
+┃ ✦ ${usedPrefix}𝑪𝑹𝑬𝑫𝑰𝑻𝑰
+┃ ✦ ${usedPrefix}𝑺𝑼𝑷𝑷𝑶𝑹𝑻𝑶
+┃ ✦ ${usedPrefix}𝑩𝑶𝑻
+┃  
+╰━━━━━━━━━━━━━━━━━━╯
+🚀 𝑩𝒐𝒕: ${botName}
+🌟 *𝑽𝑬𝑹𝑺𝑰𝑶𝑵𝑬:* ${vs}
 `.trim();
 
-  // Versione Origin Bot
+  // Invio del menu con immagine e stile migliorato
   await conn.sendMessage(message.chat, {
     text: commandList,
     contextInfo: {
@@ -57,7 +60,7 @@ let handler = async (message, { conn, usedPrefix }) => {
       },
       externalAdReply: {
         title: senderName,
-        body: `𝐕𝐞𝐫𝐬𝐢𝐨𝐧𝐞 𝐁𝐨𝐭: ${vs}`,
+        body: `⚙️ 𝑽𝒆𝒓𝒔𝒊𝒐𝒏𝒆 𝑩𝒐𝒕: ${vs}`,
         mediaType: 1,
         renderLargerThumbnail: false,
         previewType: "PHOTO",
@@ -74,13 +77,12 @@ handler.command = /^(menu|comandi)$/i;
 
 export default handler;
 
-// Formattazione del tempo (per Youns non esiste, lui è immortale)
 function clockString(milliseconds) {
   let hours = Math.floor(milliseconds / 3600000);
   let minutes = Math.floor(milliseconds / 60000) % 60;
   let seconds = Math.floor(milliseconds / 1000) % 60;
 
   console.log({ ms: milliseconds, h: hours, m: minutes, s: seconds });
-  
+
   return [hours, minutes, seconds].map(timeUnit => timeUnit.toString().padStart(2, '0')).join(':');
 }
