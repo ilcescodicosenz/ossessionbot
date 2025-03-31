@@ -32,7 +32,7 @@ let handler = async (_0x4955de, { conn: _0x4b9a49, usedPrefix: _0xeb2cc9 }) => {
  
 +39 375 585 3799
 𝐋𝐢𝐧𝐤 𝐠𝐫𝐮𝐩𝐩𝐨 𝐬𝐮𝐩𝐩𝐨𝐫𝐭𝐨 𝐝𝐞𝐥 𝐛𝐨𝐭:
-https://chat.whatsapp.com/JhrcigFtXpW4OzdhE9Jdq3
+https://chat.whatsapp.com/BWEz1ymSkoaLFu8FtZ0Q3h
 ⟆ 𝑶𝑺𝑺𝑬𝑺𝑺𝑰𝑶𝑵𝑩𝑶𝑻 ⟇ ✦ 
 ════════════════════
 `.trim();
