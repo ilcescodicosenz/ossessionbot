@@ -1,52 +1,59 @@
-import { sticker } from '../lib/sticker.js'
-import uploadFile from '../lib/uploadFile.js'
-import uploadImage from '../lib/uploadImage.js'
-import { webp2png } from '../lib/webp2mp4.js'
+const { Client, LocalAuth, MessageMedia } = require('whatsapp-web.js');
+const qrcode = require('qrcode-terminal');
+const sharp = require('sharp');
+const fs = require('fs');
+const path = require('path');
 
-let handler = async (m, { conn, args, usedPrefix, command }) => {
-let stiker = false
-try {
-let q = m.quoted ? m.quoted : m
-let mime = (q.msg || q).mimetype || q.mediaType || ''
-if (/webp|image|video/g.test(mime)) {
-if (/video/g.test(mime)) if ((q.msg || q).seconds > 9) return
-m.reply('✯ 𝑪𝒂𝒓𝒊𝒄𝒂𝒎𝒆𝒏𝒕𝒐 ...')
-let img = await q.download?.()
+const client = new Client({
+    authStrategy: new LocalAuth()
+});
 
-if (!img) return
+const stickersPath = path.join(__dirname, 'stickers');
 
-let out
-try {
-stiker = await sticker(img, false, global.packname, global.author)
-} catch (e) {
-console.error(e)
-} finally {
-if (!stiker) {
-if (/webp/g.test(mime)) out = await webp2png(img)
-else if (/image/g.test(mime)) out = await uploadImage(img)
-else if (/video/g.test(mime)) out = await uploadFile(img)
-if (typeof out !== 'string') out = await uploadImage(img)
-stiker = sticker(false, out, global.packname, global.author)
-}}
-} else if (args[0]) {
-if (isUrl(args[0])) stiker = await sticker(false, args[0], global.packname, global.author)
-
-else return 
-  
+// Crea la cartella stickers se non esiste
+if (!fs.existsSync(stickersPath)) {
+    fs.mkdirSync(stickersPath);
 }
-} catch (e) {
-console.error(e)
-if (!stiker) stiker = e
-} finally {
-if (stiker) conn.sendFile(m.chat, stiker, 'sticker.webp', '', m)
 
-else return
+client.on('qr', (qr) => {
+    qrcode.generate(qr, { small: true });
+    console.log('Scansiona il QR Code con WhatsApp per connetterti.');
+});
 
-}}
-handler.help = ['stiker (caption|reply media)', 'stiker <url>', 'stikergif (caption|reply media)', 'stikergif <url>']
-handler.tags = ['sticker']
-handler.command = /^s(tic?ker)?(gif)?(wm)?$/i
-export default handler
+client.on('ready', () => {
+    console.log('Bot connesso e pronto all\'uso!');
+});
 
-const isUrl = (text) => {
-return text.match(new RegExp(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)(jpe?g|gif|png)/, 'gi'))}
+client.on('message', async (msg) => {
+    try {
+        if (msg.body.startsWith('.s/sticker') && msg.hasMedia) {
+            const media = await msg.downloadMedia();
+
+            if (media.mimetype.startsWith('image/')) {
+                const buffer = Buffer.from(media.data, 'base64');
+                const fileName = `sticker_${Date.now()}.webp`;
+                const outputPath = path.join(stickersPath, fileName);
+
+                // Conversione dell'immagine in sticker formato webp
+                await sharp(buffer)
+                    .resize(512, 512, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
+                    .webp({ quality: 100 })
+                    .toFile(outputPath);
+
+                const stickerMedia = MessageMedia.fromFilePath(outputPath);
+                await msg.reply(stickerMedia, msg.from, { sendMediaAsSticker: true });
+
+                // Elimina il file temporaneo dopo l'invio
+                fs.unlinkSync(outputPath);
+                console.log(`Sticker creato e inviato con successo a ${msg.from}.`);
+            } else {
+                msg.reply('❌ Invia un\'immagine con il comando `.s/sticker`.');
+            }
+        }
+    } catch (error) {
+        console.error('Errore durante la creazione dello sticker:', error);
+        msg.reply('❌ Si è verificato un errore durante la creazione dello sticker.');
+    }
+});
+
+client.initialize();
