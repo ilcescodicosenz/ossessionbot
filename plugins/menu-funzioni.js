@@ -101,7 +101,7 @@ let handler = async (message, { conn, usedPrefix }) => {
   menuText += "> ⓘ 𝐈𝐧𝐟𝐨 𝐬𝐮𝐥𝐥𝐞 𝐟𝐮𝐧𝐳𝐢𝐨𝐧𝐢\n";
   menuText += "> 🟢 » 𝐅𝐮𝐧𝐳𝐢𝐨𝐧𝐞 𝐚𝐭𝐭𝐢𝐯𝐚𝐭𝐚 \n";
   menuText += "> 🔴 » 𝐅𝐮𝐧𝐳𝐢𝐨𝐧𝐞 𝐝𝐢𝐬𝐚𝐛𝐢𝐥𝐢𝐭𝐚𝐭𝐚 \n";
-  menuText += " ꙰ 𝟥𝟥𝟥 ꙰ 𝔹𝕆𝕋 ꙰\n────────────\n";
+  menuText += " ⟆ 𝑶𝑺𝑺𝑬𝑺𝑺𝑰𝑶𝑵𝑩𝑶𝑻 ⟇ ✦\n────────────\n";
   menuText += "> ⓘ 𝐔𝐬𝐨 𝐝𝐞𝐥 𝐜𝐨𝐦𝐚𝐧𝐝𝐨\n";
   menuText += `> ${usedPrefix}attiva antilink\n`;
   menuText += `> ${usedPrefix}disabilita antilink\n`;
@@ -109,7 +109,7 @@ let handler = async (message, { conn, usedPrefix }) => {
   menuText += `> ${usedPrefix}infostato\n`;
   menuText += "──────────────";
 
-  let botName = global.db.data.nomedelbot || " ꙰ 𝟥𝟥𝟥 ꙰ 𝔹𝕆𝕋 ꙰ ";
+  let botName = global.db.data.nomedelbot || " ⟆ 𝑶𝑺𝑺𝑬𝑺𝑺𝑰𝑶𝑵𝑩𝑶𝑻 ⟇ ✦ ";
 
   conn.sendMessage(message.chat, {
     text: menuText,
@@ -118,7 +118,7 @@ let handler = async (message, { conn, usedPrefix }) => {
       forwardingScore: 1,
       isForwarded: true,
       forwardedNewsletterMessageInfo: {
-        newsletterJid: "120363341274693350@newsletter",
+        newsletterJid: "120363379175813844@newsletter",
         serverMessageId: '',
         newsletterName: botName
       }
