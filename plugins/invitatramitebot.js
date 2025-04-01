@@ -9,7 +9,7 @@ let handler = async (m, { conn, args, text, usedPrefix, command }) => {
   let link = 'https://chat.whatsapp.com/' + await conn.groupInviteCode(group);
   let groupName = await conn.groupMetadata(group).then(metadata => metadata.subject);
 
-  let inviteMessage = `🍟 *INVITO AL GRUPPO*\n\nUn utente ti ha invitato a unirti al gruppo *${groupName}* \n\n${link}`;
+  let inviteMessage = `🍟 *INVITO AL GRUPPO*\n\nTi ho invitato a unirti a questo gruppo *${groupName}* \n\n${link}`;
   if (customMessage) {
     inviteMessage += `\n\nMessaggio: ${customMessage}`;
   }
