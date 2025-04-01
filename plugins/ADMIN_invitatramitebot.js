@@ -14,7 +14,8 @@ let handler = async (m, { conn, args, text, usedPrefix, command }) => {
     try {
         link = 'https://chat.whatsapp.com/' + await conn.groupInviteCode(group);
     } catch (e) {
-        throw '❌ Errore nel generare il link di invito. Assicurati che il bot sia amministratore.';
+        console.error('Errore nel generare il link di invito:', e);
+        link = '⚠️ Errore nel generare il link di invito. Contatta un amministratore.';
     }
     
     await conn.reply(text + '@s.whatsapp.net', `🍟 *INVITO AL GRUPPO*\n\nUn utente ti ha invitato a unirti a questo gruppo \n\n${link}`, m, {mentions: [m.sender]});
@@ -49,5 +50,3 @@ handler.group = true;
 handler.botAdmin = true;
 
 export default handler;
-
-
