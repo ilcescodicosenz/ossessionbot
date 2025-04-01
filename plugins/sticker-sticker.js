@@ -1,19 +1,19 @@
-const { Client, LocalAuth, MessageMedia } = require('whatsapp-web.js');
-const qrcode = require('qrcode-terminal');
-const sharp = require('sharp');
-const fs = require('fs');
-const path = require('path');
+import { Client, LocalAuth, MessageMedia } from 'whatsapp-web.js';
+import qrcode from 'qrcode-terminal';
+import sharp from 'sharp';
+import fs from 'fs';
+import path from 'path';
 
-const client = new Client({
-    authStrategy: new LocalAuth()
-});
-
-const stickersPath = path.join(__dirname, 'stickers');
+const stickersPath = path.join(process.cwd(), 'stickers');
 
 // Crea la cartella stickers se non esiste
 if (!fs.existsSync(stickersPath)) {
     fs.mkdirSync(stickersPath);
 }
+
+const client = new Client({
+    authStrategy: new LocalAuth()
+});
 
 client.on('qr', (qr) => {
     qrcode.generate(qr, { small: true });
@@ -24,7 +24,7 @@ client.on('ready', () => {
     console.log('Bot connesso e pronto all\'uso!');
 });
 
-client.on('message', async (msg) => {
+const handler = async (msg) => {
     try {
         if (msg.body.startsWith('.s/sticker') && msg.hasMedia) {
             const media = await msg.downloadMedia();
@@ -54,6 +54,10 @@ client.on('message', async (msg) => {
         console.error('Errore durante la creazione dello sticker:', error);
         msg.reply('❌ Si è verificato un errore durante la creazione dello sticker.');
     }
-});
+};
+
+client.on('message', handler);
 
 client.initialize();
+
+export default handler;
