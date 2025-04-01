@@ -14,24 +14,17 @@ let handler = async (m, { conn, args, text, usedPrefix, command }) => {
     try {
         link = 'https://chat.whatsapp.com/' + await conn.groupInviteCode(group);
     } catch (e) {
-        console.error('Errore nel generare il link di invito:', e);
-        link = '⚠️ Errore nel generare il link di invito. Contatta un amministratore.';
+        link = null; // Se c'è un errore, non inviare il link
     }
-    
-    await conn.reply(text + '@s.whatsapp.net', `🍟 *INVITO AL GRUPPO*\n\nUn utente ti ha invitato a unirti a questo gruppo \n\n${link}`, m, {mentions: [m.sender]});
-    
-    m.reply('🍟 È stato inviato un link di invito all\'utente.');
-    
-    // Mostra il canale del gruppo in alto
-    if (groupMetadata.announce) {
-        let groupSubject = groupMetadata.subject;
-        let groupDesc = groupMetadata.desc || 'Nessuna descrizione disponibile';
-        m.reply(`📢 *Canale del Gruppo:* ${groupSubject}\n📜 *Descrizione:* ${groupDesc}`);
+
+    if (link) {
+        // Invia il messaggio di invito solo se il link è valido
+        await conn.reply(text + '@s.whatsapp.net', `🍟 *INVITO AL GRUPPO*\n\nUn utente ti ha invitato a unirti a questo gruppo \n\n${link}`, m, {mentions: [m.sender]});
+        m.reply('🍟 È stato inviato un link di invito all\'utente.');
+    } else {
+        // Se non è possibile generare il link, invia un messaggio alternativo
+        m.reply('⚠️ Non è possibile generare il link di invito al momento.');
     }
-    
-    // Mostra il canale ufficiale del gruppo
-    let officialChannel = '120363387378860419@newsletter';
-    m.reply(`📢 *Canale Ufficiale:* wa.me/${officialChannel}`);
     
     // Aggiunge un messaggio di benvenuto personalizzato per i nuovi membri
     conn.sendMessage(group, `🎉 Benvenuto nel gruppo! ${text} 🎊\nSegui le regole e divertiti!`, { mentions: [text + '@s.whatsapp.net'] });
