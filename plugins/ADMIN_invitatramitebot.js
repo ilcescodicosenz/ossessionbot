@@ -8,7 +8,7 @@ let handler = async (m, { conn, args, text, usedPrefix, command }) => {
     
     await conn.reply(text+'@s.whatsapp.net', `🍟 *INVITO AL GRUPPO*\n\nUn utente ti ha invitato a unirti a questo gruppo \n\n${link}`, m, {mentions: [m.sender]})
     
-    m.reply(`🍟 È stato inviato un link di invito all'utente.`)
+    m.reply(`🍟 Ho un link di invito all'utente.`)
 }
 
 handler.help = ['invite *<numero>*']
