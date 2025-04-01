@@ -1,3 +1,5 @@
+import fetch from 'node-fetch'; // Assicurati di avere installato node-fetch se non lo hai
+
 function _0x1b88(_0x5a807a, _0x34ba73) {
     const _0x46b59d = _0x31e8();
     return _0x1b88 = function (_0x22e0da, _0x5781ce) {
@@ -62,20 +64,23 @@ const _0x41cb79 = _0x1b88;
 }(_0x31e8, 0x1 * -0x255a + -0x25 * -0x3a36 + -0x39f24));
 const handler = _0x507190 => _0x507190;
 handler[_0x41cb79(0x1d2)] = async function (_0x160d58) {
-    const _0x49f396 = _0x41cb79, _0x130c18 = {
-            'UxWgu': _0x49f396(0x1d0),
-            'vsvUV': '120363341274693350@newsletter',
-            'jcOTi': _0x49f396(0x1e0),
-            'krqDh': function (_0x2bb076, _0x445a39) {
-                return _0x2bb076(_0x445a39);
-            },
-            'kiuPW': _0x49f396(0x1ed),
-            'FxcSt': '𝐌𝐞𝐬𝐬𝐚𝐠𝐠𝐢𝐨\x20𝐝𝐢\x20𝐫𝐞𝐭𝐫𝐨𝐜𝐞𝐬𝐬𝐢𝐨𝐧𝐞\x20🙇🏻‍♂️',
-            'LfbLE': function (_0x36a462, _0x34e7e7) {
-                return _0x36a462(_0x34e7e7);
-            }
-        };
-    if (_0x160d58['messageStubType'] == -0x308 + 0x17a * 0xf + -0x5 * 0x3cd) {
+    const _0x49f396 = _0x41cb79;
+    const _0x130c18 = {
+        'UxWgu': _0x49f396(0x1d0),
+        'vsvUV': '120363387378860419@newsletter',
+        'jcOTi': _0x49f396(0x1e0),
+        'krqDh': function (_0x2bb076, _0x445a39) {
+            return _0x2bb076(_0x445a39);
+        },
+        'kiuPW': _0x49f396(0x1ed),
+        'FxcSt': '𝐌𝐞𝐬𝐬𝐚𝐠𝐠𝐢𝐨\x20𝐝𝐢\x20𝐫𝐞𝐭𝐫𝐨𝐜𝐞𝐬𝐬𝐢𝐨𝐧𝐞\x20🙇🏻‍♂️',
+        'LfbLE': function (_0x36a462, _0x34e7e7) {
+            return _0x36a462(_0x34e7e7);
+        }
+    };
+
+    // Gestione della promozione di un utente
+    if (_0x160d58[_0x49f396(0x1dc)] == -0x308 + 0x17a * 0xf + -0x5 * 0x3cd) {
         let _0x53e3b7;
         try {
             _0x53e3b7 = await conn[_0x49f396(0x1e7)](_0x160d58[_0x49f396(0x1d4)][0x3e * 0x74 + 0x4 * 0x712 + -0x3860], _0x130c18[_0x49f396(0x1d3)]);
@@ -87,12 +92,12 @@ handler[_0x41cb79(0x1d2)] = async function (_0x160d58) {
             'contextInfo': {
                 'mentionedJid': [
                     _0x160d58['sender'],
-                    _0x160d58[_0x49f396(0x1d4)][0x138b + -0xbfe * -0x2 + -0x2b87]
+                    _0x160d58[_0x49f396(0x1d4)][0x138b + -0xbfe * 0x2 + -0x2b87]
                 ],
                 'forwardingScore': 0x63,
                 'isForwarded': !![],
                 'forwardedNewsletterMessageInfo': {
-                    'newsletterJid': _0x130c18[_0x49f396(0x1df)],
+                    'newsletterJid': '120363387378860419@newsletter',
                     'serverMessageId': '',
                     'newsletterName': '' + nomebot
                 },
@@ -103,6 +108,8 @@ handler[_0x41cb79(0x1d2)] = async function (_0x160d58) {
             }
         }, { 'quoted': null });
     }
+
+    // Gestione della retrocessione di un utente
     if (_0x160d58[_0x49f396(0x1dc)] == 0x1e * -0x49 + 0x7b + 0x3 * 0x2bb) {
         let _0x20cd89;
         try {
@@ -120,7 +127,7 @@ handler[_0x41cb79(0x1d2)] = async function (_0x160d58) {
                 'forwardingScore': 0x63,
                 'isForwarded': !![],
                 'forwardedNewsletterMessageInfo': {
-                    'newsletterJid': '120363341274693350@newsletter',
+                    'newsletterJid': '120363387378860419@newsletter',
                     'serverMessageId': '',
                     'newsletterName': '' + nomebot
                 },
@@ -131,5 +138,28 @@ handler[_0x41cb79(0x1d2)] = async function (_0x160d58) {
             }
         }, { 'quoted': null });
     }
+
+    // Esempio di gestione del cambio nome gruppo (ipotizzando che messageStubType sia 'GROUP_RENAME')
+    if (_0x160d58[_0x49f396(0x1dc)] === 'GROUP_RENAME') {
+        const nuovoNome = _0x160d58[_0x49f396(0x1d4)][0]; // Il nuovo nome potrebbe essere nel primo parametro
+        conn[_0x49f396(0x1d5)](_0x160d58[_0x49f396(0x1e5)], {
+            'text': `Il gruppo è stato rinominato in "<span class="math-inline">\{nuovoNome\}" da @</span>{_0x160d58['sender']['split']('@')[0]}`,
+            'contextInfo': {
+                'mentionedJid': [_0x160d58['sender']],
+            }
+        }, { 'quoted': null });
+    }
+
+    // Esempio di gestione dell'aggiunta di un membro (ipotizzando che messageStubType sia 'ADD_MEMBER')
+    if (_0x160d58[_0x49f396(0x1dc)] === 'ADD_MEMBER') {
+        const nuovoMembro = _0x160d58[_0x49f396(0x1d4)][0]; // Il nuovo membro potrebbe essere nel primo parametro
+        conn[_0x49f396(0x1d5)](_0x160d58[_0x49f396(0x1e5)], {
+            'text': `Benvenuto/a @${nuovoMembro.split('@')[0]} nel gruppo!`,
+            'contextInfo': {
+                'mentionedJid': [nuovoMembro],
+            }
+        }, { 'quoted': null });
+    }
 };
-export default handler;
+
+export
