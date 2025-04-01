@@ -2,8 +2,9 @@ let handler = async (m, { conn, args, text, usedPrefix, command }) => {
     if (!text) throw '🍟 Inserisci il numero a cui vuoi inviare un invito al gruppo\n\n🚩 Esempio:\n*' + usedPrefix + command + '* 3456987541';
     if (text.includes('+')) throw '🚩 Inserisci il numero tutto attaccato senza il *+*';
     if (isNaN(text)) throw '🍟 Inserisci solo numeri con il prefisso internazionale senza spazi';
-    
+
     let group = m.chat;
+    let link = 'https://chat.whatsapp.com/' + await conn.groupInviteCode(group)
     let botNumber = conn.user.id.split(':')[0] + '@s.whatsapp.net';
     let groupMetadata = await conn.groupMetadata(group);
     let botIsAdmin = groupMetadata.participants.some(p => p.id === botNumber && p.admin);
