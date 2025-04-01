@@ -130,7 +130,7 @@
         "ytdl-core": "^4.11.5"
     },
     "optionalDependencies": {
-        "moment-timezone": "^0.5.37",
-        "wa-sticker-formatter": "^4.4.4"
+        "eslint": "^8.45.0",
+        "eslint-config-google": "^0.14.0"
     }
 }
