@@ -47,7 +47,7 @@
         "@octokit/rest": "^21.1.0",
         "@vioo/apis": "^1.4.26",
         "@vitalets/google-translate-api": "^9.2.0",
-        "@whiskeysockets/baileys": "github:elrebelde21/baileys",
+        "@whiskeysockets/baileys": "npm:@fizzxydev/baileys-pro@^8.6.8",
         "@xct007/frieren-scraper": "^0.0.2",
         "acrcloud": "^1.4.0",
         "adm-zip": "^0.5.16",
