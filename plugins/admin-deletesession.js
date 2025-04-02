@@ -1,106 +1,83 @@
-import { getDevice } from '@whiskeysockets/baileys';
-import PhoneNumber from 'awesome-phonenumber';
+import { existsSync, promises as fsPromises } from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
-const handler = async (m, { conn }) => {
-  try {
-    const mention = m.mentionedJid?.[0] || m.quoted?.sender || m.sender;
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const sessionFolder = path.join(__dirname, '../ossessionbotSession/');
 
-    if (!global.db.data.users[mention]) {
-      global.db.data.users[mention] = {
-        name: "Sconosciuto",
-        messaggi: 0,
-        warn: 0,
-        warnlink: 0,
-        muto: false,
-        banned: false,
-        command: 0,
-        age: "Non specificata", // Età predefinita più neutra
-        gender: "Non specificato",
-        instagram: "",
-        bio: "Nessuna bio impostata.",
-        categoria: "Utente",
-        lastSeen: null,
-        registratoIl: Date.now() // Data di registrazione
-      };
+const handler = async (message, { conn, usedPrefix }) => {
+    if (global.conn.user.jid !== conn.user.jid) {
+        return conn.sendMessage(message.chat, {
+            text: "*🚨 𝐔𝐭𝐢𝐥𝐢𝐳𝐳𝐢 𝐪𝐮𝐞𝐬𝐭𝐨 𝐜𝐨𝐦𝐚𝐧𝐝𝐨 𝐝𝐢𝐫𝐞𝐭𝐭𝐚𝐦𝐞𝐧𝐭𝐞 𝐧𝐞𝐥 𝐧𝐮𝐦𝐞𝐫𝐨 𝐝𝐞𝐥 𝐛𝐨𝐭.*"
+        }, { quoted: message });
     }
-    const userData = global.db.data.users[mention];
 
-    let bio = "";
+    await conn.sendMessage(message.chat, {
+        text: "⚡️ 𝐑𝐢𝐩𝐫𝐢𝐬𝐭𝐢𝐧𝐨 𝐝𝐞𝐥𝐥𝐞 𝐬𝐞𝐬𝐬𝐢𝐨𝐧𝐢 𝐢𝐧 𝐜𝐨𝐫𝐬𝐨... ⏳"
+    }, { quoted: message });
+
     try {
-      const status = await conn.fetchStatus(mention);
-      bio = status?.status || userData.bio || "Nessuna bio impostata.";
-    } catch {
-      bio = userData.bio || "Nessuna bio impostata.";
-    }
-
-    const nome = userData.name || "Sconosciuto";
-    const numero = PhoneNumber(mention.split("@")[0], "IT").getNumber("international");
-    const dispositivo = await getDevice(m.key.id) || "Sconosciuto";
-
-    let categoria = userData.categoria || "Utente";
-    let categoriaEmoji = "";
-    switch (categoria) {
-      case "Utente":
-        categoriaEmoji = "👤";
-        break;
-      case "Amico":
-        categoriaEmoji = "🌟";
-        break;
-      case "VIP":
-        categoriaEmoji = "👑";
-        break;
-      default:
-        categoriaEmoji = "🏷️";
-        break;
-    }
-
-    const stato = userData.muto ? "🔇 Muto" : userData.banned ? "🚫 Bannato" : "✅ Attivo";
-    const lastAccess = userData.lastSeen ? new Date(userData.lastSeen).toLocaleString('it-IT') : "Non disponibile";
-    const instagramLink = userData.instagram ? `📸 *Instagram:* [@${userData.instagram}](https://instagram.com/${userData.instagram})\n` : '';
-    const registratoIl = userData.registratoIl ? new Date(userData.registratoIl).toLocaleString('it-IT') : "Non disponibile";
-
-    let profilo;
-    try {
-      profilo = await conn.profilePictureUrl(mention, 'image');
-    } catch {
-      profilo = 'https://telegra.ph/file/560f1667a55ecf09650cd.png';
-    }
-
-    const messaggio = `╭───〔 📌 *INFO UTENTE* 📌 〕───╮\n` +
-      `📛 *Nome:* ${nome}\n` +
-      `🏷️ *Numero:* ${numero}\n` +
-      `📱 *Dispositivo:* ${dispositivo}\n` +
-      `🏆 *Categoria:* ${categoriaEmoji} ${categoria}\n` +
-      `🛡️ *Stato:* ${stato}\n` +
-      `📊 *Messaggi:* ${userData.messaggi}\n` +
-      `⌨️ *Comandi usati:* ${userData.command}\n` +
-      `⚠️ *Warn:* ${userData.warn} / 5\n` +
-      `📆 *Età:* ${userData.age}\n` +
-      `🚻 *Genere:* ${userData.gender}\n` +
-      `🗓️ *Registrato il:* ${registratoIl}\n` +
-      `📝 *Bio:* ${bio}\n` +
-      `⏱️ *Ultimo accesso:* ${lastAccess}\n` +
-      instagramLink +
-      `╰───────────────────────╯`;
-
-    await conn.sendMessage(m.chat, {
-      text: messaggio,
-      contextInfo: {
-        mentionedJid: [mention],
-        externalAdReply: {
-          title: `${nome} | ${userData.age} | ${userData.gender} | ${categoria}`,
-          body: bio,
-          sourceUrl: "https://wa.me/" + mention.split("@")[0],
-          thumbnail: await (await fetch(profilo)).buffer()
+        // Crea la cartella delle sessioni se non esiste
+        if (!existsSync(sessionFolder)) {
+            await fsPromises.mkdir(sessionFolder, { recursive: true });
+            return await conn.sendMessage(message.chat, {
+                text: "✅ 𝐂𝐚𝐫𝐭𝐞𝐥𝐥𝐚 𝐝𝐞𝐥𝐥𝐞 𝐬𝐞𝐬𝐬𝐢𝐨𝐧𝐢 𝐜𝐫𝐞𝐚𝐭𝐚. 𝐄𝐬𝐞𝐠𝐮𝐢 𝐧𝐮𝐨𝐯𝐚𝐦𝐞𝐧𝐭𝐞 𝐢𝐥 𝐜𝐨𝐦𝐚𝐧𝐝𝐨."
+            }, { quoted: message });
         }
-      }
-    }, { quoted: m });
 
-  } catch (error) {
-    console.error("Errore in USERINFO:", error);
-    await conn.sendMessage(m.chat, { text: "❌ Errore nel recuperare le informazioni dell'utente." }, { quoted: m });
-  }
+        const sessionFiles = await fsPromises.readdir(sessionFolder);
+        let deletedCount = 0;
+
+        for (const file of sessionFiles) {
+            if (file !== "creds.json") {
+                try {
+                    await fsPromises.unlink(path.join(sessionFolder, file));
+                    deletedCount++;
+                } catch (err) {
+                    console.error(`Errore durante l'eliminazione di ${file}:`, err);
+                    await conn.sendMessage(message.chat, { text: `❌ Errore durante l'eliminazione di ${file}` }, { quoted: message });
+                }
+            }
+        }
+
+        const responseText = deletedCount === 0
+            ? "❗ 𝐋𝐞 𝐬𝐞𝐬𝐬𝐢𝐨𝐧𝐢 𝐬𝐨𝐧𝐨 𝐯𝐮𝐨𝐭𝐞 ‼️"
+            : `🔥 𝐒𝐨𝐧𝐨 𝐞𝐥𝐢𝐦𝐢𝐧𝐚𝐭𝐢 ${deletedCount} 𝐚𝐫𝐜𝐡𝐢𝐯𝐢 𝐝𝐞𝐥𝐥𝐞 𝐬𝐞𝐬𝐬𝐢𝐨𝐧𝐢!`;
+
+        await conn.sendMessage(message.chat, { text: responseText }, { quoted: message });
+
+    } catch (error) {
+        console.error('⚠️ Errore durante l\'operazione sulle sessioni:', error);
+        await conn.sendMessage(message.chat, { text: "❌ 𝐄𝐫𝐫𝐨𝐫𝐞 durante l'operazione sulle sessioni!" }, { quoted: message });
+    }
+
+    const botName = global.db.data.nomedelbot || "⟆ 𝑶𝑺𝑺𝑬𝑺𝑺𝑰𝑶𝑵𝑩𝑶𝑻 ⟇ ✦";
+    const quotedMessage = {
+        key: {
+            participants: "0@s.whatsapp.net",
+            fromMe: false,
+            id: 'Halo'
+        },
+        message: {
+            locationMessage: {
+                name: botName,
+                jpegThumbnail: await (await fetch("https://qu.ax/cSqEs.jpg")).buffer(),
+                vcard: "BEGIN:VCARD\nVERSION:3.0\nN:;Unlimited;;;\nFN:Unlimited\nORG:Unlimited\nTITLE:\nitem1.TEL;waid=19709001746:+1 (970) 900-1746\nitem1.X-ABLabel:Unlimited\nX-WA-BIZ-DESCRIPTION:ofc\nX-WA-BIZ-NAME:Unlimited\nEND:VCARD"
+            }
+        },
+        participant: '0@s.whatsapp.net'
+    };
+
+    await conn.sendMessage(message.chat, {
+        text: "💌 𝐎𝐫𝐚 𝐬𝐚𝐫𝐚𝐢 𝐢𝐧 𝐠𝐫𝐚𝐝𝐨 𝐝𝐢 𝐥𝐞𝐠𝐠𝐞𝐫𝐞 𝐢 𝐦𝐞𝐬𝐬𝐚𝐠𝐠𝐢 𝐝𝐞𝐥 𝐛𝐨𝐭 🚀"
+    }, { quoted: quotedMessage });
 };
 
-handler.command = /^(userinfo|infoutente|profilo)$/i;
+handler.help = ['del_reg_in_session_owner'];
+handler.tags = ["owner"];
+handler.command = /^(deletession|ds|clearallsession)$/i;
+handler.admin = true;
+
 export default handler;
