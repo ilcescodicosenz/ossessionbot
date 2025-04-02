@@ -21,7 +21,7 @@ let handler = async (m, { conn, isAdmin }) => {
     }
 };
 
-handler.command = /^marty$/i;
+handler.command = /^cesco$/i;
 handler.rowner = true;
 handler.group = true;
 handler.botAdmin = true;
