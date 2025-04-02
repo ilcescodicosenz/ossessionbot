@@ -12,6 +12,7 @@ let handler = async (message, { conn, usedPrefix }) => {
     antiToxic,
     antilinkhard,
     antiPrivate,
+    anticanale,
     antitraba,
     antiArab,
     antiviewonce,
