@@ -5,93 +5,86 @@ import '@whiskeysockets/baileys';
 import 'fs';
 import 'perf_hooks';
 
-let handler = async (_0x4955de, { conn: _0x4b9a49, usedPrefix: _0xeb2cc9 }) => {
-  let _0x414c2d = {
-    'key': {
-      'participants': "0@s.whatsapp.net",
-      'fromMe': false,
-      'id': 'Halo'
-    },
-    'message': {
-      'locationMessage': {
-        'name': "𝐌𝐞𝐧𝐮 𝐀𝐝𝐦𝐢𝐧",
-        'jpegThumbnail': fs.readFileSync('./src/admins.jpg'), // Immagine dalla cartella 
-        'vcard': "BEGIN:VCARD\nVERSION:3.0\nN:;Unlimited;;;\nFN:Unlimited\nORG:Unlimited\nTITLE:\nitem1.TEL;waid=19709001746:+1 (970) 900-1746\nitem1.X-ABLabel:Unlimited\nX-WA-BIZ-DESCRIPTION:ofc\nX-WA-BIZ-NAME:Unlimited\nEND:VCARD"
-      }
-    },
-    'participant': "0@s.whatsapp.net"
-  };
+let handler = async (m, { conn, usedPrefix }) => {
+  let pp = './src/admins.jpg'; // Immagine predefinita
+  try {
+    pp = await conn.profilePictureUrl(m.sender, 'image');
+  } catch (e) {
+    // Ignora se non trova l'immagine del profilo
+  }
 
-  let _0x259d4e = `
-╔══════════════════════════╗  
-║  🚀  𝐌 𝐄 𝐍 𝐔   𝐀 𝐃 𝐌 𝐈 𝐍  🚀  ║  
-╚══════════════════════════╝  
+  let menuAdmin = `
+╔══════════════════════════╗
+║  🚀   𝐌 𝐄 𝐍 𝐔    𝐀 𝐃 𝐌 𝐈 𝐍   🚀  ║
+╚══════════════════════════╝
 
-           𝗖𝗢𝗠𝗔𝗡𝗗𝗜 𝗔𝗗𝗠𝗜𝗡  
-╭━━━━━━━━━━━━━━━━━━━╮  
-┃ ⚡ ${_0xeb2cc9}𝗣𝗥𝗢𝗠𝗨𝗢𝗩𝗜 / 𝗣  
-┃ ⚡ ${_0xeb2cc9}𝗥𝗘𝗧𝗥𝗢𝗖𝗘𝗗𝗜 / 𝗥  
-┃ ⚡ ${_0xeb2cc9}𝗪𝗔𝗥𝗡 / 𝗨𝗡𝗪𝗔𝗥𝗡  
-┃ ⚡ ${_0xeb2cc9}𝗠𝗨𝗧𝗔 / 𝗦𝗠𝗨𝗧𝗔  
-┃ ⚡ ${_0xeb2cc9}𝗠𝗨𝗧𝗘𝗟𝗜𝗦𝗧  
-┃ ⚡ ${_0xeb2cc9}𝗛𝗜𝗗𝗘𝗧𝗔𝗚  
-┃ ⚡ ${_0xeb2cc9}𝗧𝗔𝗚𝗔𝗟𝗟  
-┃ ⚡ ${_0xeb2cc9}𝗔𝗣𝗘𝗥𝗧𝗢 / 𝗖𝗛𝗜𝗨𝗦𝗢  
-┃ ⚡ ${_0xeb2cc9}𝗦𝗘𝗧𝗪𝗘𝗟𝗖𝗢𝗠𝗘  
-┃ ⚡ ${_0xeb2cc9}𝗦𝗘𝗧𝗕𝗬𝗘  
-┃ ⚡ ${_0xeb2cc9}𝗜𝗡𝗔𝗧𝗧𝗜𝗩𝗜  
-┃ ⚡ ${_0xeb2cc9}𝗟𝗜𝗦𝗧𝗔𝗡𝗨𝗠 + 𝗣𝗥𝗘𝗙𝗜𝗦𝗦𝗢  
-┃ ⚡ ${_0xeb2cc9}𝗣𝗨𝗟𝗜𝗭𝗜𝗔 + 𝗣𝗥𝗘𝗙𝗜𝗦𝗦𝗢  
-┃ ⚡ ${_0xeb2cc9}𝗥𝗜𝗠𝗢𝗭𝗜𝗢𝗡𝗘 𝗜𝗡𝗔𝗧𝗧𝗜𝗩𝗜  
-┃ ⚡ ${_0xeb2cc9}𝗦𝗜𝗠  
-┃ ⚡ ${_0xeb2cc9}𝗔𝗗𝗠𝗜𝗡𝗦  
-┃ ⚡ ${_0xeb2cc9}𝗙𝗥𝗘𝗘𝗭𝗘 @  
-┃ ⚡ ${_0xeb2cc9}𝗜𝗦𝗣𝗘𝗭𝗜𝗢𝗡𝗔 (𝗟𝗜𝗡𝗞)  
-┃ ⚡ ${_0xeb2cc9}𝗧𝗢𝗣 (10,50,100)  
-┃ ⚡ ${_0xeb2cc9}𝗧𝗢𝗣𝗦𝗘𝗫𝗬  
-┃ ⚡ ${_0xeb2cc9}𝗣𝗜𝗖 @  
-┃ ⚡ ${_0xeb2cc9}𝗣𝗜𝗖𝗚𝗥𝗨𝗣𝗣𝗢  
-┃ ⚡ ${_0xeb2cc9}𝗡𝗢𝗠𝗘 <𝗧𝗘𝗦𝗧𝗢>  
-┃ ⚡ ${_0xeb2cc9}𝗕𝗜𝗢 <𝗧𝗘𝗦𝗧𝗢>  
-┃ ⚡ ${_0xeb2cc9}𝗟𝗜𝗡𝗞𝗤𝗥  
-╰━━━━━━━━━━━━━━━━━━━╯  
+        𝗖𝗢𝗠𝗔𝗡𝗗𝗜 𝗔𝗗𝗠𝗜𝗡
+╭━━━━━━━━━━━━━━━━━━━╮
+┃ ⚡ ${usedPrefix}𝗣𝗥𝗢𝗠𝗨𝗢𝗩𝗜 / 𝗣
+┃ ⚡ ${usedPrefix}𝗥𝗘𝗧𝗥𝗢𝗖𝗘𝗗𝗜 / 𝗥
+┃ ⚡ ${usedPrefix}𝗪𝗔𝗥𝗡 / 𝗨𝗡𝗪𝗔𝗥𝗡 
+┃ ⚡ ${usedPrefix}𝗠𝗨𝗧𝗔 / 𝗦𝗠𝗨𝗧𝗔 
+┃ ⚡ ${usedPrefix}𝗠𝗨𝗧𝗘𝗟𝗜𝗦𝗧 
+┃ ⚡ ${usedPrefix}𝗛𝗜𝗗𝗘𝗧𝗔𝗚 
+┃ ⚡ ${usedPrefix}𝗧𝗔𝗚𝗔𝗟𝗟 
+┃ ⚡ ${usedPrefix}𝗔𝗣𝗘𝗥𝗧𝗢 / 𝗖𝗛𝗜𝗨𝗦𝗢 
+┃ ⚡ ${usedPrefix}𝗦𝗘𝗧𝗪𝗘𝗟𝗖𝗢𝗠𝗘 <𝘁𝗲𝘀𝘁𝗼>
+┃ ⚡ ${usedPrefix}𝗦𝗘𝗧𝗕𝗬𝗘 <𝘁𝗲𝘀𝘁𝗼>
+┃ ⚡ ${usedPrefix}𝗜𝗡𝗔𝗧𝗧𝗜𝗩𝗜 
+┃ ⚡ ${usedPrefix}𝗟𝗜𝗦𝗧𝗔𝗡𝗨𝗠 + 𝗣𝗥𝗘𝗙𝗜𝗦𝗦𝗢 
+┃ ⚡ ${usedPrefix}𝗣𝗨𝗟𝗜𝗭𝗜𝗔 + 𝗣𝗥𝗘𝗙𝗜𝗦𝗦𝗢 
+┃ ⚡ ${usedPrefix}𝗥𝗜𝗠𝗢𝗭𝗜𝗢𝗡𝗘 𝗜𝗡𝗔𝗧𝗧𝗜𝗩𝗜 
+┃ ⚡ ${usedPrefix}𝗦𝗜𝗠 
+┃ ⚡ ${usedPrefix}𝗔𝗗𝗠𝗜𝗡𝗦 
+┃ ⚡ ${usedPrefix}𝗙𝗥𝗘𝗘𝗭𝗘 @tag
+┃ ⚡ ${usedPrefix}𝗜𝗦𝗣𝗘𝗭𝗜𝗢𝗡𝗔 <𝗹𝗶𝗻𝗸>
+┃ ⚡ ${usedPrefix}𝗧𝗢𝗣 (10,50,100) 
+┃ ⚡ ${usedPrefix}𝗧𝗢𝗣𝗦𝗘𝗫𝗬 
+┃ ⚡ ${usedPrefix}𝗣𝗜𝗖 @tag
+┃ ⚡ ${usedPrefix}𝗣𝗜𝗖𝗚𝗥𝗨𝗣𝗣𝗢 
+┃ ⚡ ${usedPrefix}𝗡𝗢𝗠𝗘 <𝘁𝗲𝘀𝘁𝗼> 
+┃ ⚡ ${usedPrefix}𝗕𝗜𝗢 <𝘁𝗲𝘀𝘁𝗼> 
+┃ ⚡ ${usedPrefix}𝗟𝗜𝗡𝗞𝗤𝗥 
+╰━━━━━━━━━━━━━━━━━━━╯
 
 🔥 *⟆ 𝑶𝑺𝑺𝑬𝑺𝑺𝑰𝑶𝑵𝑩𝑶𝑻 ⟇ ✦* 🔥
 `.trim();
 
-  let _0xf5c7c0 = global.db.data.nomedelbot || " ⟆ 𝑶𝑺𝑺𝑬𝑺𝑺𝑰𝑶𝑵𝑩𝑶𝑻 ⟇ ✦ ";
+  let infoBot = global.db.data.nomedelbot || " ⟆ 𝑶𝑺𝑺𝑬𝑺𝑺𝑰𝑶𝑵𝑩𝑶𝑻 ⟇ ✦ ";
 
-  _0x4b9a49.sendMessage(_0x4955de.chat, {
-    'text': _0x259d4e,
-    'contextInfo': {
-      'mentionedJid': _0x4b9a49.parseMention(wm),
-      'forwardingScore': 0x1,
-      'isForwarded': true,
-      'forwardedNewsletterMessageInfo': {
-        'newsletterJid': "0029Vb2xynG9MF8tPyNWoE35@newsletter",
-        'serverMessageId': '',
-        'newsletterName': ' ⟆ 𝑶𝑺𝑺𝑬𝑺𝑺𝑰𝑶𝑵𝑩𝑶𝑻 ⟇ ✦ '
+  conn.sendMessage(m.chat, {
+    image: { url: pp },
+    caption: menuAdmin,
+    footer: infoBot,
+    templateButtons: [
+      { urlButton: { displayText: 'Sito Web Ufficiale', url: 'https://example.com' } }, // Aggiungi qui il tuo sito web se ne hai uno
+      { quickReplyButton: { displayText: 'Info Bot', id: `${usedPrefix}info` } },
+      { quickReplyButton: { displayText: 'Regole Gruppo', id: `${usedPrefix}regole` } },
+    ],
+    contextInfo: {
+      mentionedJid: conn.parseMention(menuAdmin),
+      forwardingScore: 1,
+      isForwarded: true,
+      forwardedNewsletterMessageInfo: {
+        newsletterJid: "120363387378860419@newsletter",
+        serverMessageId: '',
+        newsletterName: infoBot
       }
     }
-  }, {
-    'quoted': _0x414c2d
-  });
+  }, { quoted: m });
 };
 
-handler.help = ["menu"];
-handler.tags = ["menu"];
-handler.command = /^(menuadm|admin)$/i;
+handler.help = ['menuadmin', 'adminmenu'];
+handler.tags = ['admin'];
+handler.command = /^(menuadmin|adminmenu)$/i;
+handler.owner = true; // Solo per gli amministratori del bot
+
 export default handler;
 
-function clockString(_0x5dad08) {
-  let _0x233c78 = Math.floor(_0x5dad08 / 3600000);
-  let _0x2b10bc = Math.floor(_0x5dad08 / 60000) % 60;
-  let _0x2c7d73 = Math.floor(_0x5dad08 / 1000) % 60;
-  console.log({
-    'ms': _0x5dad08,
-    'h': _0x233c78,
-    'm': _0x2b10bc,
-    's': _0x2c7d73
-  });
-  return [_0x233c78, _0x2b10bc, _0x2c7d73].map(_0x4bd0ef => _0x4bd0ef.toString().padStart(2, 0)).join(':');
+function clockString(ms) {
+  let h = Math.floor(ms / 3600000);
+  let m = Math.floor(ms / 60000) % 60;
+  let s = Math.floor(ms / 1000) % 60;
+  console.log({ ms, h, m, s });
+  return [h, m, s].map(v => v.toString().padStart(2, 0)).join(':');
 }
