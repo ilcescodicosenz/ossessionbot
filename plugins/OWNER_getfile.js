@@ -5,57 +5,67 @@ import path from 'path'
 const _fs = fs.promises
 
 let handler = async (m, { text, usedPrefix, command, __dirname }) => {
-    if (!text) throw `
-> 𝐔𝐭𝐢𝐥𝐢𝐳𝐳𝐨 : ${usedPrefix + command} <𝐧𝐨𝐦𝐞 𝐟𝐢𝐥𝐞>
+    let nomeFile = text.split(' ')[0] // Prende solo la prima parte come nome del file
+    if (!nomeFile) throw `
+> Utilizzo : ${usedPrefix + command} <nome file>
 
-📌 Ejemplo:
+📌 Esempio:
         ${usedPrefix}getfile main.js
         ${usedPrefix}getplugin owner
 `.trim()
+
     if (/p(lugin)?/i.test(command)) {
-        const filename = text.replace(/plugin(s)\//i, '') + (/\.js$/i.test(text) ? '' : '.js')
-        const pathFile = path.join(__dirname, filename)
-        const file = await _fs.readFile(pathFile, 'utf8')
-        m.reply(file)
-        const error = syntaxError(file, filename, {
-            sourceType: 'module',
-            allowReturnOutsideFunction: true,
-            allowAwaitOutsideFunction: true
-        })
-        if (error) {
-            await m.reply(`
-⛔️ Errore in *${filename}*:
-
-${error}
-
-`.trim())
-        }
-
-    } else {
-        const isJavascript = /\.js/.test(text)
-        if (isJavascript) {
-            const file = await _fs.readFile(text, 'utf8')
-            m.reply(file)
-            const error = syntaxError(file, text, {
+        nomeFile = nomeFile.replace(/plugin(s)\//i, '') + (/\.js$/i.test(nomeFile) ? '' : '.js')
+        const pathFile = path.join(__dirname, nomeFile)
+        try {
+            const file = await _fs.readFile(pathFile, 'utf8')
+            m.reply(`File: ${nomeFile}\n\n${file}`)
+            const error = syntaxError(file, nomeFile, {
                 sourceType: 'module',
                 allowReturnOutsideFunction: true,
                 allowAwaitOutsideFunction: true
             })
             if (error) {
                 await m.reply(`
-⛔️ Errore in *${text}*:
+⛔️ Errore in *${nomeFile}*:
 
 ${error}
 
 `.trim())
             }
-        } else {
-            const file = await _fs.readFile(text, 'base64')
-            await m.reply(Buffer.from(file, 'base64'))
+        } catch (e) {
+            m.reply(`⚠️ File non trovato o impossibile da leggere.`)
+        }
+
+    } else {
+        const isJavascript = /\.js/.test(nomeFile)
+        try {
+            if (isJavascript) {
+                const file = await _fs.readFile(nomeFile, 'utf8')
+                m.reply(`File: ${nomeFile}\n\n${file}`)
+                const error = syntaxError(file, nomeFile, {
+                    sourceType: 'module',
+                    allowReturnOutsideFunction: true,
+                    allowAwaitOutsideFunction: true
+                })
+                if (error) {
+                    await m.reply(`
+⛔️ Errore in *${nomeFile}*:
+
+${error}
+
+`.trim())
+                }
+            } else {
+                const file = await _fs.readFile(nomeFile, 'base64')
+                await m.reply(Buffer.from(file, 'base64'))
+            }
+        } catch (e) {
+            m.reply(`⚠️ File non trovato o impossibile da leggere.`)
         }
     }
 }
-handler.help = ['plugin', 'file'].map(v => `get${v} <name file>`)
+handler.help = ['plugin', 'file'].map(v => `get${v} <nome file>`)
 handler.tags = ['owner']
 handler.command = /^g(et)?(p(lugin)?|f(ile)?)$/i
 
