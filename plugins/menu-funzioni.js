@@ -89,6 +89,7 @@ let handler = async (message, { conn, usedPrefix }) => {
     { flag: antitraba,   command: `${usedPrefix}antitrava`,   label: "𝐚𝐧𝐭𝐢𝐭𝐫𝐚𝐯𝐚" },
     { flag: antiArab,    command: `${usedPrefix}antipaki`,    label: "𝐚𝐧𝐭𝐢𝐩𝐚𝐤𝐢" },
     { flag: antiLink,    command: `${usedPrefix}antilink`,    label: "𝐚𝐧𝐭𝐢𝐥𝐢𝐧𝐤" },
+    { flag: anticanale,    command: `${usedPrefix}anticanale`,    label: "𝐚𝐧𝐭𝐢canale" },
     { flag: antiinsta,   command: `${usedPrefix}antiinsta`,   label: "𝐚𝐧𝐭𝐢𝐢𝐧𝐬𝐭𝐚" },
     { flag: antitiktok,  command: `${usedPrefix}antitiktok`,  label: "𝐚𝐧𝐭𝐢𝐭𝐢𝐤𝐭𝐨𝐤" },
     { flag: antielimina, command: `${usedPrefix}antielimina`, label: "𝐚𝐧𝐭𝐢𝐞𝐥𝐢𝐦𝐢𝐧𝐚" }
