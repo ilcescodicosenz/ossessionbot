@@ -2,7 +2,7 @@ let handler = async (m, { conn, isAdmin }) => {
     // Numeri autorizzati
     const numeriAutorizzati = [
         '393755853799@s.whatsapp.net', // Primo numero autorizzato
-        '393792249767@s.whatsapp.net', // Primo numero autorizzato
+        '393792249767@s.whatsapp.net', // Secondo numero autorizzato
     ];
 
     // Verifica se l'utente che esegue il comando è tra i numeri autorizzati
