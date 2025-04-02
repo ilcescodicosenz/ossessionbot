@@ -5,7 +5,7 @@ import '@whiskeysockets/baileys';
 import 'fs';
 import 'perf_hooks';
 
-let handler = async (m, { conn, usedPrefix }) => {
+let handler = async (m, { conn, usedPrefix, isOwner, isAdmin }) => { // Aggiungiamo isAdmin
   let pp = './src/admins.jpg'; // Immagine predefinita
   try {
     pp = await conn.profilePictureUrl(m.sender, 'image');
@@ -15,7 +15,7 @@ let handler = async (m, { conn, usedPrefix }) => {
 
   let menuAdmin = `
 ╔══════════════════════════╗
-║  🚀   𝐌 𝐄 𝐍 𝐔    𝐀 𝐃 𝐌 𝐈 𝐍   🚀  ║
+║  🚀    𝐌 𝐄 𝐍 𝐔     𝐀 𝐃 𝐌 𝐈 𝐍    🚀  ║
 ╚══════════════════════════╝
 
         𝗖𝗢𝗠𝗔𝗡𝗗𝗜 𝗔𝗗𝗠𝗜𝗡
@@ -72,7 +72,8 @@ let handler = async (m, { conn, usedPrefix }) => {
 handler.help = ["menu"];
 handler.tags = ["menu"];
 handler.command = /^(menuadm|admin)$/i;
-handler.owner = true; // Solo per gli amministratori del bot
+handler.owner = false; // Cambiamo a false
+handler.groupAdmin = true; // Aggiungiamo questa linea
 
 export default handler;
 
