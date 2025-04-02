@@ -64,8 +64,10 @@ const handler = async (message, { conn, usedPrefix }) => {
                 const response = messages[0];
                 if (response.key.remoteJid === message.chat && !response.key.fromMe) {
                     const text = response.message?.conversation?.toLowerCase() || response.message?.extendedTextMessage?.text?.toLowerCase();
-                    if (text === 'si' || text === 's' || text === 'no' || text === 'n') {
-                        resolve(text);
+                    if (text === 'si' || text === 's') {
+                        resolve('si');
+                    } else if (text === 'no' || text === 'n') {
+                        resolve('no');
                     } else {
                         conn.sendMessage(message.chat, { text: "Rispondi con 'si' o 'no'." }, { quoted: message });
                     }
@@ -73,7 +75,7 @@ const handler = async (message, { conn, usedPrefix }) => {
             });
         });
 
-        if (confirmation === 'si' || confirmation === 's') {
+        if (confirmation === 'si') {
             // Eliminazione manuale delle sessioni
             for (const file of sessionFiles) {
                 if (file !== "creds.json") {
@@ -87,9 +89,9 @@ const handler = async (message, { conn, usedPrefix }) => {
                 }
             }
 
-            const responseText = deletedCount === 0 && autoCleanedCount === 0
+            const responseText = deletedCount === 0
                 ? "❗ 𝐋𝐞 𝐬𝐞𝐬𝐬𝐢𝐨𝐧𝐢 𝐬𝐨𝐧𝐨 𝐯𝐮𝐨𝐭𝐞 ‼️"
-                : `🔥 𝐒𝐨𝐧𝐨 state eliminate ${deletedCount + autoCleanedCount} archivio/i delle sessioni!`;
+                : `🔥 𝐒𝐨𝐧𝐨 state eliminate ${deletedCount} archivio/i delle sessioni!`;
 
             await conn.sendMessage(message.chat, { text: responseText }, { quoted: message });
         } else {
