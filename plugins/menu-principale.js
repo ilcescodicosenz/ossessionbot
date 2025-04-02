@@ -37,13 +37,6 @@ let handler = async (message, { conn, usedPrefix }) => {
 ┃
 ┃ 🛠 *𝑪𝑶𝑴𝑨𝑵𝑫𝑰 𝑮𝑬𝑵𝑬𝑹𝑨𝑳𝑰* 🛠
 ┃ ━━━━━━━━━━━
-┃ ✨ ${usedPrefix}ciao -  Saluta il bot!
-┃ ❓ ${usedPrefix}info -  Scopri di più su di me!
-┃ 🖼️ ${usedPrefix}immagine <testo> - Crea un'immagine con quello che scrivi!
-┃ 🤣 ${usedPrefix}battuta -  Ti racconto una barzelletta!
-┃ 🎶 ${usedPrefix}musica <nome canzone> - Cerca e manda una canzone!
-┃
-┃ ⚙️ *ALTRI COMANDI* ⚙️
 ┃ ✦ ${usedPrefix}PROPRIETARIO
 ┃ ✦ ${usedPrefix}FUNZIONI
 ┃ ✦ ${usedPrefix}ADMIN
