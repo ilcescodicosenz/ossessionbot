@@ -6,7 +6,7 @@ const handler = async (m, { conn }) => {
     const mention = m.mentionedJid?.[0] || m.quoted?.sender || m.sender;
 
     if (!global.db.data.users[mention]) {
-      global.db.data.users[mention] = { 
+      global.db.data.users[mention] = {
         name: "Sconosciuto",
         messaggi: 0,
         warn: 0,
@@ -14,12 +14,13 @@ const handler = async (m, { conn }) => {
         muto: false,
         banned: false,
         command: 0,
-        age: "👶🏼🍼",
+        age: "Non specificata", // Età predefinita più neutra
         gender: "Non specificato",
         instagram: "",
         bio: "Nessuna bio impostata.",
         categoria: "Utente",
-        lastSeen: null
+        lastSeen: null,
+        registratoIl: Date.now() // Data di registrazione
       };
     }
     const userData = global.db.data.users[mention];
@@ -36,10 +37,27 @@ const handler = async (m, { conn }) => {
     const numero = PhoneNumber(mention.split("@")[0], "IT").getNumber("international");
     const dispositivo = await getDevice(m.key.id) || "Sconosciuto";
 
-    const categoria = userData.categoria || "Nessuna categoria";
+    let categoria = userData.categoria || "Utente";
+    let categoriaEmoji = "";
+    switch (categoria) {
+      case "Utente":
+        categoriaEmoji = "👤";
+        break;
+      case "Amico":
+        categoriaEmoji = "🌟";
+        break;
+      case "VIP":
+        categoriaEmoji = "👑";
+        break;
+      default:
+        categoriaEmoji = "🏷️";
+        break;
+    }
+
     const stato = userData.muto ? "🔇 Muto" : userData.banned ? "🚫 Bannato" : "✅ Attivo";
     const lastAccess = userData.lastSeen ? new Date(userData.lastSeen).toLocaleString('it-IT') : "Non disponibile";
     const instagramLink = userData.instagram ? `📸 *Instagram:* [@${userData.instagram}](https://instagram.com/${userData.instagram})\n` : '';
+    const registratoIl = userData.registratoIl ? new Date(userData.registratoIl).toLocaleString('it-IT') : "Non disponibile";
 
     let profilo;
     try {
@@ -48,16 +66,18 @@ const handler = async (m, { conn }) => {
       profilo = 'https://telegra.ph/file/560f1667a55ecf09650cd.png';
     }
 
-    const messaggio = `╭───〔 📌 *USER INFO* 📌 〕───╮\n` +
+    const messaggio = `╭───〔 📌 *INFO UTENTE* 📌 〕───╮\n` +
       `📛 *Nome:* ${nome}\n` +
       `🏷️ *Numero:* ${numero}\n` +
       `📱 *Dispositivo:* ${dispositivo}\n` +
-      `🏆 *Categoria:* ${categoria}\n` +
+      `🏆 *Categoria:* ${categoriaEmoji} ${categoria}\n` +
       `🛡️ *Stato:* ${stato}\n` +
       `📊 *Messaggi:* ${userData.messaggi}\n` +
+      `⌨️ *Comandi usati:* ${userData.command}\n` +
       `⚠️ *Warn:* ${userData.warn} / 5\n` +
       `📆 *Età:* ${userData.age}\n` +
       `🚻 *Genere:* ${userData.gender}\n` +
+      `🗓️ *Registrato il:* ${registratoIl}\n` +
       `📝 *Bio:* ${bio}\n` +
       `⏱️ *Ultimo accesso:* ${lastAccess}\n` +
       instagramLink +
