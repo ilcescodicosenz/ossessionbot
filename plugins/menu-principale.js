@@ -26,24 +26,36 @@ let handler = async (message, { conn, usedPrefix }) => {
 
   const botName = global.db.data.nomedelbot || "⟆ 𝑶𝑺𝑺𝑬𝑺𝑺𝑰𝑶𝑵𝑩𝑶𝑻 ⟇ ✦";
 
+  // Ottieni il tempo di attività del bot in un formato carino
+  let uptime = format(process.uptime() * 1000);
+
   // Formattazione speciale dei comandi
   const commandList = `
 ╭━━━〔 *⚡ 𝑴𝑬𝑵𝑼 𝑫𝑬𝑳 𝑩𝑶𝑻 ⚡* 〕━━━╮
-┃  
+┃
+┃ Ciao ${senderName}! 👋 Ecco cosa posso fare:
+┃
 ┃ 🛠 *𝑪𝑶𝑴𝑨𝑵𝑫𝑰 𝑮𝑬𝑵𝑬𝑹𝑨𝑳𝑰* 🛠
 ┃ ━━━━━━━━━━━
-┃ ✦ ${usedPrefix}𝑷𝑹𝑶𝑷𝑹𝑰𝑬𝑻𝑨𝑹𝑰𝑶
-┃ ✦ ${usedPrefix}𝑭𝑼𝑵𝒁𝑰𝑶𝑵𝑰
-┃ ✦ ${usedPrefix}𝑨𝑫𝑴𝑰𝑵
-┃ ✦ ${usedPrefix}𝑮𝑹𝑼𝑷𝑷𝑶
-┃ ✦ ${usedPrefix}𝑶𝑾𝑵𝑬𝑹
-┃ ✦ ${usedPrefix}𝑪𝑹𝑬𝑫𝑰𝑻𝑰
-┃ ✦ ${usedPrefix}𝑺𝑼𝑷𝑷𝑶𝑹𝑻𝑶
-┃ ✦ ${usedPrefix}𝑩𝑶𝑻
-┃  
+┃ ✨ ${usedPrefix}ciao -  Saluta il bot!
+┃ ❓ ${usedPrefix}info -  Scopri di più su di me!
+┃ 🖼️ ${usedPrefix}immagine <testo> - Crea un'immagine con quello che scrivi!
+┃ 🤣 ${usedPrefix}battuta -  Ti racconto una barzelletta!
+┃ 🎶 ${usedPrefix}musica <nome canzone> - Cerca e manda una canzone!
+┃
+┃ ⚙️ *ALTRI COMANDI* ⚙️
+┃ ✦ ${usedPrefix}PROPRIETARIO
+┃ ✦ ${usedPrefix}FUNZIONI
+┃ ✦ ${usedPrefix}ADMIN
+┃ ✦ ${usedPrefix}GRUPPO
+┃ ✦ ${usedPrefix}OWNER
+┃ ✦ ${usedPrefix}CREDITI
+┃ ✦ ${usedPrefix}SUPPORTO
+┃ ✦ ${usedPrefix}BOT
+┃
 ╰━━━━━━━━━━━━━━━━━━╯
-🚀 𝑩𝒐𝒕: ${botName}
-🌟 *𝑽𝑬𝑹𝑺𝑰𝑶𝑵𝑬:* ${vs}
+🚀 *Sono attivo da:* ${uptime}
+🌟 *Versione:* ${vs}
 `.trim();
 
   // Invio del menu con immagine e stile migliorato
@@ -54,13 +66,13 @@ let handler = async (message, { conn, usedPrefix }) => {
       forwardingScore: 1,
       isForwarded: true,
       forwardedNewsletterMessageInfo: {
-        newsletterJid: '0029Vb2xynG9MF8tPyNWoE35@newsletter',
+        newsletterJid: '120363387378860419@newsletter',
         serverMessageId: '',
         newsletterName: botName
       },
       externalAdReply: {
         title: senderName,
-        body: `⚙️ 𝑽𝒆𝒓𝒔𝒊𝒐𝒏𝒆 𝑩𝒐𝒕: ${vs}`,
+        body: `⚙️ Versione Bot: ${vs}`,
         mediaType: 1,
         renderLargerThumbnail: false,
         previewType: "PHOTO",
@@ -85,4 +97,15 @@ function clockString(milliseconds) {
   console.log({ ms: milliseconds, h: hours, m: minutes, s: seconds });
 
   return [hours, minutes, seconds].map(timeUnit => timeUnit.toString().padStart(2, '0')).join(':');
+}
+
+// Funzione di supporto per formattare il tempo di attività (potrebbe essere necessario installare 'human-readable' se non l'hai già fatto)
+function format(seconds) {
+  let days = Math.floor(seconds / (24 * 60 * 60));
+  seconds %= (24 * 60 * 60);
+  let hours = Math.floor(seconds / (60 * 60));
+  seconds %= (60 * 60);
+  let minutes = Math.floor(seconds / 60);
+  seconds %= 60;
+  return `${days}g ${hours}h ${minutes}m ${seconds}s`;
 }
