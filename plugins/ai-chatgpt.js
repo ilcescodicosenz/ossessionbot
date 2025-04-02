@@ -15,6 +15,11 @@ var handler = async (m, { text, usedPrefix, command }) => {
         var res = await apii.json();
 
         if (res && res.result) {
+            // Gestione della cronologia (esempio semplice, potresti usare un database)
+            if (!m.chat in conn.chatHistory) conn.chatHistory[m.chat] = [];
+            conn.chatHistory[m.chat].push({ question: text, answer: res.result });
+            if (conn.chatHistory[m.chat].length > 5) conn.chatHistory[m.chat].shift(); // Mantieni solo le ultime 5 interazioni
+
             await m.reply(res.result);
         } else {
             await m.reply("Non ho ricevuto una risposta valida dall'API. Riprova più tardi.");
@@ -33,5 +38,8 @@ handler.command = ['bot', 'ia'];
 handler.help = ['bot <testo>', 'ia <testo>'];
 handler.tags = ['tools'];
 handler.premium = false;
+
+// Aggiungiamo un oggetto per la cronologia delle chat (in memoria, si resetta al riavvio del bot)
+conn.chatHistory = {};
 
 export default handler;
