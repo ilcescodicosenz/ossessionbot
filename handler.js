@@ -406,7 +406,7 @@ export async function handler(chatUpdate) {
                             console.error(e)
                         }
                         if (m.money) 
-                         m.reply(+m.money + ' ⟆ 𝑶𝑺𝑺𝑬𝑺𝑺𝑰𝑶𝑵𝘾𝙊𝙄𝙉𝙎 🐱 𝙐𝙎𝘼𝘿𝙊(𝙎)') 
+                         m.reply(+m.money + ' 𝙂𝘼𝙏𝘼𝘾𝙊𝙄𝙉𝙎 🐱 𝙐𝙎𝘼𝘿𝙊(𝙎)') 
                          break                    }
                     if (m.limit)
                         m.reply(+m.limit + ' diamante usato')
