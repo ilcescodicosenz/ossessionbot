@@ -54,49 +54,24 @@ const handler = async (message, { conn, usedPrefix }) => {
             await conn.sendMessage(message.chat, { text: `🧹 Sono state eliminate automaticamente ${autoCleanedCount} sessioni vecchie.` }, { quoted: message });
         }
 
-        // Protezione da eliminazione accidentale
-        await conn.sendMessage(message.chat, {
-            text: "⚠️ 𝐒𝐞𝐢 𝐬𝐢𝐜𝐮𝐫𝐨 𝐝𝐢 𝐯𝐨𝐥𝐞𝐫 𝐞𝐥𝐢𝐦𝐢𝐧𝐚𝐫𝐞 𝐭𝐮𝐭𝐭𝐞 𝐥𝐞 𝐬𝐞𝐬𝐬𝐢𝐨𝐧𝐢 𝐦𝐚𝐧𝐮𝐚𝐥𝐦𝐞𝐧𝐭𝐞?\n𝐑𝐢𝐬𝐩𝐨𝐧𝐝𝐢 𝐜𝐨𝐧 '𝐬𝐢' 𝐩𝐞𝐫 𝐜𝐨𝐧𝐟𝐞𝐫𝐦𝐚𝐫𝐞 𝐨 𝐜𝐨𝐧 '𝐧𝐨' 𝐩𝐞𝐫 𝐚𝐧𝐧𝐮𝐥𝐥𝐚𝐫𝐞."
-        }, { quoted: message });
-
-        const confirmation = await new Promise((resolve) => {
-            conn.ev.on('messages.upsert', async ({ messages }) => {
-                const response = messages[0];
-                if (response.key.remoteJid === message.chat && !response.key.fromMe) {
-                    const text = response.message?.conversation?.toLowerCase() || response.message?.extendedTextMessage?.text?.toLowerCase();
-                    if (text === 'si' || text === 's') {
-                        resolve('si');
-                    } else if (text === 'no' || text === 'n') {
-                        resolve('no');
-                    } else {
-                        conn.sendMessage(message.chat, { text: "Rispondi con 'si' o 'no'." }, { quoted: message });
-                    }
-                }
-            });
-        });
-
-        if (confirmation === 'si') {
-            // Eliminazione manuale delle sessioni
-            for (const file of sessionFiles) {
-                if (file !== "creds.json") {
-                    try {
-                        await fsPromises.unlink(path.join(sessionFolder, file));
-                        deletedCount++;
-                    } catch (err) {
-                        console.error(`❌ Errore durante l'eliminazione di ${file}:`, err);
-                        await conn.sendMessage(message.chat, { text: `❌ Errore durante l'eliminazione di ${file}` }, { quoted: message });
-                    }
+        // Eliminazione manuale delle sessioni
+        for (const file of sessionFiles) {
+            if (file !== "creds.json") {
+                try {
+                    await fsPromises.unlink(path.join(sessionFolder, file));
+                    deletedCount++;
+                } catch (err) {
+                    console.error(`❌ Errore durante l'eliminazione di ${file}:`, err);
+                    await conn.sendMessage(message.chat, { text: `❌ Errore durante l'eliminazione di ${file}` }, { quoted: message });
                 }
             }
-
-            const responseText = deletedCount === 0
-                ? "❗ 𝐋𝐞 𝐬𝐞𝐬𝐬𝐢𝐨𝐧𝐢 𝐬𝐨𝐧𝐨 𝐯𝐮𝐨𝐭𝐞 ‼️"
-                : `🔥 𝐒𝐨𝐧𝐨 state eliminate ${deletedCount} archivio/i delle sessioni!`;
-
-            await conn.sendMessage(message.chat, { text: responseText }, { quoted: message });
-        } else {
-            await conn.sendMessage(message.chat, { text: "🚫 Eliminazione delle sessioni annullata." }, { quoted: message });
         }
+
+        const responseText = deletedCount === 0 && autoCleanedCount === 0
+            ? "❗ 𝐋𝐞 𝐬𝐞𝐬𝐬𝐢𝐨𝐧𝐢 𝐬𝐨𝐧𝐨 𝐯𝐮𝐨𝐭𝐞 ‼️"
+            : `🔥 𝐒𝐨𝐧𝐨 state eliminate ${deletedCount + autoCleanedCount} archivio/i delle sessioni!`;
+
+        await conn.sendMessage(message.chat, { text: responseText }, { quoted: message });
 
     } catch (error) {
         console.error('⚠️ Errore durante l\'operazione sulle sessioni:', error);
