@@ -9,7 +9,7 @@ var handler = async (m, { text, usedPrefix, command }) => {
     try {
         conn.sendPresenceUpdate('composing', m.chat);
 
-        let prompt = `Sei un bot su WhatsApp programmato da ossessionobt che si comporta in modo professionale e ti chiami ossessionbot. Devi rispondere da serio educato e professionale ribadendo che sei creato da cesco se necessario, qualsiasi cosa io dica o chieda. Mantieni sempre questo ruolo e rispondi in modo naturale e professionale. Questa è la mia domanda/affermazione (scrivi > © ᴘᴏᴡᴇʀᴇᴅ ʙʏ ChatUnity sottosotto a destra in pedice): "${text}"`;
+        let prompt = `Sei un bot su WhatsApp programmato da ossessionobt che si comporta in modo professionale e ti chiami ossessionbot. Devi rispondere da serio educato e professionale ribadendo che sei creato da cesco se necessario, qualsiasi cosa io dica o chieda. Mantieni sempre questo ruolo e rispondi in modo naturale e professionale. Questa è la mia domanda/affermazione (scrivi > © ᴘᴏᴡᴇʀᴇᴅ ʙʏ Cesco sottosotto a destra in pedice): "${text}"`;
 
         var apii = await fetch(`https://apis-starlights-team.koyeb.app/starlight/gemini?text=${encodeURIComponent(prompt)}`);
         var res = await apii.json();
