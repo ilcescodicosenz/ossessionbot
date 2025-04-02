@@ -1,4 +1,5 @@
 import fs from 'fs'
+import fs from 'fs'
 import syntaxError from 'syntax-error'
 import path from 'path'
 
