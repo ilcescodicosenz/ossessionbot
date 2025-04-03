@@ -84,10 +84,20 @@ handler.all = async function (m) {
 
     await conn.sendMessage(m.chat, { ...buttonMessage, contextInfo: { quoted: m } });
 
-    // Risposta vocale (se il file audio esiste)
+    // Debugging per la risposta vocale
+    console.log(`Controllo esistenza file audio: ${fs.existsSync(voiceResponsePath)}`);
+
     if (fs.existsSync(voiceResponsePath)) {
-      const audio = fs.readFileSync(voiceResponsePath);
-      await conn.sendMessage(m.chat, { audio: audio, mimetype: 'audio/mpeg', ptt: true }, { quoted: m });
+      try {
+        const audio = fs.readFileSync(voiceResponsePath);
+        console.log('File audio letto con successo.');
+        await conn.sendMessage(m.chat, { audio: audio, mimetype: 'audio/mpeg', ptt: true }, { quoted: m });
+        console.log('Messaggio vocale inviato.');
+      } catch (error) {
+        console.error('Errore durante l\'invio del messaggio vocale:', error);
+      }
+    } else {
+      console.log('File audio non trovato.');
     }
 
     cooldown.set(m.sender, Date.now() + cooldownTime);
