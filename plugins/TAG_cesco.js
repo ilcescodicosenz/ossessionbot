@@ -21,8 +21,8 @@ const randomMessages = [
   "Notifica ricevuta! Ecco i dettagli dell'owner:",
 ];
 
-// Percorso del file audio per la risposta vocale
-const voiceResponsePath = './icone/audio_risposta.mp3';
+// Percorso del file audio per la risposta vocale (commentato per ora)
+// const voiceResponsePath = './icone/audio_risposta.mp3';
 
 // ID del gruppo specifico in cui la risposta è attiva (lascia vuoto o commenta per tutti i gruppi)
 const allowedGroupId = ''; // Inserisci l'ID del gruppo se vuoi limitare la funzionalità
@@ -68,7 +68,7 @@ handler.all = async function (m) {
 
     const randomMessage = pickRandom(randomMessages);
 
-    // Opzioni interattive (Pulsanti)
+    // Opzioni interattive (Pulsanti) per la risposta principale
     let buttons = [
       { buttonId: 'instagram_owner', buttonText: { displayText: '📸 Instagram' }, type: 1 },
       { buttonId: 'whatsapp_group', buttonText: { displayText: '👥 Gruppo WhatsApp' }, type: 1 },
@@ -84,21 +84,27 @@ handler.all = async function (m) {
 
     await conn.sendMessage(m.chat, { ...buttonMessage, contextInfo: { quoted: m } });
 
-    // Debugging per la risposta vocale
-    console.log(`Controllo esistenza file audio: ${fs.existsSync(voiceResponsePath)}`);
+    // Risposta vocale (commentato temporaneamente)
+    // if (fs.existsSync(voiceResponsePath)) {
+    //   const audio = fs.readFileSync(voiceResponsePath);
+    //   await conn.sendMessage(m.chat, { audio: audio, mimetype: 'audio/mpeg', ptt: true }, { quoted: m });
+    // }
 
-    if (fs.existsSync(voiceResponsePath)) {
-      try {
-        const audio = fs.readFileSync(voiceResponsePath);
-        console.log('File audio letto con successo.');
-        await conn.sendMessage(m.chat, { audio: audio, mimetype: 'audio/mpeg', ptt: true }, { quoted: m });
-        console.log('Messaggio vocale inviato.');
-      } catch (error) {
-        console.error('Errore durante l\'invio del messaggio vocale:', error);
-      }
-    } else {
-      console.log('File audio non trovato.');
-    }
+    // Richiesta del motivo della menzione (con pulsanti)
+    let reasonButtons = [
+      { buttonId: 'reason_question', buttonText: { displayText: '❓ Domanda' }, type: 1 },
+      { buttonId: 'reason_suggestion', buttonText: { displayText: '💡 Suggerimento' }, type: 1 },
+      { buttonId: 'reason_report', buttonText: { displayText: '🚨 Segnalazione' }, type: 1 },
+      { buttonId: 'reason_other', buttonText: { displayText: 'Altro' }, type: 1 },
+    ];
+
+    let reasonMessage = {
+      text: 'Potresti dirmi brevemente il motivo per cui hai menzionato l\'owner?',
+      buttons: reasonButtons,
+      footer: 'Motivo della Menzone (Opzionale)'
+    };
+
+    await conn.sendMessage(m.chat, reasonMessage, { quoted: m });
 
     cooldown.set(m.sender, Date.now() + cooldownTime);
   }
@@ -114,6 +120,10 @@ handler.on('button-response', async (m) => {
     await conn.sendMessage(m.chat, { text: 'Ecco il link al gruppo WhatsApp: https://chat.whatsapp.com/FTHuRX16IVXDv0WQvDNxqw' }, { quoted: m });
   } else if (buttonId === 'supporto_command') {
     await conn.sendMessage(m.chat, { text: 'Per richiedere supporto, usa il comando: `.supporto`' }, { quoted: m });
+  } else if (buttonId.startsWith('reason_')) {
+    const reason = buttonId.split('_')[1];
+    await conn.sendMessage(m.chat, { text: `Hai indicato il motivo: *${reason}*. Grazie per l'informazione!` }, { quoted: m });
+    // Qui potresti aggiungere logica per gestire il motivo fornito dall'utente
   }
 });
 
