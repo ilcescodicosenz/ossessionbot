@@ -3,6 +3,7 @@ import { promisify } from 'util';
 import translate from '@vitalets/google-translate-api';
 import { buttonsMessage } from '@whiskeysockets/baileys'; // Importa buttonsMessage
 
+
 const exec = promisify(cp.exec).bind(cp);
 
 const handler = async (m) => {
