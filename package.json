@@ -79,6 +79,7 @@
         "google-libphonenumber": "latest",
         "google-play-scraper": "latest",
         "got": "^14.4.2",
+        "google-translate-api": "^2.3.0"
         "groq-sdk": "latest",
         "human-readable": "^0.2.1",
         "imagemaker.js": "^2.0.4",
@@ -95,7 +96,8 @@
         "moment-timezone": "^0.5.34",
         "mongoose": "^6.6.5",
         "nexo-aio-downloader": "^1.4.1",
-        "node-fetch": "^3.2.10",
+        "node-cache": "^5.1.2",
+        "node-fetch": "^3.2.0",
         "node-gtts": "^2.0.2",
         "node-webpmux": "^3.1.1",
         "openai": "^3.3.0",
