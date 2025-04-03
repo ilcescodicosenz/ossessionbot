@@ -79,7 +79,7 @@ handler.all = async function (m) {
       text: `👋 Ciao *${name}*! ${randomMessage}\n\n📩 Se hai bisogno di supporto o vuoi richiedere il bot, usa il comando \`.supporto\`.`,
       buttons: buttons,
       footer: 'INSTAGRAM OWNER',
-      location: { jpegThumbnail: image } // Potrebbe non essere necessario se usi buttonsMessage
+      // location: { jpegThumbnail: image } // Potrebbe non essere necessario se usi buttonsMessage
     };
 
     await conn.sendMessage(m.chat, { ...buttonMessage, contextInfo: { quoted: m } });
@@ -90,21 +90,21 @@ handler.all = async function (m) {
     //   await conn.sendMessage(m.chat, { audio: audio, mimetype: 'audio/mpeg', ptt: true }, { quoted: m });
     // }
 
-    // Richiesta del motivo della menzione (con pulsanti)
-    let reasonButtons = [
-      { buttonId: 'reason_question', buttonText: { displayText: '❓ Domanda' }, type: 1 },
-      { buttonId: 'reason_suggestion', buttonText: { displayText: '💡 Suggerimento' }, type: 1 },
-      { buttonId: 'reason_report', buttonText: { displayText: '🚨 Segnalazione' }, type: 1 },
-      { buttonId: 'reason_other', buttonText: { displayText: 'Altro' }, type: 1 },
-    ];
+    // Richiesta del motivo della menzione (COMMENTATO)
+    // let reasonButtons = [
+    //   { buttonId: 'reason_question', buttonText: { displayText: '❓ Domanda' }, type: 1 },
+    //   { buttonId: 'reason_suggestion', buttonText: { displayText: '💡 Suggerimento' }, type: 1 },
+    //   { buttonId: 'reason_report', buttonText: { displayText: '🚨 Segnalazione' }, type: 1 },
+    //   { buttonId: 'reason_other', buttonText: { displayText: 'Altro' }, type: 1 },
+    // ];
 
-    let reasonMessage = {
-      text: 'Potresti dirmi brevemente il motivo per cui hai menzionato l\'owner?',
-      buttons: reasonButtons,
-      footer: 'Motivo della Menzone (Opzionale)'
-    };
+    // let reasonMessage = {
+    //   text: 'Potresti dirmi brevemente il motivo per cui hai menzionato l\'owner?',
+    //   buttons: reasonButtons,
+    //   footer: 'Motivo della Menzone (Opzionale)'
+    // };
 
-    await conn.sendMessage(m.chat, reasonMessage, { quoted: m });
+    // await conn.sendMessage(m.chat, reasonMessage, { quoted: m });
 
     cooldown.set(m.sender, Date.now() + cooldownTime);
   }
@@ -120,11 +120,12 @@ handler.on('button-response', async (m) => {
     await conn.sendMessage(m.chat, { text: 'Ecco il link al gruppo WhatsApp: https://chat.whatsapp.com/FTHuRX16IVXDv0WQvDNxqw' }, { quoted: m });
   } else if (buttonId === 'supporto_command') {
     await conn.sendMessage(m.chat, { text: 'Per richiedere supporto, usa il comando: `.supporto`' }, { quoted: m });
-  } else if (buttonId.startsWith('reason_')) {
-    const reason = buttonId.split('_')[1];
-    await conn.sendMessage(m.chat, { text: `Hai indicato il motivo: *${reason}*. Grazie per l'informazione!` }, { quoted: m });
-    // Qui potresti aggiungere logica per gestire il motivo fornito dall'utente
   }
+  // else if (buttonId.startsWith('reason_')) { // COMMENTATO
+  //   const reason = buttonId.split('_')[1];
+  //   await conn.sendMessage(m.chat, { text: `Hai indicato il motivo: *${reason}*. Grazie per l'informazione!` }, { quoted: m });
+  //   // Qui potresti aggiungere logica per gestire il motivo fornito dall'utente
+  // }
 });
 
 export default handler
