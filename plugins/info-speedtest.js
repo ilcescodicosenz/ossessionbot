@@ -1,7 +1,7 @@
 import cp from 'child_process';
 import { promisify } from 'util';
 import translate from '@vitalets/google-translate-api';
-import { buttonsMessage } from '@adiwajshing/baileys'; // Importa buttonsMessage
+import { buttonsMessage } from '@whiskeysockets/baileys'; // Importa buttonsMessage
 
 const exec = promisify(cp.exec).bind(cp);
 
