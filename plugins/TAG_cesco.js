@@ -21,7 +21,7 @@ const randomMessages = [
   "Notifica ricevuta! Ecco i dettagli dell'owner:",
 ];
 
-// Percorso del file audio per la risposta vocale (assicurati che il file esista)
+// Percorso del file audio per la risposta vocale
 const voiceResponsePath = './icone/audio_risposta.mp3';
 
 // ID del gruppo specifico in cui la risposta è attiva (lascia vuoto o commenta per tutti i gruppi)
