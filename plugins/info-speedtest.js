@@ -1,8 +1,7 @@
 import cp from 'child_process';
 import { promisify } from 'util';
 import translate from '@vitalets/google-translate-api';
-import { buttonsMessage } from '@whiskeysockets/baileys'; // Importa buttonsMessage
-
+// import { buttonsMessage } from '@whiskeysockets/baileys'; // Commenta questa linea
 
 const exec = promisify(cp.exec).bind(cp);
 
@@ -38,18 +37,7 @@ const handler = async (m) => {
 
       const finalReplyMb = finalReplyNoDuplicate.replace(/Mbit\/s/g, " 𝐌𝐛𝐩𝐬");
 
-      // Aggiungi un pulsante per condividere i risultati
-      const buttons = [
-        { buttonId: 'share_speedtest', buttonText: { displayText: 'Condividi Risultati' }, type: 1 },
-      ];
-
-      const buttonMessage = {
-        text: finalReplyMb,
-        buttons: buttons,
-        footer: 'Speedtest by @fcesco_' // Aggiungi il tuo tag o nome
-      };
-
-      await conn.sendMessage(m.chat, buttonMessage, { quoted: m });
+      m.reply(finalReplyMb); // Invia solo il testo per ora
     }
     if (stderr.trim()) {
       const translated = await translate(stderr, { to: 'it' });
@@ -63,16 +51,16 @@ handler.tags = ['info'];
 handler.command = /^(speedtest?|test?|speed)$/i;
 handler.owner = true;
 
-handler.on('button-response', async (m) => {
-  const buttonId = m.buttonId;
-  if (buttonId === 'share_speedtest') {
-    const originalMessage = m.message?.buttonsResponseMessage?.displayText || m.message?.listResponseMessage?.title || '';
-    if (originalMessage) {
-      await conn.reply(m.chat, `Ecco i miei risultati del test di velocità:\n\n${originalMessage}`, m.quoted ? m.quoted : m);
-    } else {
-      await conn.reply(m.chat, 'Non sono riuscito a recuperare i risultati del test.', m);
-    }
-  }
-});
+// handler.on('button-response', async (m) => { // Commenta anche questa parte
+//   const buttonId = m.buttonId;
+//   if (buttonId === 'share_speedtest') {
+//     const originalMessage = m.message?.buttonsResponseMessage?.displayText || m.message?.listResponseMessage?.title || '';
+//     if (originalMessage) {
+//       await conn.reply(m.chat, `Ecco i miei risultati del test di velocità:\n\n${originalMessage}`, m.quoted ? m.quoted : m);
+//     } else {
+//       await conn.reply(m.chat, 'Non sono riuscito a recuperare i risultati del test.', m);
+//     }
+//   }
+// });
 
 export default handler;
