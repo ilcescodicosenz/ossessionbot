@@ -19,7 +19,8 @@ const handler = async (m, { conn }) => {
                 instagram: "",
                 bio: "Nessuna bio impostata.",
                 categoria: "Utente",
-                lastSeen: null
+                lastSeen: null,
+                regTime: Date.now(), // Aggiungi la data di registrazione
             };
         }
         const userData = global.db.data.users[mention];
@@ -40,6 +41,7 @@ const handler = async (m, { conn }) => {
         const stato = userData.muto ? "🔇 Muto" : userData.banned ? "🚫 Bannato" : "✅ Attivo";
         const lastAccess = userData.lastSeen ? new Date(userData.lastSeen).toLocaleString('it-IT') : "Non disponibile";
         const instagramLink = userData.instagram ? `📸 *Instagram:* [@${userData.instagram}](https://instagram.com/${userData.instagram})\n` : '';
+        const whatsappLink = `🔗 *WhatsApp:* wa.me/${mention.split('@')[0]}\n`; // Nuova funzionalità: Link WhatsApp
 
         let profilo;
         try {
@@ -59,6 +61,9 @@ const handler = async (m, { conn }) => {
         let badgeText = badges.length > 0 ? `\n🏆 *Distintivi:* ${badges.join(", ")}\n` : '';
         // --- FINE DELLE NUOVE COSE ---
 
+        // Nuova funzionalità: Data di Registrazione
+        const registrationDate = userData.regTime ? new Date(userData.regTime).toLocaleString('it-IT') : "Non disponibile";
+
         const messaggio = `╭───〔 📌 *USER INFO* 📌 〕───╮\n` +
             `📛 *Nome:* ${nome}\n` +
             `🏷️ *Numero:* ${numero}\n` +
@@ -66,12 +71,15 @@ const handler = async (m, { conn }) => {
             `🏆 *Categoria:* ${categoria}\n` +
             `🛡️ *Stato:* ${stato}\n` +
             `📊 *Messaggi:* ${messageEmoji} ${userData.messaggi}\n` + // Usiamo l'emoji qui
+            `⌨️ *Comandi Usati:* ${userData.command}\n` + // Nuova funzionalità: Comandi Usati
+            `📅 *Registrato il:* ${registrationDate}\n` + // Nuova funzionalità: Data di Registrazione
             `⚠️ *Warn:* ${userData.warn} / 3\n` +
             `📆 *Età:* ${userData.age}\n` +
             `🚻 *Genere:* ${userData.gender}\n` +
             `📝 *Bio:* ${bio}\n` +
             `⏱️ *Ultimo accesso:* ${lastAccess}\n` +
             instagramLink +
+            whatsappLink + // Nuova funzionalità: Link WhatsApp
             badgeText + // Aggiungiamo i distintivi al messaggio
             `╰───────────────────────╯`;
 
@@ -94,5 +102,5 @@ const handler = async (m, { conn }) => {
     }
 };
 
-handler.command = /^(userinfo|infoutente|profilo)$/i;
+handler.command = /^(userinfo|info|utente)$/i;
 export default handler;
