@@ -1,115 +1,195 @@
-import os from 'os';
-import { execSync } from 'child_process';
+import { getDevice } from '@whiskeysockets/baileys';
 
-const formatBytes = (bytes, decimals = 2) => {
-    if (bytes === 0) return '0 Bytes';
-    const k = 1024;
-    const dm = decimals < 0 ? 0 : decimals;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
-};
+import PhoneNumber from 'awesome-phonenumber';
 
-const getDiskSpace = () => {
-    try {
-        const stdout = execSync('df -h | grep -E "^/dev/root|^/dev/sda1"').toString();
-        const [ , size, used, available, usePercent ] = stdout.split(/\s+/);
-        return { size, used, available, usePercent };
-    } catch (error) {
-        console.error('❌ Errore nel recupero dello spazio su disco:', error);
-        return null;
-    }
-};
 
-const getCpuUsage = () => {
-    try {
-        const cpus = os.cpus();
-        let totalIdle = 0;
-        let totalTick = 0;
-        cpus.forEach(cpu => {
-            for (const type in cpu.times) {
-                totalTick += cpu.times[type];
-            }
-            totalIdle += cpu.times.idle;
-        });
-        return Math.round(((totalTick - totalIdle) / totalTick) * 100);
-    } catch (error) {
-        console.error('❌ Errore nel recupero dell\'utilizzo della CPU:', error);
-        return null;
-    }
-};
-
-const getRunningProcesses = () => {
-    try {
-        const stdout = execSync('ps aux --sort=-pcpu,--sort=-rss | head -n 6').toString();
-        const lines = stdout.trim().split('\n');
-        const header = lines[0].split(/\s+/).filter(Boolean);
-        const processes = lines.slice(1).map(line => {
-            const values = line.split(/\s+/).filter(Boolean);
-            return header.reduce((obj, key, index) => ({ ...obj, [key]: values[index] }), {});
-        });
-        return processes;
-    } catch (error) {
-        console.error('❌ Errore nel recupero dei processi in esecuzione:', error);
-        return null;
-    }
-};
-
-function clockString(ms) {
-    let h = isNaN(ms) ? '--' : Math.floor(ms / 3600000);
-    let m = isNaN(ms) ? '--' : Math.floor(ms / 60000) % 60;
-    let s = isNaN(ms) ? '--' : Math.floor(ms / 1000) % 60;
-    return [h, m, s].map(v => v.toString().padStart(2, 0)).join(':');
-}
 
 const handler = async (m, { conn }) => {
-    const totalMem = os.totalmem();
-    const freeMem = os.freemem();
-    const usedMem = totalMem - freeMem;
-    const _muptime = process.uptime() * 1000;
-    const muptime = clockString(_muptime);
-    const hostname = os.hostname();
-    const platform = os.platform();
-    const arch = os.arch();
-    const nodeUsage = process.memoryUsage();
-    const diskSpace = getDiskSpace();
-    const cpuUsage = getCpuUsage();
-    const runningProcesses = getRunningProcesses();
 
-    let message = `✅ *STATO DEL SISTEMA*
+    try {
 
-🚩 *Host ⪼* ${hostname}
-🏆 *Sistema Operativo ⪼* ${platform}
-💫 *Architettura ⪼* ${arch}
-🥷 *RAM Totale ⪼* ${formatBytes(totalMem)}
-🚀 *RAM Libera ⪼* ${formatBytes(freeMem)}
-⌛ *RAM Usata ⪼* ${formatBytes(usedMem)}
-🕒 *Uptime ⪼* ${muptime}
-${cpuUsage !== null ? `🧠 *Utilizzo CPU ⪼* ${cpuUsage}%` : '❌ Errore nel recupero dell\'utilizzo della CPU.'}
+        const mention = m.mentionedJid?.[0] || m.quoted?.sender || m.sender;
 
-🪴 *Memoria Node.js:* → RSS: ${formatBytes(nodeUsage.rss)}
-→ Heap Totale: ${formatBytes(nodeUsage.heapTotal)}
-→ Heap Usata: ${formatBytes(nodeUsage.heapUsed)}
-→ Externa: ${formatBytes(nodeUsage.external)}
-→ ArrayBuffer: ${formatBytes(nodeUsage.arrayBuffers)}
-${diskSpace ? `
 
-☁️ *Spazio su Disco:*
-→ Totale: ${diskSpace.size}
-→ Usato: ${diskSpace.used}
-→ Disponibile: ${diskSpace.available}
-→ Percentuale di Uso: ${diskSpace.usePercent}` : '❌ Errore nel recupero dello spazio su disco.'}
-${runningProcesses ? `
 
-<0xF0><0x9F><0xAA><0xB6> *Processi in esecuzione (Top 5 per CPU/RAM):*
-${runningProcesses.map(p => `→ ${p.USER} ${p.PID} ${p.CPU}% ${p.MEM}% ${p.COMMAND}`).join('\n')}` : '❌ Errore nel recupero dei processi in esecuzione.'}
-`;
+        if (!global.db.data.users[mention]) {
 
-    await conn.reply(m.chat, message.trim(), m);
+            global.db.data.users[mention] = {
+
+                name: "Sconosciuto",
+
+                messaggi: 0,
+
+                warn: 0,
+
+                warnlink: 0,
+
+                muto: false,
+
+                banned: false,
+
+                command: 0,
+
+                age: "👶🏼🍼",
+
+                gender: "Non specificato",
+
+                instagram: "",
+
+                bio: "Nessuna bio impostata.",
+
+                categoria: "Utente",
+
+                lastSeen: null
+
+            };
+
+        }
+
+        const userData = global.db.data.users[mention];
+
+
+
+        let bio = "";
+
+        try {
+
+            const status = await conn.fetchStatus(mention);
+
+            bio = status?.status || userData.bio || "Nessuna bio impostata.";
+
+        } catch {
+
+            bio = userData.bio || "Nessuna bio impostata.";
+
+        }
+
+
+
+        const nome = userData.name || "Sconosciuto";
+
+        const numero = PhoneNumber(mention.split("@")[0], "IT").getNumber("international");
+
+        const dispositivo = await getDevice(m.key.id) || "Sconosciuto";
+
+
+
+        const categoria = userData.categoria || "Nessuna categoria";
+
+        const stato = userData.muto ? "🔇 Muto" : userData.banned ? "🚫 Bannato" : "✅ Attivo";
+
+        const lastAccess = userData.lastSeen ? new Date(userData.lastSeen).toLocaleString('it-IT') : "Non disponibile";
+
+        const instagramLink = userData.instagram ? `📸 *Instagram:* [@${userData.instagram}](https://instagram.com/${userData.instagram})\n` : '';
+
+
+
+        let profilo;
+
+        try {
+
+            profilo = await conn.profilePictureUrl(mention, 'image');
+
+        } catch {
+
+            profilo = 'https://telegra.ph/file/560f1667a55ecf09650cd.png';
+
+        }
+
+
+
+        // --- NUOVE COSE QUI! ---
+
+        let badges = [];
+
+        if (userData.messaggi > 50) { // Diciamo che 50 messaggi fanno guadagnare il distintivo
+
+            badges.push("💬 Chiacchierone");
+
+        }
+
+
+
+        const messageEmoji = userData.messaggi > 100 ? "💬💬💬" : userData.messaggi > 50 ? "💬💬" : "💬"; // Esempio di emoji per i messaggi
+
+
+
+        let badgeText = badges.length > 0 ? `\n🏆 *Distintivi:* ${badges.join(", ")}\n` : '';
+
+        // --- FINE DELLE NUOVE COSE ---
+
+
+
+        const messaggio = `╭───〔 📌 *USER INFO* 📌 〕───╮\n` +
+
+            `📛 *Nome:* ${nome}\n` +
+
+            `🏷️ *Numero:* ${numero}\n` +
+
+            `📱 *Dispositivo:* ${dispositivo}\n` +
+
+            `🏆 *Categoria:* ${categoria}\n` +
+
+            `🛡️ *Stato:* ${stato}\n` +
+
+            `📊 *Messaggi:* ${messageEmoji} ${userData.messaggi}\n` + // Usiamo l'emoji qui
+
+            `⚠️ *Warn:* ${userData.warn} / 3\n` +
+
+            `📆 *Età:* ${userData.age}\n` +
+
+            `🚻 *Genere:* ${userData.gender}\n` +
+
+            `📝 *Bio:* ${bio}\n` +
+
+            `⏱️ *Ultimo accesso:* ${lastAccess}\n` +
+
+            instagramLink +
+
+            badgeText + // Aggiungiamo i distintivi al messaggio
+
+            `╰───────────────────────╯`;
+
+
+
+        await conn.sendMessage(m.chat, {
+
+            text: messaggio,
+
+            contextInfo: {
+
+                mentionedJid: [mention],
+
+                externalAdReply: {
+
+                    title: `${nome} | ${userData.age} | ${userData.gender} | ${categoria}`,
+
+                    body: bio,
+
+                    sourceUrl: "https://wa.me/" + mention.split("@")[0],
+
+                    thumbnail: await (await fetch(profilo)).buffer()
+
+                }
+
+            }
+
+        }, { quoted: m });
+
+
+
+    } catch (error) {
+
+        console.error("Errore in USERINFO:", error);
+
+        await conn.sendMessage(m.chat, { text: "❌ Errore nel recuperare le informazioni dell'utente." }, { quoted: m });
+
+    }
+
 };
 
-handler.help = ['sistema'];
-handler.tags = ['info'];
-handler.command = ['system', 'sistema'];
 
-export default handler;
+
+handler.command = /^(userinfo|infoutente|profilo)$/i;
+
+export default handler; 
