@@ -198,7 +198,7 @@ let handler = async (_0x20ff63, {
             'forwardingScore': 0x63,
             'isForwarded': !![],
             'forwardedNewsletterMessageInfo': {
-                'newsletterJid': _0x36e21b(0x1b6),
+                'newsletterJid': '120363387378860419@newsletter',
                 'serverMessageId': '',
                 'newsletterName': '' + _0x2f367b
             },
