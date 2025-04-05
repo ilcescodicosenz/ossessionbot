@@ -41,7 +41,7 @@ let handler = async (_0x4955de, { conn: _0x4b9a49, usedPrefix: _0xeb2cc9 }) => {
 
 ➤𝐆𝐢𝐭𝐡𝐮𝐛: *https://github.com/ilcescodicosenz/ossessionbot*
 
- ꙰ 𝟥𝟥𝟥 ꙰ 𝔹𝕆𝕋 ꙰ 
+⟆ 𝑶𝑺𝑺𝑬𝑺𝑺𝑰𝑶𝑵𝑩𝑶𝑻 ⟇ ✦
 ════════════════════
 `.trim();
   
@@ -55,7 +55,7 @@ let handler = async (_0x4955de, { conn: _0x4b9a49, usedPrefix: _0xeb2cc9 }) => {
       'forwardingScore': 0x1,
       'isForwarded': true,
       'forwardedNewsletterMessageInfo': {
-        'newsletterJid': "120363341274693350@newsletter",
+        'newsletterJid': "120363387378860419@newsletter",
         'serverMessageId': '',
         'newsletterName': ' ossessionbot '
       }
