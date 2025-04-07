@@ -41,7 +41,7 @@ let handler = async (m, { conn, usedPrefix, text }) => {
 
 handler.help = ['infobot', 'speed'];
 handler.tags = ['info', 'tools'];
-handler.command = /^(sega)$/i;
+handler.command = /^(pugnetta)$/i;
 
 export default handler;
 
