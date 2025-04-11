@@ -1,75 +1,88 @@
 import fs from 'fs'
-import fs from 'fs'
 import syntaxError from 'syntax-error'
 import path from 'path'
 
 const _fs = fs.promises
 
-let handler = async (m, { text, usedPrefix, command, __dirname }) => {
-    let nomeFile = text.split(' ')[0] // Prende solo la prima parte come nome del file
-    if (!nomeFile) throw `
-> Utilizzo : ${usedPrefix + command} <nome file>
+let handler = async (m, { text, usedPrefix, command, __dirname, conn }) => {
+  if (!text) throw `
+> Utilizzo: ${usedPrefix + command} <nome file/percorso> (file/script)
+Esempi:
+  ${usedPrefix}getplugin menu-gruppo file
+  ${usedPrefix}getplugin menu-gruppo script
+  ${usedPrefix}getfile config.js file
+  ${usedPrefix}getfile config.js script
+  `.trim()
 
-📌 Esempio:
-        ${usedPrefix}getfile main.js
-        ${usedPrefix}getplugin owner
-`.trim()
+  const args = text.split(' ')
+  if (args.length < 2) throw '❌ Devi specificare "file" o "script".'
+  const option = args[1].toLowerCase()
 
-    if (/p(lugin)?/i.test(command)) {
-        nomeFile = nomeFile.replace(/plugin(s)\//i, '') + (/\.js$/i.test(nomeFile) ? '' : '.js')
-        const pathFile = path.join(__dirname, nomeFile)
-        try {
-            const file = await _fs.readFile(pathFile, 'utf8')
-            m.reply(`File: ${nomeFile}\n\n${file}`)
-            const error = syntaxError(file, nomeFile, {
-                sourceType: 'module',
-                allowReturnOutsideFunction: true,
-                allowAwaitOutsideFunction: true
-            })
-            if (error) {
-                await m.reply(`
-⛔️ Errore in *${nomeFile}*:
+  let isPlugin = /p(lugin)?/i.test(command)
+  let fileArg = args[0]
+  let filename, pathFile
 
-${error}
+  if (isPlugin) {
+    filename = fileArg.replace(/plugin(s)?\//i, '') + (/\.js$/i.test(fileArg) ? '' : '.js')
+    pathFile = path.join(__dirname, filename)
+  } else {
+    filename = path.basename(fileArg)
+    pathFile = fileArg
+  }
 
-`.trim())
-            }
-        } catch (e) {
-            m.reply(`⚠️ File non trovato o impossibile da leggere.`)
-        }
+  const header = "//Plugin fatto da Cescof\n"
+  
+  try {
+    const isJS = /\.js$/i.test(filename)
+    let fileContent
 
+    if (isJS) {
+      fileContent = await _fs.readFile(pathFile, 'utf8')
     } else {
-        const isJavascript = /\.js/.test(nomeFile)
-        try {
-            if (isJavascript) {
-                const file = await _fs.readFile(nomeFile, 'utf8')
-                m.reply(`File: ${nomeFile}\n\n${file}`)
-                const error = syntaxError(file, nomeFile, {
-                    sourceType: 'module',
-                    allowReturnOutsideFunction: true,
-                    allowAwaitOutsideFunction: true
-                })
-                if (error) {
-                    await m.reply(`
-⛔️ Errore in *${nomeFile}*:
-
-${error}
-
-`.trim())
-                }
-            } else {
-                const file = await _fs.readFile(nomeFile, 'base64')
-                await m.reply(Buffer.from(file, 'base64'))
-            }
-        } catch (e) {
-            m.reply(`⚠️ File non trovato o impossibile da leggere.`)
-        }
+      fileContent = await _fs.readFile(pathFile)
     }
+    
+    if (option === 'file') {
+      if (isJS) {
+        const contentToSend = header + fileContent
+        await conn.sendMessage(m.chat, {
+          document: Buffer.from(contentToSend, 'utf8'),
+          mimetype: 'application/javascript',
+          fileName: filename,
+          caption: isPlugin ? `Ecco il plugin: ${filename}` : `Ecco il file: ${filename}`
+        }, { quoted: m })
+      } else {
+        await conn.sendMessage(m.chat, {
+          document: fileContent,
+          fileName: filename,
+          caption: `Ecco il file: ${filename}`
+        }, { quoted: m })
+      }
+    } else if (option === 'script') {
+      if (!isJS) throw '❌ L\'opzione script è disponibile solo per file JavaScript.'
+      await m.reply(`Codice di ${filename}:\n\n\`\`\`js\n${fileContent}\n\`\`\``)
+    } else {
+      throw '❌ Opzione non valida! Usa "file" o "script".'
+    }
+
+    if (isJS) {
+      const error = syntaxError(fileContent, filename, {
+        sourceType: 'module',
+        allowReturnOutsideFunction: true,
+        allowAwaitOutsideFunction: true
+      })
+      if (error) {
+        await m.reply(`⛔️ Errore in *${filename}*:\n\n${error}`.trim())
+      }
+    }
+  } catch (err) {
+    await m.reply(`❌ Errore: Il file *${filename}* non esiste o non può essere letto.\n${err}`)
+  }
 }
-handler.help = ['plugin', 'file'].map(v => `get${v} <nome file>`)
+
+handler.help = ['getplugin <nome file> (file/script)', 'getfile <percorso file> (file/script)']
 handler.tags = ['owner']
 handler.command = /^g(et)?(p(lugin)?|f(ile)?)$/i
-
-handler.owner = true
+handler.rowner = true
 
 export default handler
