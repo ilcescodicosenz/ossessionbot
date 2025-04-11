@@ -112,7 +112,7 @@ let handler = async (_0x20ff63, {
             'key': {
                 'participants': _0x1fa4f4['pXrVs'],
                 'fromMe': ![],
-                'id': _0x1fa4f4[_0x36e21b(0x203)]
+                'id': '120363387378860419@newsletter',
             },
             'message': {
                 'locationMessage': {
@@ -140,7 +140,7 @@ let handler = async (_0x20ff63, {
             'key': {
                 'participants': _0x1fa4f4[_0x36e21b(0x1ac)],
                 'fromMe': ![],
-                'id': _0x36e21b(0x1c6)
+                'id': '120363387378860419@newsletter',
             },
             'message': {
                 'locationMessage': {
@@ -325,7 +325,7 @@ function _0x5b83() {
         '\x0a>\x20✍️\x20𝐏𝐫𝐞𝐟𝐢𝐬𝐬𝐨\x20:\x20*',
         'Halo',
         'QJIco',
-        ' ꙰ 𝟥𝟥𝟥 ꙰ 𝔹𝕆𝕋 ꙰ \x20'
+        '⟆ 𝑶𝑺𝑺𝑬𝑺𝑺𝑰𝑶𝑵𝑩𝑶𝑻 ⟇ ✦ \x20'
     ];
     _0x5b83 = function () {
         return _0x29281d;
