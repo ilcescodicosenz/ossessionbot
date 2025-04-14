@@ -77,7 +77,7 @@ const handler = async (message, { conn, usedPrefix }) => {
       locationMessage: {
         name: botName,
         // Scarica la miniatura da URL e convertila in buffer
-        jpegThumbnail: await (await fetch("https://i.ibb.co/JRc3WH15/ossessionbot.png.jpg")).buffer(),
+        jpegThumbnail: await (await fetch("https://raw.githubusercontent.com/ilcescodicosenz/ossessionbot/main/ossessionbot.png")).buffer(),
         vcard: 
           "BEGIN:VCARD\n" +
           "VERSION:3.0\n" +
