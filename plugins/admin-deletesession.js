@@ -66,7 +66,7 @@ const handler = async (message, { conn, usedPrefix }) => {
   }
 
   // Componi e invia il messaggio finale con il "livello di lettura"
-  const botName = global.db.data.nomedelbot || "𝐂𝐡𝐚𝐭𝐔𝐧𝐢𝐭𝐲-Bot";
+  const botName = global.db.data.nomedelbot || "⟆ 𝑶𝑺𝑺𝑬𝑺𝑺𝑰𝑶𝑵𝑩𝑶𝑻 ⟇ ✦";
   const quotedMessage = {
     key: {
       participants: "0@s.whatsapp.net",
