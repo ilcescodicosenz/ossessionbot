@@ -13,7 +13,7 @@ const handler = async (message, { conn, usedPrefix }) => {
   }, { quoted: message });
 
   try {
-    const sessionFolder = "./cescoBotSession/";
+    const sessionFolder = "./OssessionBotSession/";
 
     if (!existsSync(sessionFolder)) {
       return await conn.sendMessage(message.chat, {
