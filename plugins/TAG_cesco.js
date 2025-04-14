@@ -1,4 +1,6 @@
 import fs from 'fs';
+import { buttonsMessage } from '@adiwajshing/baileys';
+import path from 'path';
 
 const toMathematicalAlphanumericSymbols = text => {
   const map = {
@@ -9,51 +11,139 @@ const toMathematicalAlphanumericSymbols = text => {
   return text.split('').map(char => map[char] || char).join('');
 };
 
+const groupCooldown = new Map(); // Cooldown globale per chat
+const cooldownTime = 10 * 1000;
+
+const randomMessages = [
+  "Ciao! Hai menzionato l'owner, ecco i suoi contatti:",
+  "Ehi! Qualcuno ha chiamato l'owner? Ecco le info:",
+  "Salve! Hai taggato l'admin, qui trovi i link utili:",
+  "Oh, hai bisogno dell'owner? Ecco qui:",
+  "Notifica ricevuta! Ecco i dettagli dell'owner:",
+];
+
+const allowedGroupId = ''; // Es: '1234567890-123456789@g.us'
+
 let handler = m => m;
 
 handler.all = async function (m) {
   if (!m.text) return;
 
-  // Verifica se è una delle menzioni previste
-  if (/^@393755853799$/i.test(m.text)) {
-    if (m.sender === global.conn.user.jid) return;
+  const isGroup = m.chat.endsWith('@g.us');
+  if (allowedGroupId && isGroup && m.chat !== allowedGroupId) return;
 
-    // Caricamento immagine
-    let image;
-    try {
-      image = fs.readFileSync('./icone/instagram.png');
-    } catch (err) {
-      console.error("Errore nel caricamento dell'immagine:", err);
+  const ownerRegex = /@393755853799/i;
+  if (!ownerRegex.test(m.text)) return;
+
+  if (m.sender === global.conn.user.jid) return;
+
+  // Cooldown globale per tutta la chat
+  if (groupCooldown.has(m.chat)) {
+    const timeLeft = (groupCooldown.get(m.chat) - Date.now()) / 1000;
+    if (timeLeft > 0) {
       return global.conn.sendMessage(
         m.chat,
-        { text: "❌ Errore nel caricamento dell'immagine." },
+        { text: `⏳ Attendi ancora *${timeLeft.toFixed(1)} secondi* prima di menzionare di nuovo l'owner.` },
         { quoted: m }
       );
     }
+  }
 
-    // Messaggio con vCard e immagine thumbnail
-    let quotedContact = {
-      key: { participants: "0@s.whatsapp.net", fromMe: false, id: "Halo" },
-      message: {
-        locationMessage: {
-          name: toMathematicalAlphanumericSymbols("INSTAGRAM OWNER"),
-          jpegThumbnail: image,
-          vcard: `BEGIN:VCARD\nVERSION:3.0\nN:Sy;Bot;;;\nFN:y\nitem1.TEL;waid=${m.sender.split('@')[0]}:${m.sender.split('@')[0]}\nitem1.X-ABLabel:Ponsel\nEND:VCARD`
-        }
-      },
-      participant: "0@s.whatsapp.net"
-    };
+  // Reazione emoji alla menzione
+  await global.conn.sendMessage(m.chat, { react: { text: '⚠️', key: m.key } });
 
-    // Risposta principale
-    await global.conn.sendMessage(
+  // Log nel file owner_mentions.txt
+  fs.appendFileSync('./logs/owner_mentions.txt', `[${new Date().toISOString()}] ${m.sender} - ${m.chat}\n`);
+
+  await global.conn.sendMessage(m.chat, { text: '⏳ Un momento...' }, { quoted: m });
+
+  const imagePath = path.resolve('./icone/instagram.png');
+  let image;
+  try {
+    image = fs.readFileSync(imagePath);
+  } catch (err) {
+    console.error("Errore nel caricamento dell'immagine:", err);
+    return global.conn.sendMessage(
       m.chat,
-      {
-        text: `🔗 *Instagram:* https://instagram.com/f.cesco_\n\n📩 *Se volete il bot, fate .supporto*`
-      },
-      { quoted: quotedContact }
+      { text: "❌ Errore nel caricamento dell'immagine dell'owner." },
+      { quoted: m }
     );
   }
-  return !0;
+
+  const whatsappGroupLink = "https://chat.whatsapp.com/FTHuRX16IVXDv0WQvDNxqw";
+  const randomMessage = pickRandom(randomMessages);
+  const name = global.conn.getName ? global.conn.getName(m.sender) : m.sender;
+
+  const vcard = [
+    "BEGIN:VCARD",
+    "VERSION:3.0",
+    "N:Sy;Bot;;;",
+    "FN:y",
+    `item1.TEL;waid=${m.sender.split('@')[0]}:${m.sender.split('@')[0]}`,
+    "item1.X-ABLabel:Ponsel",
+    "END:VCARD"
+  ].join("\n");
+
+  const quotedContact = {
+    key: { participants: "0@s.whatsapp.net", fromMe: false, id: "Halo" },
+    message: {
+      locationMessage: {
+        name: toMathematicalAlphanumericSymbols("INSTAGRAM OWNER"),
+        jpegThumbnail: image,
+        vcard: vcard,
+      },
+    },
+    participant: "0@s.whatsapp.net"
+  };
+
+  let buttons = [
+    { buttonId: 'instagram_owner', buttonText: { displayText: '📸 Instagram' }, type: 1 },
+    { buttonId: 'whatsapp_group', buttonText: { displayText: '👥 Gruppo WhatsApp' }, type: 1 },
+    { buttonId: 'supporto_command', buttonText: { displayText: '💬 Richiedi Supporto' }, type: 1 },
+  ];
+
+  let buttonMessage = {
+    text: `👋 Ciao *${name}*! ${randomMessage}\n\n📩 Se hai bisogno di supporto o vuoi richiedere il bot, usa il comando \`.supporto\`.`,
+    footer: 'INSTAGRAM OWNER',
+    buttons: buttons,
+    contextInfo: { quoted: quotedContact }
+  };
+
+  try {
+    await global.conn.sendMessage(m.chat, buttonMessage, { quoted: m });
+  } catch (e) {
+    console.error("Errore nell'invio del messaggio con pulsanti:", e);
+  }
+
+  // Imposta cooldown globale per la chat
+  groupCooldown.set(m.chat, Date.now() + cooldownTime);
 };
 
+handler.on('button-response', async (m) => {
+  const buttonId = m.buttonId;
+  if (buttonId === 'instagram_owner') {
+    await global.conn.sendMessage(
+      m.chat,
+      { text: 'Ecco il link a Instagram: https://instagram.com/f.cesco_' },
+      { quoted: m }
+    );
+  } else if (buttonId === 'whatsapp_group') {
+    await global.conn.sendMessage(
+      m.chat,
+      { text: 'Ecco il link al gruppo WhatsApp: https://chat.whatsapp.com/FTHuRX16IVXDv0WQvDNxqw' },
+      { quoted: m }
+    );
+  } else if (buttonId === 'supporto_command') {
+    await global.conn.sendMessage(
+      m.chat,
+      { text: 'Per richiedere supporto, usa il comando: `.supporto`' },
+      { quoted: m }
+    );
+  }
+});
+
 export default handler;
+
+function pickRandom(list) {
+  return list[Math.floor(Math.random() * list.length)];
+}
