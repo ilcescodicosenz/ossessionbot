@@ -31,7 +31,7 @@ handler.all = async function (m) {
       participant: "0@s.whatsapp.net"
     }
 
-    conn.reply(m.chat, `🔗 *Instagram:* https://instagram.com/f.cesco_\n\n📩 * *al momento cesco non c'è appena torna forse ti risponde, se vuoi il bot fai .supporto**`, prova, m)
+    conn.reply(m.chat, `🔗 *Instagram:* https://instagram.com/f.cesco_\n\n📩 *al momento cesco non c'è, appena torna forse ti risponde, intanto se vuoi il bot fai .supporto*`, prova, m)
   }
   return !0
 }
