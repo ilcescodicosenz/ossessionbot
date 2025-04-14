@@ -39,7 +39,7 @@ let handler = async (m, { conn, text, command, usedPrefix }) => {
     case 1: // Catturato
       let multa = Math.min(Math.floor(Math.random() * (users[senderId].limit - minRubare + 1)) + minRubare, maxRubare)
       users[senderId].limit -= multa
-      await conn.reply(m.chat, `🚩 Sei stato catturato dagli sbirri! Multa di *-${multa} 💶 Unitycoins* per ${senderName}.`, m)
+      await conn.reply(m.chat, `🚩 Sei stato catturato dagli sbirri! Multa di *-${multa} 💶 Ossessioncoins* per ${senderName}.`, m)
       break
 
     case 2: // Successo parziale
