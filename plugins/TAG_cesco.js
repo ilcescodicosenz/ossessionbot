@@ -48,7 +48,7 @@ handler.all = async function (m) {
     await global.conn.sendMessage(
       m.chat,
       {
-        text: `🔗 *Instagram:* https://instagram.com/f.cesco_\n\n📩 *al momento cesco non c'è appena torna forse ti risponde*
+        text: `🔗 *Instagram:* https://instagram.com/f.cesco_\n\n📩 *al momento cesco non c'è appena torna forse ti risponde, se vuoi il bot fai .supporto*
       },
       { quoted: quotedContact }
     );
