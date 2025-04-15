@@ -1,5 +1,30 @@
 let linkRegex = /chat\.whatsapp\.com\/([0-9A-Za-z]{20,24})/i;
 
+function extractTextFromMsg(msg) {
+  if (!msg.message) return "";
+
+  // Cerca testo normale
+  if (msg.message.conversation) return msg.message.conversation;
+
+  // Cerca testo da extendedTextMessage (forwarded, replied, etc.)
+  if (msg.message.extendedTextMessage?.text) return msg.message.extendedTextMessage.text;
+
+  // Cerca testo da image/caption
+  if (msg.message.imageMessage?.caption) return msg.message.imageMessage.caption;
+
+  // Cerca nei sondaggi
+  if (msg.message.pollCreation) {
+    let poll = msg.message.pollCreation;
+    let text = poll.name || "";
+    if (poll.options && Array.isArray(poll.options)) {
+      text += " " + poll.options.map(o => o.optionName).join(" ");
+    }
+    return text;
+  }
+
+  return "";
+}
+
 export async function before(msg, { isAdmin, isBotAdmin }) {
   if (msg.isBaileys && msg.fromMe) return true;
   if (!msg.isGroup) return false;
@@ -9,47 +34,19 @@ export async function before(msg, { isAdmin, isBotAdmin }) {
   let messageId = msg.key.id;
   let botSettings = global.db.data.settings[this.user.jid] || {};
 
-  let foundLink = null;
+  const contentText = extractTextFromMsg(msg);
+  const foundLink = linkRegex.exec(contentText);
 
-  // Analizza messaggi di tipo testo
-  if (msg.text && linkRegex.test(msg.text)) {
-    foundLink = msg.text.match(linkRegex);
-  }
-
-  // Analizza anche sondaggi
-  if (msg.message?.pollCreation) {
-    const poll = msg.message.pollCreation;
-    const title = poll.name || "";
-    const options = poll.options?.map(o => o.optionName) || [];
-
-    // Controlla il titolo del sondaggio
-    if (linkRegex.test(title)) {
-      foundLink = title.match(linkRegex);
-    }
-
-    // Controlla ogni opzione del sondaggio
-    for (let option of options) {
-      if (linkRegex.test(option)) {
-        foundLink = option.match(linkRegex);
-        break;
-      }
-    }
-  }
-
-  // Se l'utente è admin e ha postato un link (consentito)
   if (isAdmin && chatData.antiLink && foundLink) return;
 
-  // Se è stato trovato un link e non è admin
   if (chatData.antiLink && foundLink && !isAdmin) {
-    // Evita di bannare per il link del gruppo stesso
     if (isBotAdmin) {
       const groupLink = "https://chat.whatsapp.com/" + (await this.groupInviteCode(msg.chat));
-      if (msg.text?.includes(groupLink) || foundLink[0] === groupLink) return true;
+      if (contentText.includes(groupLink)) return true;
     }
 
     if (isBotAdmin && botSettings.restrict) {
-      const warning = "⚠ *ANTI-LINK*: Link non autorizzato rilevato nel messaggio. L'utente sarà rimosso.";
-      await conn.reply(msg.chat, warning, msg);
+      await conn.reply(msg.chat, "⚠ *ANTI-LINK:* Link non consentito rilevato. L'utente sarà rimosso.", msg);
 
       await conn.sendMessage(msg.chat, {
         delete: {
@@ -60,8 +57,7 @@ export async function before(msg, { isAdmin, isBotAdmin }) {
         }
       });
 
-      let remove = await conn.groupParticipantsUpdate(msg.chat, [msg.sender], 'remove');
-      if (remove[0]?.status === "404") return;
+      await conn.groupParticipantsUpdate(msg.chat, [msg.sender], 'remove');
     }
   }
 
