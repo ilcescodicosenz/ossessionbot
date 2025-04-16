@@ -48,7 +48,7 @@
         "@moonr/utils": "^0.6.2",
         "@octokit/rest": "^21.1.0",
         "@vioo/apis": "^1.4.26",
-        "@vitalets/google-translate-api": "^9.2.0",
+        "@vitalets/google-translate-api": "^8.0.0",
         "@whiskeysockets/baileys": "npm:@fizzxydev/baileys-pro@^8.5.12",
         "@xct007/frieren-scraper": "^0.0.2",
         "acrcloud": "^1.4.0",
