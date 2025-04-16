@@ -51,7 +51,7 @@
         "aptoide-scraper": "^1.0.1",
         "aria2": "^4.1.2",
         "awesome-phonenumber": "^3.4.0",
-        "baileys": "npm:@fizzxydev/baileys-pro@^8.5.12",
+        "baileys": "github:ds6/bails",
         "btch-downloader": "^2.3.2",
         "body-parser": "^1.20.2",
         "canvafy": "^7.2.0",
