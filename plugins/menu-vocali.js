@@ -24,7 +24,7 @@ let handler = async (message, { conn, usedPrefix }) => {
     profilePicBuffer = await (await fetch("https://qu.ax/cSqEs.jpg")).buffer();
   }
 
-  const botName = global.db.data.nomedelbot || " ꙰ 𝟥𝟥𝟥 ꙰ 𝔹𝕆𝕋 ꙰ ";
+  const botName = global.db.data.nomedelbot || " ⟆ 𝑶𝑺𝑺𝑬𝑺𝑺𝑰𝑶𝑵𝑩𝑶𝑻 ⟇ ✦";
   
   // Comandi con formattazione stilizzata
   const commandList = `
@@ -38,7 +38,7 @@ let handler = async (message, { conn, usedPrefix }) => {
 ➤ ${usedPrefix}𝐡𝐨𝐥𝐚
 
 ────────────────────────
- ꙰ 𝟥𝟥𝟥 ꙰ 𝔹𝕆𝕋 ꙰   -  𝐕𝐞𝐫𝐬𝐢𝐨𝐧𝐞: ${vs}
+⟆ 𝑶𝑺𝑺𝑬𝑺𝑺𝑰𝑶𝑵𝑩𝑶𝑻 ⟇ ✦   -  𝐕𝐞𝐫𝐬𝐢𝐨𝐧𝐞: ${vs}
 `.trim();
 
   // Versione Origin Bot
@@ -49,7 +49,7 @@ let handler = async (message, { conn, usedPrefix }) => {
       forwardingScore: 1,
       isForwarded: true,
       forwardedNewsletterMessageInfo: {
-        newsletterJid: '120363341274693350@newsletter',
+        newsletterJid: '120363387378860419@newsletter',
         serverMessageId: '',
         newsletterName: botName
       },
@@ -72,7 +72,6 @@ handler.command = /^(menuvocali)$/i;
 
 export default handler;
 
-// Formattazione del tempo (per Youns non esiste, lui è immortale)
 function clockString(milliseconds) {
   let hours = Math.floor(milliseconds / 3600000);
   let minutes = Math.floor(milliseconds / 60000) % 60;
