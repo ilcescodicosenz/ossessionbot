@@ -57,7 +57,6 @@
         "adm-zip": "^0.5.16",
         "api-dylux": "^1.8.3",
         "aptoide-scraper": "^1.0.1",
-        "archiver": "^7.0.1",
         "aria2": "^4.1.2",
         "awesome-phonenumber": "^3.4.0",
         "axios": "^1.7.9",
@@ -138,7 +137,8 @@
         "url-regex-safe": "^3.0.0", 
         "yargs": "^17.6.0",
         "yt-search": "^2.10.3",
-        "ytdl-core": "^4.11.5"
+        "ytdl-core": "^4.11.5",
+        "archiver": "^7.0.1"
     },
     "optionalDependencies": { 
         "eslint": "^8.45.0", 
