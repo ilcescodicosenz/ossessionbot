@@ -10,12 +10,12 @@
         "plugins": "plugins"
     },
     "scripts": {
-        "start": "node index.js",
-        "test": "node test.js",
-        "test2": "nodemon index.js",
-        "eslint": "eslint .",
-        "eslint-fix": "eslint --fix ."
-    },
+      "start": "node index.js",
+      "test": "node test.js",
+      "test2": "nodemon index.js",
+      "eslint": "eslint .",
+      "eslintfix": "eslint --fix ."
+},
     "keywords": [
         "termux-whatsapp-bot",
         "whatsapp-bot",
