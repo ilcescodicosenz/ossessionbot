@@ -79,7 +79,7 @@
         "fb-downloader-scrapper": "^1.0.1",
         "fluent-ffmpeg": "^2.1.2",
         "formdata-node": "^4.3.2",
-        "fs-extra": "^11.2.0",
+        "fs": "^0.0.1-security",
         "g-i-s": "^2.1.6",
         "glob": "^10.4.5",
         "google-it": "^1.6.3",
