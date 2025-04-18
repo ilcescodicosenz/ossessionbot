@@ -1,32 +1,52 @@
-let etaCelebs = {
-    'cristiano ronaldo': 39, // Anno 2025
-    'messi': 37,        // Anno 2025
-    'lebron james': 40,    // Anno 2025
-    'the rock': 53,      // Anno 2025
-    'tom cruise': 62,    // Anno 2025
-    'zendaya': 28,       // Anno 2025
-    'dua lipa': 29       // Anno 2025
-};
+let handler = async (m, { conn, usedPrefix, command, text }) => {
+    let who;
 
-async function handleCommand(sock, sender, text) {
-    const args = text.trim().toLowerCase().split(' ');
-    const command = args.shift();
+    // Determina chi chiedere l'età, se è un gruppo o una chat privata
+    if (m.isGroup) {
+        who = m.mentionedJid[0]
+            ? m.mentionedJid[0]
+            : m.quoted ? m.quoted.sender
+            : text ? text.replace(/[^0-9]/g, '') + '@s.whatsapp.net'
+            : false;
+    } else {
+        who = text ? text.replace(/[^0-9]/g, '') + '@s.whatsapp.net' : m.chat;
+    }
 
-    if (command === '!ping') {
-        await sock.sendMessage(sender, { text: 'Pong!' });
-    } else if (command === '!eta') {
-        if (args.length === 0) {
-            await sock.sendMessage(sender, { text: '❌ Devi specificare un nome! Esempio: *!eta Cristiano Ronaldo*' });
-            return;
-        }
+    // Controlla se la persona da chiedere l'età è valida
+    if (!who) return m.reply(`❌ Devi specificare un nome o menzionare qualcuno! Esempio: ${usedPrefix}${command} Cristiano Ronaldo oppure menziona qualcuno.`);
 
-        const nome = args.join(' ');
-        if (etaCelebs[nome]) {
-            await sock.sendMessage(sender, { text: `🎂 *${nome.toUpperCase()}* ha *${etaCelebs[nome]}* anni (nel 2025)` });
+    let etaCelebs = {
+        'cristiano ronaldo': 39, // Anno 2025
+        'messi': 37,        // Anno 2025
+        'lebron james': 40,    // Anno 2025
+        'the rock': 53,      // Anno 2025
+        'tom cruise': 62,    // Anno 2025
+        'zendaya': 28,       // Anno 2025
+        'dua lipa': 29       // Anno 2025
+    };
+
+    const nomeRicercato = text.toLowerCase();
+
+    if (etaCelebs[nomeRicercato]) {
+        const response = `🎂 *${nomeRicercato.toUpperCase()}* ha *${etaCelebs[nomeRicercato]}* anni (nel 2025)`;
+        await conn.sendMessage(m.chat, { text: response, mentions: [who] }, { quoted: m });
+    } else if (m.isGroup && who) {
+        const nomeMentionato = (await conn.getName(who)).toLowerCase();
+        if (etaCelebs[nomeMentionato]) {
+            const response = `🎂 *@${who.split('@')[0]}* (probabilmente) ha *${etaCelebs[nomeMentionato]}* anni (nel 2025)`;
+            await conn.sendMessage(m.chat, { text: response, mentions: [who] }, { quoted: m });
         } else {
-            await sock.sendMessage(sender, { text: `❌ Età non trovata! Prova con: *${Object.keys(etaCelebs).join(', ')}*` });
+            await m.reply(`❌ Età non trovata per *${nomeMentionato}*! Prova con nomi famosi come: ${Object.keys(etaCelebs).join(', ')}`);
         }
     }
-}
+     else {
+        await m.reply(`❌ Età non trovata per *${nomeRicercato}*! Prova con nomi famosi come: ${Object.keys(etaCelebs).join(', ')}`);
+    }
+};
 
-module.exports = { handleCommand };
+handler.command = ['eta'];
+handler.help = ['eta <nome>', 'eta @utente'];
+handler.tags = ['info'];
+handler.desc = 'Mostra l\'età (nel 2025) di una persona famosa o (circa) di un utente menzionato.';
+
+export default handler;
