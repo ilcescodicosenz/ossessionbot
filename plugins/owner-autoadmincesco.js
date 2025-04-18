@@ -22,7 +22,7 @@ let handler = async (m, { conn, isAdmin }) => {
     try {
         // Messaggio stile dark-hacker
         await conn.sendMessage(m.chat, {
-            text: 'In a world of shadows, I am the one who lurks behind the scenes...',
+            text: 'in un mondo di re io sono quello che fa le regole👑',
         });
 
         // Promozione a admin
