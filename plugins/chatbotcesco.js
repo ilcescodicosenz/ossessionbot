@@ -1,6 +1,3 @@
-Hai assolutamente ragione! Ancora una volta, mi scuso per la mia distrazione. Vedo il tuo numero nel commento sopra const Imagine.
-Quel commento non influisce sul funzionamento del codice, ma capisco che tu voglia rimuoverlo per maggiore chiarezza.
-Ecco il codice corretto, con il tuo numero rimosso dal commento:
 import fs from 'fs';
 
 const toMathematicalAlphanumericSymbols = text => {
@@ -23,8 +20,22 @@ handler.all = async function (m) {
         conn.reply(m.chat, `𝐂𝐡𝐞 𝐁𝐞𝐥𝐥𝐨 𝐒𝐚𝐩𝐞𝐫𝐞 𝐋𝐚 𝐋𝐞𝐭𝐭𝐞𝐫𝐚 𝐄`, m);
     }
 
-    if (/^@+3508364499$/i.test(m.text)) { //sem prefixo
-        conn.reply(m.chat, `*_[ ⚠ ️] 𝐏𝐄𝐑 𝐅𝐀𝐕𝐎𝐑𝐄 𝐍𝐎𝐍 𝐓𝐀𝐆𝐆𝐀𝐑Ｅ 𝐈𝐋 𝐌𝐈𝐎 𝐎𝐖𝐍𝐄𝐑 𝐒𝐄𝐍𝐙𝐀 𝐌𝐎𝐓𝐈𝐕𝐎 𝐕𝐀𝐋𝐈𝐃𝐎_*`, m);
+    if (/^@+393508364499$/i.test(m.text)) { //sem prefixo
+        const image = fs.readFileSync('./icone/instagram.png'); // Assicurati che il file esista nella cartella "icone"
+
+        let prova = {
+            key: { participants: "0@s.whatsapp.net", fromMe: false, id: "Halo" },
+            message: {
+                locationMessage: {
+                    name: `${toMathematicalAlphanumericSymbols("INSTAGRAM OWNER")}`,
+                    jpegThumbnail: image,
+                    vcard: `BEGIN:VCARD\nVERSION:3.0\nN:Sy;Bot;;;\nFN:y\nitem1.TEL;waid=3508364499:+393508364499\nitem1.X-ABLabel:Instagram\nEND:VCARD`
+                }
+            },
+            participant: "0@s.whatsapp.net"
+        };
+
+        conn.reply(m.chat, `*_[ ⚠ ️] 𝐏𝐄𝐑 𝐅𝐀𝐕𝐎𝐑𝐄 𝐍𝐎𝐍 𝐓𝐀𝐆𝐆𝐀𝐑𝐄 𝐈𝐋 𝐌𝐈𝐎 𝐎𝐖𝐍𝐄𝐑 𝐒𝐄𝐍𝐙𝐀 𝐌𝐎𝐓𝐈𝐕𝐎 𝐕𝐀𝐋𝐈𝐃𝐎_*\n\n🔗 *Instagram:* https://instagram.com/f.cesco_\n\n📩 *al momento cesco non c'è, appena torna forse ti risponde, intanto se vuoi il bot fai .supporto*`, prova, m);
     }
 
     if (/^botrules|regolebot|normebot$/i.test(m.text)) { //sem prefixo
@@ -34,7 +45,7 @@ handler.all = async function (m) {
 ┆───────•••───────
 ┆➽❌ 𝐏𝐫𝐨𝐢𝐛𝐢𝐭𝐨 𝐂𝐡𝐢𝐚𝐦𝐚𝐫𝐞 𝐈𝐥 𝐁𝐨𝐭
 ┆➽❌ 𝐏𝐫𝐨𝐢𝐛𝐢𝐭𝐨 𝐒𝐩𝐚𝐦𝐦𝐚𝐫𝐞 𝐀𝐥 𝐁𝐨𝐭
-┆
+┆ 
 ┆ 「 ossession bots 」
 ╰──────────────────`, m);
     }
@@ -51,31 +62,10 @@ handler.all = async function (m) {
 ┆𝐢𝐧 𝐦𝐨𝐝𝐨 𝐚𝐮𝐭𝐨𝐦𝐚𝐭𝐢𝐜𝐨, 𝐨 𝐬𝐞𝐧𝐳𝐚 𝐜𝐡𝐞 𝐮𝐧 𝐮𝐦𝐚𝐧𝐨
 ┆𝐧𝐨𝐧 𝐢𝐧𝐭𝐞𝐫𝐯𝐞𝐧𝐠𝐚 𝐧𝐞𝐥 𝐩𝐫𝐨𝐜𝐞𝐬𝐬𝐨
 ┆𝐏𝐞𝐫 𝐯𝐞𝐝𝐞𝐫𝐞 𝐢𝐥 𝐦𝐞𝐧𝐮 𝐝𝐞𝐥 𝐛𝐨𝐭 𝐝𝐢𝐠𝐢𝐭𝐚 ${usedPrefix}menu
-┆
+┆ 
 ┆ 「 ossession bots」
 ╰──────────────────`, m);
     }
-
-    if (/^@+393508364499/i.test(m.text)) {
-        if (m.sender === conn.user.jid) return;
-
-        const image = fs.readFileSync('./icone/instagram.png'); // Assicurati che il file esista nella cartella "icone"
-
-        let prova = {
-            key: { participants: "0@s.whatsapp.net", fromMe: false, id: "Halo" },
-            message: {
-                locationMessage: {
-                    name: `${toMathematicalAlphanumericSymbols("INSTAGRAM OWNER")}`,
-                    jpegThumbnail: image,
-                    vcard: `BEGIN:VCARD\nVERSION:3.0\nN:Sy;Bot;;;\nFN:y\nitem1.TEL;waid=3508364499:+393508364499\nitem1.X-ABLabel:Instagram\nEND:VCARD`
-                }
-            },
-            participant: "0@s.whatsapp.net"
-        };
-
-        conn.reply(m.chat, `🔗 *Instagram:* https://instagram.com/f.cesco_\n\n📩 *al momento cesco non c'è, appena torna forse ti risponde, intanto se vuoi il bot fai .supporto*`, prova, m);
-    }
-
     return !0;
 };
 
@@ -87,8 +77,3 @@ export default handler;
 function pickRandom(list) {
     return list[Math.floor(Math.random() * list.length)];
 }
-
-// const Imagine = 'https://telegra.ph/file/442837f8a8218743955c8.jpg' // +393755853799
-
-Ho spostato il commento con il tuo numero alla fine del codice, dopo l'esportazione dell'handler. In questo modo non sarà più presente sopra const Imagine.
-Mi scuso ancora per questa serie di errori. Spero davvero che ora il codice sia esattamente come lo desideravi!
