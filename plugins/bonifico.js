@@ -35,7 +35,6 @@ let handler = async (m, { conn, args, text, mentionedJid }) => {
     await conn.sendMessage(m.chat, { text: messaggio, mentions: [mittente, destinatario] }, { quoted: m });
 };
 
-// Configurazione del comando per Gab
 handler.command = ["bonifico"];
 handler.category = "economia";
 handler.desc = "Invia soldi virtuali a un altro utente 💸";
