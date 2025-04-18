@@ -84,7 +84,7 @@ let handler = async (m, { conn, usedPrefix, command, text }) => {
         return m.reply(`📏 Devi specificare un nome! Esempio: ${usedPrefix}${command} Usain Bolt`);
     }
 
-    const nomeRicercato = text.trim().toLowerCase();
+    const nomeRicercato = text.trim().toLowerCase(); // Converti l'input in minuscolo
 
     if (altezzeCelebs[nomeRicercato]) {
         const response = `📏 *${nomeRicercato.toUpperCase()}* è alto *${altezzeCelebs[nomeRicercato]}*`;
@@ -100,4 +100,3 @@ handler.tags = ['info'];
 handler.desc = 'Mostra l\'altezza di una persona famosa.';
 
 export default handler;
-    
