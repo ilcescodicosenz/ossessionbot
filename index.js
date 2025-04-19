@@ -1,32 +1,28 @@
+console.log('avviando...')
 import { join, dirname } from 'path'
-import { createRequire } from 'module';
+import { createRequire } from "module";
 import { fileURLToPath } from 'url'
 import { setupMaster, fork } from 'cluster'
 import { watchFile, unwatchFile } from 'fs'
 import cfonts from 'cfonts';
 import { createInterface } from 'readline'
 import yargs from 'yargs'
-import express from 'express'
-import chalk from 'chalk'
-import path from 'path'
-import os from 'os'
-import { promises as fsPromises } from 'fs'
+import { EventEmitter } from 'events';
 
-// https://stackoverflow.com/a/50052194
 const __dirname = dirname(fileURLToPath(import.meta.url))
-const require = createRequire(__dirname) // Bring in the ability to create the 'require' method
-const { name, author } = require(join(__dirname, './package.json')) // https://www.stefanjudis.com/snippets/how-to-import-json-files-in-es-modules-node-js/
+const require = createRequire(__dirname) 
+const { name, author } = require(join(__dirname, './package.json')) 
 const { say } = cfonts
 const rl = createInterface(process.stdin, process.stdout)
 
-const app = express()
-const port = process.env.PORT || 8080;
+// Aumenta il limite dei listener
+EventEmitter.defaultMaxListeners = 20;
 
-say('⟆ 𝑶𝑺𝑺𝑬𝑺𝑺𝑰𝑶𝑵 ⟇ ✦\n𝑩𝑶𝑻\n1.0', {
+say('OSSESSION\nBot\n1.0', {
     font: 'chrome',
     align: 'center',
     gradient: ['red', 'magenta']})
-    say(`developed by CESCO`, {
+    say(`developed by cesco`, {
     font: 'console',
     align: 'center',
     gradient: ['red', 'magenta']})
