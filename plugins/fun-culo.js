@@ -30,8 +30,8 @@ const inoltra = (nomeDelBot) => {
     return messageOptions;
 };
 
-handler.command = ["analizza", "misura"];
-handler.help = ["analizza", "misura"];
+handler.command = ["culo", "analizza", "misura"];
+handler.help = ["culo", "analizza", "misura"];
 handler.tags = ["fun"];
 handler.desc = "Analizza in modo casuale una 'grandezza'.";
 export default handler;
