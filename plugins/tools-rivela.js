@@ -1,15 +1,9 @@
 let { downloadContentFromMessage } = (await import('@whiskeysockets/baileys'));
 
-let handler = async (m, { conn, isOwner, isAdmin }) => {
+let handler = async (m, { conn }) => {
     try {
         if (!m.quoted) throw '⚠️ Rispondi a un messaggio con una foto o un video "Visualizza una sola volta".';
         if (m.quoted.mtype !== 'viewOnceMessageV2') throw '⚠️ Il messaggio non è "Visualizza una sola volta".';
-
-        // Verifica se l'utente è l'owner o un admin del bot
-        const canRead = isOwner || isAdmin;
-        if (!canRead) {
-            throw '⚠️ Solo l\'owner o gli amministratori del bot possono usare questo comando.';
-        }
 
         let msg = m.quoted.message;
         let type = Object.keys(msg)[0];
@@ -38,5 +32,6 @@ let handler = async (m, { conn, isOwner, isAdmin }) => {
 handler.help = ['readvo'];
 handler.tags = ['tools'];
 handler.command = ['readviewonce', 'nocap', 'rivela', 'readvo'];
+handler.group = true; // Assicura che funzioni solo nei gruppi
 
 export default handler;
