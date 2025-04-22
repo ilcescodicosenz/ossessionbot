@@ -2,27 +2,28 @@ let { downloadContentFromMessage } = (await import('@whiskeysockets/baileys'));
 
 let handler = async (m, { conn }) => {
     try {
-        if (!m.quoted) throw '⚠️ Rispondi a un messaggio con una foto o un video "Visualizza una sola volta".';
-        if (m.quoted.mtype !== 'viewOnceMessageV2') throw '⚠️ Il messaggio non è "Visualizza una sola volta".';
+        if (!m.quoted) throw '⚠️ Rispondi a un messaggio con una foto o video "Visualizza una sola volta".';
 
-        let msg = m.quoted.message;
-        let type = Object.keys(msg)[0];
+        let viewOnce = m.quoted.message?.viewOnceMessageV2?.message;
+        if (!viewOnce) throw '⚠️ Il messaggio non è "Visualizza una sola volta".';
 
-        console.log('Messaggio ricevuto:', msg);
+        let type = Object.keys(viewOnce)[0];
+        let media = viewOnce[type];
 
-        let mediaStream = await downloadContentFromMessage(msg[type], type === 'imageMessage' ? 'image' : 'video');
+        console.log('Tipo:', type);
+        console.log('Media:', media);
+
+        let mediaStream = await downloadContentFromMessage(media, type.includes('image') ? 'image' : 'video');
         let buffer = Buffer.from([]);
 
         for await (const chunk of mediaStream) {
             buffer = Buffer.concat([buffer, chunk]);
         }
 
-        console.log('Lunghezza buffer:', buffer.length);
-
         if (buffer.length === 0) throw '❌ Errore nel download del file.';
 
         let fileType = /video/.test(type) ? 'media.mp4' : 'media.jpg';
-        return conn.sendFile(m.chat, buffer, fileType, msg[type].caption || '', m);
+        return conn.sendFile(m.chat, buffer, fileType, media.caption || '', m);
     } catch (err) {
         console.error('Errore:', err);
         m.reply('⚠️ Errore durante il recupero del file. Assicurati che sia una foto/video "Visualizza una sola volta".');
@@ -32,6 +33,7 @@ let handler = async (m, { conn }) => {
 handler.help = ['readvo'];
 handler.tags = ['tools'];
 handler.command = ['readviewonce', 'nocap', 'rivela', 'readvo'];
-handler.group = true; // Assicura che funzioni solo nei gruppi
+handler.group = true;
 
 export default handler;
+
