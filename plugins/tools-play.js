@@ -1,4 +1,3 @@
-// Funzione per evitare esecuzioni multiple
 const singleExecution = function () {
     let executed = true;
     return function (context, func) {
@@ -79,18 +78,14 @@ const handleCommand = async (msg, { conn, text, usedPrefix, command }) => {
         const { title, thumbnail, timestamp, views, ago, url, author } = video;
         const formattedViews = new Intl.NumberFormat().format(views);
         const videoInfo = `
-╭━━〔*🎥 𝑰𝑵𝑭𝑶 𝑽𝑰𝑫𝑬𝑶*〕━━┈⊷
-┃◈╭─────────────·๏
-┃◈┃• *Titolo:* ${title}
-┃◈┃• *Durata:* ${timestamp}
-┃◈┃• *Visualizzazioni:* ${formattedViews}
-┃◈┃• *Canale:* ${author?.name || "Sconosciuto"}
-┃◈┃• *Pubblicato:* ${ago}
-┃◈┃• *Link:* ${url}
-┃◈└───────────┈⊷
-┃◈┃• *Sto inviando l'audio..*
-╰━━━━━━━━━━━━━┈·๏
-`.trim();
+✨ *Video selezionato:*
+
+📌 *__Titolo:__* ${title}
+⏱️ *Tempo di riproduzione:* ${duration}
+▶️ *Visto da:* ${formattedViews} persone
+📺 *A cura di:* ${author?.name || 'Sconosciuto'}
+🗓️ *Rilasciato il:* ${ago}
+🔗 *Link diretto:* ${url}
 
         const thumbData = (await conn.getFile(thumbnail))?.data;
 
