@@ -1,87 +1,140 @@
-import { exec } from "child_process";
-import fs from "fs";
-import path from "path";
+// Funzione per evitare esecuzioni multiple
+const singleExecution = function () {
+    let executed = true;
+    return function (context, func) {
+        const wrapper = executed ? function () {
+            if (func) {
+                const result = func.apply(context, arguments);
+                func = null;
+                return result;
+            }
+        } : function () {};
+        executed = false;
+        return wrapper;
+    };
+}();
 
-const PLAY_FOLDER = "/sdcard/Download/"; // 📂 Salva nella cartella Download
-if (!fs.existsSync(PLAY_FOLDER)) fs.mkdirSync(PLAY_FOLDER, { recursive: true });
+import fetch from "node-fetch";
+import ytSearch from "yt-search";
+import axios from "axios";
 
-let handler = async (m, { conn, args }) => {
-    if (!args[0]) return conn.sendMessage(m.chat, { text: "❌ *Devi inserire un titolo o un link YouTube!*\n📌 _Esempio:_ *.play Never Gonna Give You Up*" }, { quoted: m });
+// Formati audio e video supportati
+const audioFormats = ["mp3", "m4a", "webm", "acc", "flac", "opus", "ogg", "wav"];
+const videoResolutions = ["360", "480", "720", "1080",];
 
-    let query = args.join(" ");
-    let isUrl = query.includes("youtube.com") || query.includes("youtu.be");
-    let searchCommand = isUrl ? query : `ytsearch:"${query}"`;
-
-    // 📌 Ricava informazioni sulla canzone
-    exec(`yt-dlp --dump-json ${searchCommand}`, async (error, stdout) => {
-        if (error) {
-            console.error(error);
-            return conn.sendMessage(m.chat, { text: "❌ *Errore nel recupero delle informazioni!*" }, { quoted: m });
+// Funzione per scaricare video/audio
+const downloader = {
+    async download(url, format) {
+        if (!audioFormats.includes(format) && !videoResolutions.includes(format)) {
+            throw new Error("Formato non supportato.");
         }
-
-        let videoInfo;
         try {
-            videoInfo = JSON.parse(stdout.trim());
-        } catch (err) {
-            console.error(err);
-            return conn.sendMessage(m.chat, { text: "❌ *Errore nel parsing dei dati!*" }, { quoted: m });
+            const { data } = await axios.get(`https://p.oceansaver.in/ajax/download.php?format=${format}&url=${encodeURIComponent(url)}&api=dfcb6d76f2f6a9894gjkege8a4ab232222`, {
+                headers: { "User-Agent": "Mozilla/5.0" }
+            });
+            if (data?.success) {
+                const downloadUrl = await downloader.checkProgress(data.id);
+                return {
+                    id: data.id,
+                    image: data.info.image,
+                    title: data.title,
+                    downloadUrl: downloadUrl
+                };
+            } else {
+                throw new Error("Errore nel recupero dei dettagli del video.");
+            }
+        } catch (error) {
+            throw error;
         }
+    },
 
-        let { title, uploader, duration_string, thumbnail, upload_date } = videoInfo;
-        let formattedDate = `${upload_date.substring(6, 8)}/${upload_date.substring(4, 6)}/${upload_date.substring(0, 4)}`;
-
-        // 📌 Nome file per il download
-        let fileName = `${title.replace(/[^a-zA-Z0-9]/g, "_")}.mp3`; // Rimuove caratteri speciali
-        let filePath = path.join(PLAY_FOLDER, fileName);
-
-        // 📌 Mostra Embed con le informazioni
-        let embedMessage = {
-            text: `⚡ *DOWNLOAD IN CORSO* ⚡\n\n📌 *Brano:* ${title}\n🎤 *Autore:* ${uploader}\n⏳ *Durata:* ${duration_string}\n📅 *Pubblicato il:* ${formattedDate}\n\n🎵 _Attendere..._`,
-            contextInfo: {
-                externalAdReply: {
-                    title: "⚡ DOWNLOAD IN CORSO ⚡",
-                    body: `Download in corso di *${title}*...`,
-                    thumbnailUrl: thumbnail,
-                    sourceUrl: "https://wa.me/" + m.sender.split('@')[0],
-                    mediaType: 1,
-                    renderLargerThumbnail: false
+    async checkProgress(id) {
+        try {
+            while (true) {
+                const { data } = await axios.get(`https://p.oceansaver.in/ajax/progress.php?id=${id}`, {
+                    headers: { "User-Agent": "Mozilla/5.0" }
+                });
+                if (data?.success && data.progress === 1000) {
+                    return data.download_url;
                 }
+                await new Promise(resolve => setTimeout(resolve, 3000));
             }
-        };
-
-        await conn.sendMessage(m.chat, embedMessage, { quoted: m });
-
-        // 📌 Comando per scaricare l'MP3
-        let ytCommand = `yt-dlp -f bestaudio --extract-audio --audio-format mp3 --output "${filePath}" ${searchCommand}`;
-
-        // 🔄 Invia un messaggio di caricamento
-        await conn.sendMessage(m.chat, { react: { text: "🎶", key: m.key } });
-
-        // 📌 Esegui il download
-        exec(ytCommand, async (err) => {
-            if (err) {
-                console.error(err);
-                return conn.sendMessage(m.chat, { text: "❌ *Errore nel download del file!*" }, { quoted: m });
-            }
-
-            if (!fs.existsSync(filePath)) {
-                return conn.sendMessage(m.chat, { text: "❌ *Errore: File non trovato dopo il download!*" }, { quoted: m });
-            }
-
-            // 📌 Invia il file MP3
-            await conn.sendMessage(m.chat, { 
-                audio: { url: filePath }, 
-                mimetype: "audio/mpeg", 
-                fileName: `${title}.mp3`,
-                caption: `🎶 *${title}*\n✅ *Download completato!*\n\n📂 *File salvato in:* /sdcard/Download/`
-            }, { quoted: m });
-
-            // ✅ Il file NON viene eliminato, rimane salvato nella memoria del telefono
-        });
-    });
+        } catch (error) {
+            throw error;
+        }
+    }
 };
 
-handler.command = /^(play)$/i;
-handler.group = true;
+// Funzione principale per gestire i comandi di download
+const handleCommand = async (msg, { conn, text, usedPrefix, command }) => {
+    try {
+        if (!text.trim()) {
+            return conn.reply(msg.chat, "💣 Inserisci il nome della musica.", msg);
+        }
+        const searchResults = await ytSearch(text);
+        if (!searchResults.all.length) {
+            return msg.reply("Nessun risultato trovato.");
+        }
+        const video = searchResults.all[0];
+        const { title, thumbnail, timestamp, views, ago, url, author } = video;
+        const formattedViews = new Intl.NumberFormat().format(views);
+        const videoInfo = `
+╭━━〔*🎥 𝑰𝑵𝑭𝑶 𝑽𝑰𝑫𝑬𝑶*〕━━┈⊷
+┃◈╭─────────────·๏
+┃◈┃• *Titolo:* ${title}
+┃◈┃• *Durata:* ${timestamp}
+┃◈┃• *Visualizzazioni:* ${formattedViews}
+┃◈┃• *Canale:* ${author?.name || "Sconosciuto"}
+┃◈┃• *Pubblicato:* ${ago}
+┃◈┃• *Link:* ${url}
+┃◈└───────────┈⊷
+┃◈┃• *Sto inviando l'audio..*
+╰━━━━━━━━━━━━━┈·๏
+`.trim();
 
-export default handler;
+        const thumbData = (await conn.getFile(thumbnail))?.data;
+
+        // Invia l'immagine chatunitybot.jpeg con le informazioni del video
+        const imagePath = './menu/chatunitybot.jpeg';
+        await conn.sendMessage(msg.chat, { 
+            image: { url: imagePath }, 
+            caption: videoInfo, 
+            contextInfo: { 
+                externalAdReply: { 
+                    title: "YouTube Downloader", 
+                    body: "Scarica facilmente audio/video", 
+                    mediaType: 1, 
+                    previewType: 0, 
+                    mediaUrl: url, 
+                    sourceUrl: url, 
+                    thumbnail: thumbData 
+                } 
+            } 
+        });
+
+        command = command.replace(usedPrefix, ""); // Rimuove il prefisso
+        
+        if (command === "play") {
+            const downloadData = await downloader.download(url, "mp3");
+            await conn.sendMessage(msg.chat, { 
+                audio: { url: downloadData.downloadUrl }, 
+                mimetype: "audio/mpeg" 
+            }, { quoted: msg });
+        } else if (command === "play2" || command === "ytmp4") {
+            const downloadData = await downloader.download(url, "mp4");
+            await conn.sendMessage(msg.chat, { 
+                video: { url: downloadData.downloadUrl }, 
+                mimetype: "video/mp4", 
+                caption: "🎥 *Video scaricato con successo!*" 
+            }, { quoted: msg });
+        } else {
+            throw "Comando non riconosciuto.";
+        }
+    } catch (error) {
+        return msg.reply(`⚠ *Errore:* ${error.message}`);
+    }
+};
+
+// Registrazione dei comandi supportati
+handleCommand.command = handleCommand.help = ["play", "ytmp4", "play2"];
+export default handleCommand;
