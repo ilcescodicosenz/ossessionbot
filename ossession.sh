@@ -153,6 +153,7 @@ echo -e "\033[0;34mImpossibile installare Yarn. Verifica la tua connessione a In
 echo -e "\033[01;33mpkg install git -y\npkg install nodejs -y\npkg install ffmpeg -y\npkg install imagemagick -y\npkg install -y yarn\ngit clone https://github.com/ilcescodicosenz/ossessionbot\ncd ossessionbot\nyarn install\nnpm install\nnpm start\033[0m"
 exit 1
 else
+else
 echo -e "\033[01;32m\033[01mYarn è stato installato correttamente.\nYarn has been installed successfully.\n\033[0m" 
 fi
 fi
@@ -172,14 +173,21 @@ echo -e "\e[35m
 ░██╔╝░██╔╝░██╔╝  ██║██║╚████║░╚═══██╗░░░██║░░░██╔══██║██║░░░░░██║░░░░░
 ██╔╝░██╔╝░██╔╝░  ██║██║░╚███║██████╔╝░░░██║░░░██║░░██║███████╗███████╗
 ╚═╝░░╚═╝░░╚═╝░░  ╚═╝╚═╝░░╚══╝╚═════╝░░░░╚═╝░░░╚═╝░░╚═╝╚══════╝╚══════╝
-\n\e[0m"
+
+
+░█████╗░██╗░░██╗░█████╗░████████╗██╗░░░██╗███╗░░██╗██╗████████╗██╗░░░██╗░░░░░░██████╗░░█████╗░████████╗
+██╔══██╗██║░░██║██╔══██╗╚══██╔══╝██║░░░██║████╗░██║██║╚══██╔══╝╚██╗░██╔╝░░░░░░██╔══██╗██╔══██╗╚══██╔══╝
+██║░░╚═╝███████║███████║░░░██║░░░██║░░░██║██╔██╗██║██║░░░██║░░░░╚████╔╝░█████╗██████╦╝██║░░██║░░░██║░░░
+██║░░██╗██╔══██║██╔══██║░░░██║░░░██║░░░██║██║╚████║██║░░░██║░░░░░╚██╔╝░░╚════╝██╔══██╗██║░░██║░░░██║░░░
+╚█████╔╝██║░░██║██║░░██║░░░██║░░░╚██████╔╝██║░╚███║██║░░░██║░░░░░░██║░░░░░░░░░██████╦╝╚█████╔╝░░░██║░░░
+░╚════╝░╚═╝░░╚═╝╚═╝░░╚═╝░░░╚═╝░░░░╚═════╝░╚═╝░░╚══╝╚═╝░░░╚═╝░░░░░░╚═╝░░░░░░░░░╚═════╝░░╚════╝░░░░╚═╝░░░\n\e[0m"
 
 echo -e "\033[1;35m"
-git clone https://github.com/ilcescodicosenz/ossessionbot.git
+git clone https://github.com/chatunitycenter/chatunity-bot.git
 echo -e "\033[01;32m\033[01mLa clonazione è stata scaricata e installata correttamente.\nThe clone has been downloaded and installed successfully.\n\033[0m"
 
 echo -e "\033[01;32m\033[01mCambiando alla directory del repository!!\nChanging to the repository directory!!\n\033[0m" 
-cd ossessionbot
+cd chatunity-bot
 
 echo -e "\e[36m
 ██╗░░░██╗██████╗░██████╗░░█████╗░████████╗███████╗  ██╗░░░██╗░█████╗░██████╗░███╗░░██╗
@@ -253,7 +261,7 @@ menu() {
 }
 
 menu_aiuto() {
-    #printf "${v1}[${b}++${v1}]${v} ossessionbot${b}: "
+    #printf "${v1}[${b}++${v1}]${v} chatunity-botD${b}: "
 	read opzione
 	case $opzione in
             01|1)
