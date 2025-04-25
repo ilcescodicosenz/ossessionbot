@@ -86,7 +86,9 @@ const handleCommand = async (msg, { conn, text, usedPrefix, command }) => {
 📺 *A cura di:* ${author?.name || 'Sconosciuto'}
 🗓️ *Rilasciato il:* ${ago}
 🔗 *Link diretto:* ${url}
+• *Sto inviando l'audio..*
 
+`.trim();
         const thumbData = (await conn.getFile(thumbnail))?.data;
 
        
