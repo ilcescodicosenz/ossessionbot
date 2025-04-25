@@ -1,121 +1,87 @@
-const axios = require('axios');
-const fs = require('fs');
-const path = require('path');
-const { promisify } = require('util');
-const { pipeline } = require('stream');
-const streamPipeline = promisify(pipeline);
+import { exec } from "child_process";
+import fs from "fs";
+import path from "path";
 
-const handler = async (msg, { conn, text, usedPrefix }) => {
-  if (!text) {
-    return await conn.sendMessage(msg.key.remoteJid, {
-      text: `✳️ Usa el comando correctamente:\n\n📌 Ejemplo: *${usedPrefix}play2doc* La Factoría - Perdoname`
-    }, { quoted: msg });
-  }
+const PLAY_FOLDER = "/sdcard/Download/"; // 📂 Salva nella cartella Download
+if (!fs.existsSync(PLAY_FOLDER)) fs.mkdirSync(PLAY_FOLDER, { recursive: true });
 
-  await conn.sendMessage(msg.key.remoteJid, {
-    react: { text: '⏳', key: msg.key }
-  });
+let handler = async (m, { conn, args }) => {
+    if (!args[0]) return conn.sendMessage(m.chat, { text: "❌ *Devi inserire un titolo o un link YouTube!*\n📌 _Esempio:_ *.play Never Gonna Give You Up*" }, { quoted: m });
 
-  try {
-    const searchUrl = `https://api.neoxr.eu/api/video?q=${encodeURIComponent(text)}&apikey=russellxz`;
-    const searchRes = await axios.get(searchUrl);
-    const videoInfo = searchRes.data;
+    let query = args.join(" ");
+    let isUrl = query.includes("youtube.com") || query.includes("youtu.be");
+    let searchCommand = isUrl ? query : `ytsearch:"${query}"`;
 
-    if (!videoInfo || !videoInfo.data?.url) throw new Error('No se pudo encontrar el video');
-
-    const title = videoInfo.title || 'video';
-    const thumbnail = videoInfo.thumbnail;
-    const duration = videoInfo.fduration || '0:00';
-    const views = videoInfo.views || 'N/A';
-    const author = videoInfo.channel || 'Desconocido';
-    const videoLink = `https://www.youtube.com/watch?v=${videoInfo.id}`;
-
-    const captionPreview = `
-╔═════════════════╗
-║✦ 𝘼𝙕𝙐𝙍𝘼 𝗨𝗹𝘁𝗿𝗮 2.0 𝗕𝗢𝗧 ✦
-╚═════════════════╝
-
-📀 *Info del video:*  
-├ 🎼 *Título:* ${title}
-├ ⏱️ *Duración:* ${duration}
-├ 👁️ *Vistas:* ${views}
-├ 👤 *Autor:* ${author}
-└ 🔗 *Link:* ${videoLink}
-
-📥 *Opciones:*  
-┣ 🎵 _${usedPrefix}play1 ${text}_
-┣ 🎥 _${usedPrefix}play6 ${text}_
-┗ ⚠️ *¿No se reproduce?* Usa _${usedPrefix}ff_
-
-⏳ Procesando video...
-═════════════════════`;
-
-    await conn.sendMessage(msg.key.remoteJid, {
-      image: { url: thumbnail },
-      caption: captionPreview
-    }, { quoted: msg });
-
-    const qualities = ['720p', '480p', '360p'];
-    let videoData = null;
-
-    for (let quality of qualities) {
-      try {
-        const apiUrl = `https://api.neoxr.eu/api/youtube?url=${encodeURIComponent(videoLink)}&apikey=russellxz&type=video&quality=${quality}`;
-        const response = await axios.get(apiUrl);
-        if (response.data?.status && response.data?.data?.url) {
-          videoData = {
-            url: response.data.data.url,
-            title: response.data.title || title,
-            id: response.data.id || videoInfo.id
-          };
-          break;
+    // 📌 Ricava informazioni sulla canzone
+    exec(`yt-dlp --dump-json ${searchCommand}`, async (error, stdout) => {
+        if (error) {
+            console.error(error);
+            return conn.sendMessage(m.chat, { text: "❌ *Errore nel recupero delle informazioni!*" }, { quoted: m });
         }
-      } catch { continue; }
-    }
 
-    if (!videoData) throw new Error('No se pudo obtener el video');
+        let videoInfo;
+        try {
+            videoInfo = JSON.parse(stdout.trim());
+        } catch (err) {
+            console.error(err);
+            return conn.sendMessage(m.chat, { text: "❌ *Errore nel parsing dei dati!*" }, { quoted: m });
+        }
 
-    const tmpDir = path.join(__dirname, '../tmp');
-    if (!fs.existsSync(tmpDir)) fs.mkdirSync(tmpDir);
-    const filePath = path.join(tmpDir, `${Date.now()}_video.mp4`);
+        let { title, uploader, duration_string, thumbnail, upload_date } = videoInfo;
+        let formattedDate = `${upload_date.substring(6, 8)}/${upload_date.substring(4, 6)}/${upload_date.substring(0, 4)}`;
 
-    const resDownload = await axios.get(videoData.url, {
-      responseType: 'stream',
-      headers: { 'User-Agent': 'Mozilla/5.0' }
+        // 📌 Nome file per il download
+        let fileName = `${title.replace(/[^a-zA-Z0-9]/g, "_")}.mp3`; // Rimuove caratteri speciali
+        let filePath = path.join(PLAY_FOLDER, fileName);
+
+        // 📌 Mostra Embed con le informazioni
+        let embedMessage = {
+            text: `⚡ *DOWNLOAD IN CORSO* ⚡\n\n📌 *Brano:* ${title}\n🎤 *Autore:* ${uploader}\n⏳ *Durata:* ${duration_string}\n📅 *Pubblicato il:* ${formattedDate}\n\n🎵 _Attendere..._`,
+            contextInfo: {
+                externalAdReply: {
+                    title: "⚡ DOWNLOAD IN CORSO ⚡",
+                    body: `Download in corso di *${title}*...`,
+                    thumbnailUrl: thumbnail,
+                    sourceUrl: "https://wa.me/" + m.sender.split('@')[0],
+                    mediaType: 1,
+                    renderLargerThumbnail: false
+                }
+            }
+        };
+
+        await conn.sendMessage(m.chat, embedMessage, { quoted: m });
+
+        // 📌 Comando per scaricare l'MP3
+        let ytCommand = `yt-dlp -f bestaudio --extract-audio --audio-format mp3 --output "${filePath}" ${searchCommand}`;
+
+        // 🔄 Invia un messaggio di caricamento
+        await conn.sendMessage(m.chat, { react: { text: "🎶", key: m.key } });
+
+        // 📌 Esegui il download
+        exec(ytCommand, async (err) => {
+            if (err) {
+                console.error(err);
+                return conn.sendMessage(m.chat, { text: "❌ *Errore nel download del file!*" }, { quoted: m });
+            }
+
+            if (!fs.existsSync(filePath)) {
+                return conn.sendMessage(m.chat, { text: "❌ *Errore: File non trovato dopo il download!*" }, { quoted: m });
+            }
+
+            // 📌 Invia il file MP3
+            await conn.sendMessage(m.chat, { 
+                audio: { url: filePath }, 
+                mimetype: "audio/mpeg", 
+                fileName: `${title}.mp3`,
+                caption: `🎶 *${title}*\n✅ *Download completato!*\n\n📂 *File salvato in:* /sdcard/Download/`
+            }, { quoted: m });
+
+            // ✅ Il file NON viene eliminato, rimane salvato nella memoria del telefono
+        });
     });
-    await streamPipeline(resDownload.data, fs.createWriteStream(filePath));
-
-    const stats = fs.statSync(filePath);
-    if (!stats || stats.size < 100000) {
-      fs.unlinkSync(filePath);
-      throw new Error('El video descargado está vacío o incompleto');
-    }
-
-    const finalText = `🎬 Aquí tiene su video en documento.\n\n© Azura Ultra 2.0 Bot`;
-
-    await conn.sendMessage(msg.key.remoteJid, {
-      document: fs.readFileSync(filePath),
-      mimetype: 'video/mp4',
-      fileName: `${videoData.title}.mp4`,
-      caption: finalText
-    }, { quoted: msg });
-
-    fs.unlinkSync(filePath);
-
-    await conn.sendMessage(msg.key.remoteJid, {
-      react: { text: '✅', key: msg.key }
-    });
-
-  } catch (err) {
-    console.error(err);
-    await conn.sendMessage(msg.key.remoteJid, {
-      text: `❌ *Error:* ${err.message}`
-    }, { quoted: msg });
-    await conn.sendMessage(msg.key.remoteJid, {
-      react: { text: '❌', key: msg.key }
-    });
-  }
 };
 
-handler.command = ['play2doc'];
-module.exports = handler;
+handler.command = /^(play)$/i;
+handler.group = true;
+
+export default handler;
