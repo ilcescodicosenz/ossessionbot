@@ -21,7 +21,6 @@ import axios from "axios";
 const audioFormats = ["mp3", "m4a", "webm", "acc", "flac", "opus", "ogg", "wav"];
 const videoResolutions = ["360", "480", "720", "1080",];
 
-// Funzione per scaricare video/audio
 const downloader = {
     async download(url, format) {
         if (!audioFormats.includes(format) && !videoResolutions.includes(format)) {
@@ -64,7 +63,6 @@ const downloader = {
     }
 };
 
-// Funzione principale per gestire i comandi di download
 const handleCommand = async (msg, { conn, text, usedPrefix, command }) => {
     try {
         if (!text.trim()) {
@@ -78,7 +76,7 @@ const handleCommand = async (msg, { conn, text, usedPrefix, command }) => {
         const { title, thumbnail, timestamp, views, ago, url, author } = video;
         const formattedViews = new Intl.NumberFormat().format(views);
         const videoInfo = `
-╭━━〔*🎥 𝑰𝑵𝑭𝑶 𝑽𝑰𝑫𝑬𝑶*〕━━┈⊷
+╭━━〔*🎥 𝑰𝑵𝑭𝑶 𝑽𝑰𝑫𝑬𝑶*〕━━┈
 ┃◈╭─────────────·๏
 ┃◈┃• *Titolo:* ${title}
 ┃◈┃• *Durata:* ${timestamp}
@@ -88,7 +86,7 @@ const handleCommand = async (msg, { conn, text, usedPrefix, command }) => {
 ┃◈┃• *Link:* ${url}
 ┃◈└───────────┈⊷
 ┃◈┃• *Sto inviando l'audio..*
-╰━━━━━━━━━━━━━┈·๏
+╰━━━━━━━━━━━━━┈
 `.trim();
         
         const thumbData = (await conn.getFile(thumbnail))?.data;
@@ -134,6 +132,5 @@ const handleCommand = async (msg, { conn, text, usedPrefix, command }) => {
     }
 };
 
-// Registrazione dei comandi supportati
 handleCommand.command = handleCommand.help = ["play", "ytmp4", "play2"];
 export default handleCommand;
