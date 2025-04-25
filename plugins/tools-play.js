@@ -207,17 +207,17 @@ const handler = async (m, { conn, args, command }) => {
 📺 *Canale:* ${author}
 🔗 *Link:* ${url}`;
 
-        if (type === 'video') {
-            await conn.sendMessage(m.chat, {
-                video: { url: download },
-                caption: infoMessage
-            }, { quoted: m });
-        } else {
+        if (command === 'play') {
             await conn.sendMessage(m.chat, {
                 audio: { url: download },
                 mimetype: 'audio/mpeg',
                 fileName: `${title}.mp3`,
-                caption: infoMessage
+                caption: infoMessage // Invia il messaggio informativo come didascalia
+            }, { quoted: m });
+        } else if (command === 'play2') {
+            await conn.sendMessage(m.chat, {
+                video: { url: download },
+                caption: infoMessage // Invia il messaggio informativo come didascalia
             }, { quoted: m });
         }
     } catch (e) {
