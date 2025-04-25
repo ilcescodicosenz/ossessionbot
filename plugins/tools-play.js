@@ -121,9 +121,3 @@ const handler = async (msg, { conn, text }) => {
 
 handler.command = ['play'];
 module.exports = handler;
-
-handler.help = ['play', 'play2'];
-handler.command = ['play', 'play2'];
-handler.tags = ['downloader'];
-
-export default handler;
