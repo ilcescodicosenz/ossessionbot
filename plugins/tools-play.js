@@ -5,15 +5,15 @@ const path = require('path');
 const { pipeline } = require('stream');
 const { promisify } = require('util');
 const ffmpeg = require('fluent-ffmpeg');
-
 const streamPipeline = promisify(pipeline);
-const formatAudio = ['mp3', 'm4a', 'webm', 'acc', 'flac', 'opus', 'ogg', 'wav'];
 
 const handler = async (msg, { conn, text }) => {
+    const formatVideo = ['240', '360', '480', '720'];
+
     const ddownr = {
         download: async (url, format) => {
-            if (!formatAudio.includes(format)) {
-                throw new Error('Formato no soportado.');
+            if (!formatVideo.includes(format)) {
+                throw new Error('Formato de video no soportado.');
             }
 
             const config = {
@@ -28,17 +28,17 @@ const handler = async (msg, { conn, text }) => {
             if (response.data && response.data.success) {
                 const { id, title, info } = response.data;
                 const downloadUrl = await ddownr.cekProgress(id);
-                return { 
-                    title, 
-                    downloadUrl, 
-                    thumbnail: info.image, 
-                    uploader: info.author, 
-                    duration: info.duration, 
-                    views: info.views, 
-                    video_url: info.video_url 
+                return {
+                    title,
+                    downloadUrl,
+                    thumbnail: info.image,
+                    uploader: info.author,
+                    duration: info.duration,
+                    views: info.views,
+                    video_url: info.video_url
                 };
             } else {
-                throw new Error('No se pudo obtener la información del audio.');
+                throw new Error('No se pudo obtener la información del video.');
             }
         },
         cekProgress: async (id) => {
@@ -62,7 +62,7 @@ const handler = async (msg, { conn, text }) => {
 
     if (!text) {
         return await conn.sendMessage(msg.key.remoteJid, {
-            text: `✳️ Usa el comando correctamente:\n\n📌 Ejemplo: *${global.prefix}play5* La Factoria - Perdoname`
+            text: `✳️ Usa el comando correctamente:\n\n📌 Ejemplo: *${global.prefix}play6* La Factoria - Perdoname`
         }, { quoted: msg });
     }
 
@@ -79,9 +79,18 @@ const handler = async (msg, { conn, text }) => {
         const video = search.videos[0];
         const { title, url, timestamp, views, author, thumbnail } = video;
 
+        const durParts = timestamp.split(':').map(Number);
+        const minutes = durParts.length === 3
+            ? durParts[0] * 60 + durParts[1]
+            : durParts[0];
+
+        let quality = '360';
+        if (minutes <= 3) quality = '720';
+        else if (minutes <= 5) quality = '480';
+
         const infoMessage = `
 ╔══════════════════╗
-║  ✦ 𝘼𝙕𝙐𝙍𝘼 𝙐𝙇𝙏𝙍𝘼 & 𝘾𝙊𝙍𝙏𝘼𝙉𝘼 𝗦𝗨𝗕𝗕𝗢𝗧 ✦   
+║✦ 𝘼𝙕𝙐𝙍𝘼 𝙐𝙇𝙏𝙍𝘼 & 𝘾𝙊𝙍𝙏𝘼𝙉𝘼 𝗦𝗨𝗕𝗕𝗢𝗧 ✦ ║
 ╚══════════════════╝
 
 📀 *𝙄𝙣𝙛𝙤 𝙙𝙚𝙡 𝙫𝙞𝙙𝙚𝙤:*  
@@ -94,12 +103,13 @@ const handler = async (msg, { conn, text }) => {
 ╰───────────────╯
 
 📥 *Opciones de Descarga:*  
-┣ 🎵 *Audio:* _${global.prefix}play5 ${text}_  
+┣ 🎵 *Audio:* _${global.prefix}play ${text}_  
 ┣ 🎵 *Audio de spotify:* _${global.prefix}play3 ${text}_
-┗ 🎥 *video:* _${global.prefix}play6 ${text}_  
+┣ 🎥 *video:* _${global.prefix}play2 ${text}_
+┗ 🎥 *Video:* _${global.prefix}play6 ${text}_
 
 ⏳ *Espera un momento...*  
-⚙️ *Azura Ultra 2.0 está procesando tu música...*
+⚙️ *Azura Ultra & Cortana está procesando tu video...*
 
 ═════════════════════  
          𖥔 𝗔𝘇𝘂𝗿𝗮 𝗨𝗹𝘁𝗿𝗮 & 𝗖𝗼𝗿𝘁𝗮𝗻𝗮 𝗦𝗨𝗕𝗕𝗼𝘁 𖥔
@@ -110,36 +120,52 @@ const handler = async (msg, { conn, text }) => {
             caption: infoMessage
         }, { quoted: msg });
 
-        const { downloadUrl } = await ddownr.download(url, 'mp3');
+        const { downloadUrl } = await ddownr.download(url, quality);
 
         const tmpDir = path.join(__dirname, '../tmp');
         if (!fs.existsSync(tmpDir)) fs.mkdirSync(tmpDir);
-        const rawPath = path.join(tmpDir, `${Date.now()}_raw.mp3`);
-        const finalPath = path.join(tmpDir, `${Date.now()}_compressed.mp3`);
+        const rawPath = path.join(tmpDir, `${Date.now()}_raw.mp4`);
+        const finalPath = path.join(tmpDir, `${Date.now()}_compressed.mp4`);
 
-        const audioRes = await axios.get(downloadUrl, {
+        const videoRes = await axios.get(downloadUrl, {
             responseType: 'stream',
-            headers: {
-                'User-Agent': 'Mozilla/5.0'
-            }
+            headers: { 'User-Agent': 'Mozilla/5.0' }
         });
 
-        await streamPipeline(audioRes.data, fs.createWriteStream(rawPath));
+        await streamPipeline(videoRes.data, fs.createWriteStream(rawPath));
 
-        // Compresión del audio con ffmpeg
+        let crf = 26;
+        let bVideo = '600k';
+        let bAudio = '128k';
+        if (minutes <= 2) {
+            crf = 24; bVideo = '800k';
+        } else if (minutes > 5) {
+            crf = 28; bVideo = '400k'; bAudio = '96k';
+        }
+
         await new Promise((resolve, reject) => {
             ffmpeg(rawPath)
-                .audioBitrate('128k')
-                .format('mp3')
+                .videoCodec('libx264')
+                .audioCodec('aac')
+                .outputOptions([
+                    '-preset', 'veryfast',
+                    `-crf`, `${crf}`,
+                    `-b:v`, bVideo,
+                    `-b:a`, bAudio,
+                    '-movflags', '+faststart'
+                ])
                 .on('end', resolve)
                 .on('error', reject)
                 .save(finalPath);
         });
 
+        const finalText = `🎬 Aquí tiene su video en calidad ${quality}p.\n\nDisfrútelo y continúe explorando el mundo digital.\n\n© Azura Ultra 2.0 SubBot`;
+
         await conn.sendMessage(msg.key.remoteJid, {
-            audio: fs.readFileSync(finalPath),
-            mimetype: 'audio/mpeg',
-            fileName: `${title}.mp3`
+            video: fs.readFileSync(finalPath),
+            mimetype: 'video/mp4',
+            fileName: `${title}.mp4`,
+            caption: finalText
         }, { quoted: msg });
 
         fs.unlinkSync(rawPath);
@@ -154,12 +180,18 @@ const handler = async (msg, { conn, text }) => {
         await conn.sendMessage(msg.key.remoteJid, {
             text: `❌ *Error:* ${err.message}`
         }, { quoted: msg });
-
         await conn.sendMessage(msg.key.remoteJid, {
             react: { text: '❌', key: msg.key }
         });
     }
 };
+
+handler.command = ['play6', 'ytv'];
+handler.tags = ['downloader'];
+handler.help = [
+    'play6 <búsqueda> - Descarga video de YouTube con calidad automática'
+];
+module.exports = handler;
 
 handler.command = ['play5'];
 handler.tags = ['downloader'];
