@@ -1,46 +1,7 @@
 import axios from 'axios';
 import fetch from 'node-fetch';
-
-let handler = async (m, { conn, text, usedPrefix, command }) => {
-
-    if (!text) throw `╰⊱❗️⊱ *AZIONE UTILIZZATA IN MODO ERRATO* ⊱❗️⊱╮\n\n🍟 *DEVI USARE IL COMANDO COME NELL'ESEMPIO SEGUENTE:*\n${usedPrefix + command} *titolo musica*`;
-
-    try {
-
-        m.react('⌛️');
-
-        let songInfo = await spotifyxv(text);
-        if (!songInfo.length) throw `Non è stata trovata la canzone.`;
-        let song = songInfo[0];
-        const res = await fetch(`https://apis-starlights-team.koyeb.app/starlight/spotifydl?url=${song.url}`);
-        const data = await res.json();
-        if (!data || !data.music) throw "Impossibile ottenere il link di download.";
-
-        const info = `🪼 *Titolo:*\n${data.title}\n\n🪩 *Artista:*\n${data.artist}\n\n🦋 *Album:*\n${song.album}\n\n⏳ *Durata:*\n${song.duracion}\n\n🔗 *Link:*\n${data.spotify}\n\n${wm}`;
-
-        await conn.sendMessage(m.chat, { text: info, contextInfo: { forwardingScore: 9999999, isForwarded: true, 
-        externalAdReply: {
-            showAdAttribution: true,
-            containsAutoReply: true,
-            renderLargerThumbnail: true,
-            title: 'Musica Spotify',
-            mediaType: 1,
-            thumbnailUrl: data.thumbnail,
-            mediaUrl: data.music,
-            sourceUrl: data.music
-        }}}, { quoted: m });
-
-        await conn.sendMessage(m.chat, { audio: { url: data.music }, fileName: `${data.title}.mp3`, mimetype: 'audio/mpeg' }, { quoted: m });
-        m.react('✅');
-
-    } catch (e1) {
-        m.react('❌');
-        m.reply(`❌ Si è verificato un errore imprevisto: ${e1.message || e1}`);
-    }
-};
-
-handler.command = ['spotify', 'music'];
-export default handler;
+import { youtubedl, youtubedlv2 } from '@bochilteam/scraper';
+import search from 'yt-search';
 
 async function spotifyxv(query) {
     let token = await tokens();
@@ -109,3 +70,47 @@ async function getTinyURL(text) {
         return text;
     }
 }
+
+let handler = async (m, { conn, text, usedPrefix, command }) => {
+    if (!text) throw `Uso incorrecto del comando. Ejemplo: *${usedPrefix + command} Bellyache*`;
+    try {
+        m.react('⌛️');
+        let songInfo = await spotifyxv(text);
+        if (!songInfo.length) throw `*No se encontró una canción.*`;
+
+        let res = songInfo[0];
+        let shortURL = await getTinyURL(res.url);
+        const info = `✨ *Título:*\n_${res.name}_\n\n` +
+                     `🗣️ *Artista(s):*\n» _${res.artista.join(', ')}_\n\n` +
+                     `🌐 *Spotify URL:*\n» _${shortURL}_\n\n` +
+                     `🎶 *Disfruta de tu música.*`;
+
+        let img = await getBuffer(res.imagen);
+        let { videos } = await search(res.name);
+        let v = videos[0].url;
+        let yt = await youtubedl(v).catch(async (_) => await youtubedlv2(v));
+        let dl_url = await yt.audio['128kbps'].download();
+        let ttl = await yt.title;
+
+        conn.sendMessage(m.chat, { audio: { url: dl_url }, fileName: `${ttl}.mp3`, mimetype: 'audio/mpeg' }, { quoted: m });
+        await conn.sendMessage(m.chat, { text: info, contextInfo: { 
+            forwardingScore: 9999999, 
+            isForwarded: true, 
+            "externalAdReply": {
+                "showAdAttribution": true, 
+                "renderLargerThumbnail": true, 
+                "title": "Tu canción de Spotify", 
+                "mediaType": 1, 
+                "thumbnail": img, 
+                "mediaUrl": shortURL, 
+                "sourceUrl": shortURL 
+            }
+        }}, { quoted: m });
+        m.react('✅️');
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+handler.command = /^(spotify|music)$/i;
+export default handler;
