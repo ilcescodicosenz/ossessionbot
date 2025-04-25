@@ -1,66 +1,51 @@
-import fetch from 'node-fetch';
+import fs from 'fs'
 
-let handler = async (m, { conn }) => {
-    if (!global.db.data.settings[conn.user.jid].restrict) throw 'ⓘ Attiva restrict';
-    
-    let mention = 'ⓘ Mentiona la persona da bannare';
-    if (!m.mentionedJid[0] && !m.quoted) return m.reply(mention, m.chat, { mentions: conn.parseMention(mention) });
-    
-    let target = m.quoted ? m.quoted.sender : m.mentionedJid && m.mentionedJid[0] ? m.mentionedJid[0] : m.fromMe ? conn.user.jid : m.sender;
-    let user = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted.sender;
-    let name = await conn.getName(user);
-    
-    const pp = await conn.profilePictureUrl(target, 'image').catch(_ => null) || './src/avatar_contact.png';
-    let avatar;
-    pp !== './src/avatar_contact.png' ? avatar = await (await fetch(pp)).buffer() : avatar = await (await fetch('https://i.ibb.co/PvKDcRKW/ossessionbot.jpg')).buffer();
-    
-    let groupName = m.chat.split`-`[0];
-    const groupMetadata = await conn.groupMetadata(m.chat);
-    let groupOwner = groupMetadata.owner || m.chat.split`-`[0] + '@s.whatsapp.net';
-    let botOwner = global.owner[0][0] + '@s.whatsapp.net';
-    
-    if (target === conn.user.jid) throw 'ⓘ Non puoi rimuovere il bot';
-    if (target === botOwner) throw 'ⓘ Non puoi rimuovere il creatore del bot';
-    if (target === groupOwner) throw 'ⓘ Non puoi rimuovere il creatore del gruppo';
-    
-    let msg = {
-        key: {
-            participants: '0@s.whatsapp.net',
-            fromMe: false,
-            id: 'Halo'
-        },
-        message: {
-            locationMessage: {
-                name: 'Unlimited',
-                jpegThumbnail: await (await fetch('https://i.ibb.co/PvKDcRKW/alyaxroshidere-jpeg.jpg')).buffer(),
-                vcard: 'BEGIN:VCARD\nVERSION:4.0\nN:;Unlimited;;;\nFN:Unlimited\nORG:Unlimited\nTITLE:\nitem1.TEL;waid=19709001746:+1 (970) 900-1746\nitem1.X-ABLabel:Unlimited\nX-WA-BIZ-DESCRIPTION:ofc\nX-WA-BIZ-NAME:Unlimited\nEND:VCARD'
-            }
-        },
-        participant: '0@s.whatsapp.net'
-    };
-    
-    let successMsg = 'ⓘ Utente rimosso con successo ✔️';
-    conn.sendMessage(m.chat, {
-        text: successMsg,
-        contextInfo: {
-            externalAdReply: {
-                title: name + ' ',
-                previewType: 'PHOTO',
-                thumbnail: avatar,
-                sourceUrl: 'https://wa.me/' + target.split('@')[0],
-                mediaType: 1
-            }
-        }
-    }, { quoted: msg });
-    
-    await conn.groupParticipantsUpdate(m.chat, [user], 'remove');
-};
+async function handler(m, { isBotAdmin, isOwner, text, conn }) {
+  if (!isBotAdmin) return m.reply('ⓘ 𝐃𝐞𝐯𝐨 𝐞𝐬𝐬𝐞𝐫𝐞 𝐚𝐝𝐦𝐢𝐧 𝐩𝐞𝐫 𝐩𝐨𝐭𝐞𝐫 𝐟𝐮𝐧𝐳𝐢𝐨𝐧𝐚𝐫𝐞.')
 
-handler.help = ['ban', 'kick', 'cacca', 'abracadabra', 'tungtungsahur'];
-handler.tags = ['group'];
-handler.command = /^(cacca|kick|ban)$/i
-handler.admin = true;
-handler.group = true;
-handler.botAdmin = true;
+  const mention = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : m.quoted
+  if (!mention) return m.reply('ⓘ 𝐌𝐞𝐧𝐳𝐢𝐨𝐧𝐚 𝐥𝐚 𝐩𝐞𝐫𝐬𝐨𝐧𝐚 𝐝𝐚 𝐫𝐢𝐦𝐮𝐨𝐯𝐞𝐫𝐞.')
 
-export default handler;
+  const ownerBot = global.owner[0][0] + '@s.whatsapp.net'
+
+  if (mention === ownerBot) return m.reply('ⓘ 𝐍𝐨𝐧 𝐩𝐮𝐨𝐢 𝐫𝐢𝐦𝐮𝐨𝐯𝐞𝐫𝐞 𝐢𝐥 𝐜𝐫𝐞𝐚𝐭𝐨𝐫𝐞 𝐝𝐞𝐥 𝐛𝐨𝐭.')
+  if (mention === conn.user.jid) return m.reply('ⓘ 𝐍𝐨𝐧 𝐩𝐮𝐨𝐢 𝐫𝐢𝐦𝐮𝐨𝐯𝐞𝐫𝐞 𝐢𝐥 𝐛𝐨𝐭.')
+  if (mention === m.sender) return m.reply('ⓘ 𝐍𝐨𝐧 𝐩𝐮𝐨𝐢 𝐫𝐢𝐦𝐨𝐯𝐞𝐫𝐞 𝐭𝐞 𝐬𝐭𝐞𝐬𝐬𝐨.')
+
+  const groupMetadata = conn.chats[m.chat].metadata
+  const participants = groupMetadata.participants
+  const utente = participants.find(u => conn.decodeJid(u.id) === mention)
+
+  const owner = utente?.admin == 'superadmin'
+  const admin = utente?.admin == 'admin'
+
+  if (owner) return m.reply('> ⚠️ 𝐀𝐧𝐭𝐢-𝐊𝐢𝐜𝐤\n> ⓘ 𝐋\'𝐮𝐭𝐞𝐧𝐭𝐞 𝐜𝐡𝐞 𝐡𝐚𝐢 𝐩𝐫𝐨𝐯𝐚𝐭𝐨 𝐚 𝐫𝐢𝐦𝐨𝐯𝐞𝐫𝐞 𝐞̀ 𝐢𝐥 𝐜𝐫𝐞𝐚𝐭𝐨𝐫𝐞 𝐝𝐞𝐥 𝐠𝐫𝐮𝐩𝐩𝐨.')
+  if (admin) return m.reply('> ⚠️ 𝐀𝐧𝐭𝐢-𝐊𝐢𝐜𝐤\n> ⓘ 𝐋\'𝐮𝐭𝐞𝐧𝐭𝐞 𝐜𝐡𝐞 𝐡𝐚𝐢 𝐩𝐫𝐨𝐯𝐚𝐭𝐨 𝐚 𝐫𝐢𝐦𝐨𝐯𝐞𝐫𝐞 𝐞̀ 𝐚𝐝𝐦𝐢𝐧.')
+
+  const fake = {
+    key: {
+      participants: "0@s.whatsapp.net",
+      fromMe: false,
+      id: "Halo"
+    },
+    message: {
+      locationMessage: {
+        name: '𝐑𝐢𝐦𝐨𝐳𝐢𝐨𝐧𝐞 𝐢𝐧 𝐜𝐨𝐫𝐬𝐨...',
+        jpegThumbnail: await (await fetch('https://telegra.ph/file/ed97f8c272e8e88f77cc0.png')).buffer(),
+      }
+    },
+    participant: "0@s.whatsapp.net"
+  }
+
+  const reason = text ? `\n\n𝐌𝐨𝐭𝐢𝐯𝐨: ${text.replace(m.sender, '')}` : ''
+
+  conn.reply(m.chat, `@${mention.split`@`[0]} 𝐞̀ 𝐬𝐭𝐚𝐭𝐨 𝐫𝐢𝐦𝐨𝐬𝐬𝐨 𝐝𝐚 @${m.sender.split`@`[0]}${reason}`, fake, { mentions: [mention, m.sender, conn.parseMention(text)] })
+
+  conn.groupParticipantsUpdate(m.chat, [mention], 'remove')
+}
+
+handler.customPrefix = /kick|tungtungsahur|cacca|puffo|linacappuccina
+handler.command = new RegExp
+handler.admin = true
+
+export default handler
