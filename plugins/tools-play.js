@@ -94,8 +94,8 @@ const handleCommand = async (msg, { conn, text, usedPrefix, command }) => {
 
         const thumbData = (await conn.getFile(thumbnail))?.data;
 
-        // Invia l'immagine chatunitybot.jpeg con le informazioni del video
-        const imagePath = './menu/ossessionbot.jpeg';
+       
+        const imagePath = '/menu/ossessionbot.jpeg';
         await conn.sendMessage(msg.chat, { 
             image: { url: imagePath }, 
             caption: videoInfo, 
