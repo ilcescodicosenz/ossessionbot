@@ -1,56 +1,6 @@
 import axios from 'axios';
 import crypto from 'crypto';
 import yts from 'yt-search';
-import fetch from "node-fetch";
-
-const formatAudio = ['mp3', 'm4a', 'webm', 'acc', 'flac', 'opus', 'ogg', 'wav'];
-const formatVideo = ['360', '480', '720', '1080', '1440', '4k'];
-
-const ddownr = {
-    download: async (url, format) => {
-        if (!formatAudio.includes(format) && !formatVideo.includes(format)) {
-            throw new Error('Formato non supportato.');
-        }
-
-        try {
-            const { data } = await axios.get(`https://p.oceansaver.in/ajax/download.php?format=${format}&url=${encodeURIComponent(url)}&api=dfcb6d76f2f6a9894gjkege8a4ab232222`, {
-                headers: { 'User-Agent': 'Mozilla/5.0' }
-            });
-
-            if (data?.success) {
-                return {
-                    id: data.id,
-                    image: data.info.image,
-                    title: data.title,
-                    downloadUrl: await ddownr.cekProgress(data.id)
-                };
-            } else {
-                throw new Error('Errore nel recupero dei dettagli del video.');
-            }
-        } catch (error) {
-            console.error('Errore:', error.message);
-            throw error;
-        }
-    },
-
-    cekProgress: async (id) => {
-        try {
-            while (true) {
-                const { data } = await axios.get(`https://p.oceansaver.in/ajax/progress.php?id=${id}`, {
-                    headers: { 'User-Agent': 'Mozilla/5.0' }
-                });
-
-                if (data?.success && data.progress === 1000) {
-                    return data.download_url;
-                }
-                await new Promise(resolve => setTimeout(resolve, 3000)); // Ridotto da 5000 a 3000 ms
-            }
-        } catch (error) {
-            console.error('Errore:', error.message);
-            throw error;
-        }
-    }
-};
 
 const savetube = {
     api: {
@@ -230,87 +180,51 @@ const savetube = {
     }
 };
 
-const handler = async (m, { conn, text, usedPrefix, command }) => {
+const handler = async (m, { conn, args, command }) => {
+    if (args.length < 1) return m.reply(`Formato:\n- *.play <texto o URL>* (per audio)\n- *.play2 <texto o URL>* (per video)`);
+
+    let query = args.join(' ');
+    let url = savetube.isUrl(query) ? query : null;
+
+    if (!url) {
+        let search = await yts(query);
+        if (!search.videos.length) return m.reply('*No se encontraron resultados.*');
+        url = search.videos[0].url;
+    }
+
+    let format = command === 'play' ? 'mp3' : '360';
+
     try {
-        if (!text.trim()) return conn.reply(m.chat, `💣 Inserisci il nome della musica.`, m);
+        let res = await savetube.download(url, format);
+        if (!res.status) return m.reply(`*Error:* ${res.error}`);
 
-        const search = await yts(text);
-        if (!search.all.length) return m.reply('Nessun risultato trovato.');
-
-        const videoInfo = search.all[0];
-        const { title, thumbnail, timestamp, views, ago, url, author } = videoInfo;
+        let { title, download, type, duration, views, author } = res.result;
         const formattedViews = new Intl.NumberFormat().format(views);
         const infoMessage = `
 ⭐ *Titolo:* ${title}
-⏳ *Durata:* ${timestamp}
+⏳ *Durata:* ${duration}
 👁️ *Visualizzazioni:* ${formattedViews}
-📺 *Canale:* ${author?.name || 'Sconosciuto'}
-📅 *Pubblicato:* ${ago}
+📺 *Canale:* ${author}
 🔗 *Link:* ${url}`;
 
-        const thumb = (await conn.getFile(thumbnail))?.data;
-
-        conn.sendMessage(m.chat, {
-            text: infoMessage,
-            contextInfo: {
-                externalAdReply: {
-                    title: '  Ossession Downloader',
-                    body: 'Scarica facilmente audio/video By Cesco ',
-                    mediaType: 1,
-                    previewType: 0,
-                    mediaUrl: url,
-                    sourceUrl: url,
-                    thumbnail: thumb,
-                }
-            }
-        });
-
-        if (command === 'play') {
-            const api = await ddownr.download(url, 'mp3');
+        if (type === 'video') {
             await conn.sendMessage(m.chat, {
-                audio: { url: api.downloadUrl },
-                mimetype: "audio/mpeg"
+                video: { url: download },
+                caption: infoMessage
             }, { quoted: m });
-
-        } else if (command === 'play2' || command === 'ytmp4') {
-            let sources = [
-                `https://api.siputzx.my.id/api/d/ytmp4?url=${url}`,
-                `https://api.zenkey.my.id/api/download/ytmp4?apikey=zenkey&url=${url}`,
-                `https://axeel.my.id/api/download/video?url=${encodeURIComponent(url)}`,
-                `https://delirius-apiofc.vercel.app/download/ytmp4?url=${url}`
-            ];
-
-            const results = await Promise.allSettled(sources.map(src => fetch(src).then(res => res.json())));
-
-            for (const result of results) {
-                if (result.status === "fulfilled") {
-                    const { data, result: resResult, downloads } = result.value;
-                    const downloadUrl = data?.dl || resResult?.download?.url || downloads?.url || data?.download?.url;
-                    if (downloadUrl) {
-                        return conn.sendMessage(m.chat, {
-                            video: { url: downloadUrl },
-                            fileName: `${title}.mp4`,
-                            mimetype: 'video/mp4',
-                            caption: 'Scaricato con successo!',
-                            thumbnail: thumb
-                        }, { quoted: m });
-                    }
-                }
-            }
-
-            return m.reply(`⚠︎ Nessun link valido trovato.`);
         } else {
-            throw "Comando non riconosciuto.";
+            await conn.sendMessage(m.chat, {
+                audio: { url: download },
+                mimetype: 'audio/mpeg',
+                fileName: `${title}.mp3`,
+                caption: infoMessage
+            }, { quoted: m });
         }
-    } catch (error) {
-        return m.reply(`⚠︎ *Errore:* ${error.message}`);
+    } catch (e) {
+        m.reply('*Error al procesar la solicitud.*');
     }
 };
 
-handler.command = handler.help = ['play', 'ytmp4', 'play2'];
-handler.tags = ['downloader'];
-
-export default handler;
 handler.help = ['play', 'play2'];
 handler.command = ['play', 'play2'];
 handler.tags = ['downloader'];
