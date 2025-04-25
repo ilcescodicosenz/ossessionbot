@@ -7,13 +7,18 @@ global.botnumber = ""
 global.confirmCode = ""
 
 global.owner = [
-    ['393508364499', 'Proprietario', true],
+  ['393508364499', '⟆ 𝑶𝑺𝑺𝑬𝑺𝑺𝑰𝑶𝑵𝑩𝑶𝑻 ⟇ ✦', true],
+  ['xxxxxxxxxx',],
+  ['xxxxxxxxxx'],	
+  ['xxxxxxxxxx',],
+  ['xxxxxxxxxx'],
+  ['xxxxxxxxxx'],
 ] //Numero degli owner
 
 //────────────────────────────
 
 global.mods = ['xxxxxxxxxx'] 
-global.prems = [ '66949618631', 'xxxxxxxxxx']
+global.prems = ['xxxxxxxxxx', 'xxxxxxxxxx']
 
 //────────────────────────────
 
@@ -24,7 +29,7 @@ global.keysxteammm = ['29d4b59a4aa687ca', '5LTV57azwaid7dXfz5fzJu', 'cb15ed422c7
 global.keysxteam = keysxteammm[Math.floor(keysxteammm.length * Math.random())]
 global.keysneoxrrr = ['5VC9rvNx', 'cfALv5']
 global.keysneoxr = keysneoxrrr[Math.floor(keysneoxrrr.length * Math.random())]
-global.lolkeysapi = ['cesco']
+global.lolkeysapi = ['BrunoSobrino']
 
 global.APIs = { 
   xteam: 'https://api.xteam.xyz', 
@@ -49,25 +54,25 @@ global.APIKeys = {
 
 
 //────────────────────────────
-global.imagen1 = ['./media/menu2.jpg']
+global.imagen1 = ['./media/menu1.jpg']
 global.imagen4 = fs.readFileSync('./ossessionbot.png')
 //────────────────────────────
 
 // Sticker WM (Nome del pacchetto degli sticker)
-global.packname = ' ⟆ 𝑶𝑺𝑺𝑬𝑺𝑺𝑰𝑶𝑵𝑩𝑶𝑻 ⟇ ✦ '
+global.packname = '⟆ 𝑶𝑺𝑺𝑬𝑺𝑺𝑰𝑶𝑵𝑩𝑶𝑻 ⟇ ✦ '
 global.author = '𝐌𝐝'
 
 //────────────────────────────
 
-global.vs = '1.0'
+global.vs = '3.0'
 
-global.nomebot = ' ⟆ 𝑶𝑺𝑺𝑬𝑺𝑺𝑰𝑶𝑵𝑩𝑶𝑻 ⟇ ✦ '
+global.nomebot = '⟆ 𝑶𝑺𝑺𝑬𝑺𝑺𝑰𝑶𝑵𝑩𝑶𝑻 ⟇ ✦ '
 
 global.multiplier = 69 
 global.maxwarn = '4' 
 //────────────────────────────
 
-global.wm = ' ⟆ 𝑶𝑺𝑺𝑬𝑺𝑺𝑰𝑶𝑵𝑩𝑶𝑻 ⟇ ✦ '
+global.wm = '⟆ 𝑶𝑺𝑺𝑬𝑺𝑺𝑰𝑶𝑵𝑩𝑶𝑻 ⟇ ✦ '
 global.wait = 'ⓘ 𝐂𝐚𝐫𝐢𝐜𝐚𝐦𝐞𝐧𝐭𝐨 ...'
 
 //────────────────────────────
