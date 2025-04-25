@@ -1,28 +1,26 @@
 const axios = require('axios');
-const yts = require('yt-search');
 const fs = require('fs');
 const path = require('path');
-const ffmpeg = require('fluent-ffmpeg');
-const { pipeline } = require('stream');
 const { promisify } = require('util');
+const { pipeline } = require('stream');
 const streamPipeline = promisify(pipeline);
 
 const handler = async (msg, { conn, text }) => {
+  // Detectar subbotID y prefijo
   const rawID = conn.user?.id || "";
   const subbotID = rawID.split(":")[0] + "@s.whatsapp.net";
 
-  // Cargar prefijo personalizado
   const prefixPath = path.resolve("prefixes.json");
   let prefixes = {};
   if (fs.existsSync(prefixPath)) {
     prefixes = JSON.parse(fs.readFileSync(prefixPath, "utf-8"));
   }
 
-  const usedPrefix = prefixes[subbotID] || "."; // Por defecto .
+  const usedPrefix = prefixes[subbotID] || ".";
 
   if (!text) {
     return await conn.sendMessage(msg.key.remoteJid, {
-      text: `✳️ Usa el comando correctamente:\n\n📌 Ejemplo: *${usedPrefix}play* bad bunny diles`
+      text: `✳️ Usa el comando correctamente:\n\n📌 Ejemplo: *${usedPrefix}play2* La Factoría - Perdoname`
     }, { quoted: msg });
   }
 
@@ -31,77 +29,88 @@ const handler = async (msg, { conn, text }) => {
   });
 
   try {
-    const search = await yts(text);
-    const video = search.videos[0];
-    if (!video) throw new Error('No se encontraron resultados');
+    const searchUrl = `https://api.neoxr.eu/api/video?q=${encodeURIComponent(text)}&apikey=russellxz`;
+    const searchRes = await axios.get(searchUrl);
+    const videoInfo = searchRes.data;
 
-    const videoUrl = video.url;
-    const thumbnail = video.thumbnail;
-    const title = video.title;
-    const fduration = video.timestamp;
-    const views = video.views.toLocaleString();
-    const channel = video.author.name || 'Desconocido';
+    if (!videoInfo || !videoInfo.data?.url) throw new Error('No se pudo encontrar el video');
 
-    const infoMessage = `
-╔═══════════════╗
-   ✦ 𝗔𝘇𝘂𝗿𝗮 𝗨𝗹𝘁𝗿𝗮 & 𝘾𝙤𝙧𝙩𝙖𝙣𝙖 𝗦𝘂𝗯𝗯𝗼𝘁 ✦
-╚═══════════════╝
+    const title = videoInfo.title || 'video';
+    const thumbnail = videoInfo.thumbnail;
+    const duration = videoInfo.fduration || '0:00';
+    const views = videoInfo.views || 'N/A';
+    const author = videoInfo.channel || 'Desconocido';
+    const videoLink = `https://www.youtube.com/watch?v=${videoInfo.id}`;
 
-📀 *Info del audio:*  
+    const captionPreview = `
+╔════════════════╗
+║ ✦ 𝗔𝘇𝘂𝗿𝗮 𝗨𝗹𝘁𝗿𝗮 & 𝘾𝙤𝙧𝙩𝙖𝙣𝙖 𝗦𝘂𝗯𝗯𝗼𝘁 ✦
+╚════════════════╝
+
+📀 *Info del video:*  
 ├ 🎼 *Título:* ${title}
-├ ⏱️ *Duración:* ${fduration}
+├ ⏱️ *Duración:* ${duration}
 ├ 👁️ *Vistas:* ${views}
-├ 👤 *Autor:* ${channel}
-└ 🔗 *Enlace:* ${videoUrl}
+├ 👤 *Autor:* ${author}
+└ 🔗 *Link:* ${videoLink}
 
 📥 *Opciones:*  
 ┣ 🎵 _${usedPrefix}play1 ${text}_
-┣ 🎥 _${usedPrefix}play2 ${text}_
 ┣ 🎥 _${usedPrefix}play6 ${text}_
 ┗ ⚠️ *¿No se reproduce?* Usa _${usedPrefix}ff_
 
-⏳ Procesando audio...
-═══════════════════`;
+⏳ Procesando video...
+═════════════════════`;
 
     await conn.sendMessage(msg.key.remoteJid, {
       image: { url: thumbnail },
-      caption: infoMessage
+      caption: captionPreview
     }, { quoted: msg });
 
-    const apiURL = `https://api.neoxr.eu/api/youtube?url=${encodeURIComponent(videoUrl)}&type=audio&quality=128kbps&apikey=russellxz`;
-    const res = await axios.get(apiURL);
-    const json = res.data;
+    const qualities = ['720p', '480p', '360p'];
+    let videoData = null;
 
-    if (!json.status || !json.data?.url) throw new Error("No se pudo obtener el audio");
+    for (let quality of qualities) {
+      try {
+        const apiUrl = `https://api.neoxr.eu/api/youtube?url=${encodeURIComponent(videoLink)}&apikey=russellxz&type=video&quality=${quality}`;
+        const response = await axios.get(apiUrl);
+        if (response.data?.status && response.data?.data?.url) {
+          videoData = {
+            url: response.data.data.url,
+            title: response.data.title || title,
+            id: response.data.id || videoInfo.id
+          };
+          break;
+        }
+      } catch { continue; }
+    }
+
+    if (!videoData) throw new Error('No se pudo obtener el video');
 
     const tmpDir = path.join(__dirname, '../tmp');
     if (!fs.existsSync(tmpDir)) fs.mkdirSync(tmpDir);
+    const filePath = path.join(tmpDir, `${Date.now()}_video.mp4`);
 
-    const rawPath = path.join(tmpDir, `${Date.now()}_raw.m4a`);
-    const finalPath = path.join(tmpDir, `${Date.now()}_final.mp3`);
-
-    const audioRes = await axios.get(json.data.url, { responseType: 'stream' });
-    await streamPipeline(audioRes.data, fs.createWriteStream(rawPath));
-
-    await new Promise((resolve, reject) => {
-      ffmpeg(rawPath)
-        .audioCodec('libmp3lame')
-        .audioBitrate('128k')
-        .format('mp3')
-        .save(finalPath)
-        .on('end', resolve)
-        .on('error', reject);
+    const resDownload = await axios.get(videoData.url, {
+      responseType: 'stream',
+      headers: { 'User-Agent': 'Mozilla/5.0' }
     });
+    await streamPipeline(resDownload.data, fs.createWriteStream(filePath));
+
+    const stats = fs.statSync(filePath);
+    if (!stats || stats.size < 100000) {
+      fs.unlinkSync(filePath);
+      throw new Error('El video descargado está vacío o incompleto');
+    }
 
     await conn.sendMessage(msg.key.remoteJid, {
-      audio: fs.readFileSync(finalPath),
-      mimetype: 'audio/mpeg',
-      fileName: `${title}.mp3`,
-      ptt: false
+      video: fs.readFileSync(filePath),
+      mimetype: 'video/mp4',
+      fileName: `${videoData.title}.mp4`,
+      caption: `🎬 Aquí tiene su video en calidad normal.\n\n© Azura Ultra Subbot`
     }, { quoted: msg });
 
-    fs.unlinkSync(rawPath);
-    fs.unlinkSync(finalPath);
+    fs.unlinkSync(filePath);
 
     await conn.sendMessage(msg.key.remoteJid, {
       react: { text: '✅', key: msg.key }
@@ -112,12 +121,11 @@ const handler = async (msg, { conn, text }) => {
     await conn.sendMessage(msg.key.remoteJid, {
       text: `❌ *Error:* ${err.message}`
     }, { quoted: msg });
-
     await conn.sendMessage(msg.key.remoteJid, {
       react: { text: '❌', key: msg.key }
     });
   }
 };
 
-handler.command = ['play'];
+handler.command = ['play2'];
 module.exports = handler;
