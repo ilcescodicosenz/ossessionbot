@@ -1,60 +1,76 @@
-import yts from 'yt-search';
-import axios from "axios";
+import axios from 'axios';
+import cheerio from 'cheerio';
 
-const handler = async (m, { conn, text, usedPrefix, command }) => {
-  try {
-    if (!text.trim()) return conn.reply(m.chat, `💣 Inserisci il nome della musica.`, m);
-    const search = await yts(text);
-    if (!search.all.length) return m.reply('Nessun risultato trovato.');
-    const videoInfo = search.all[0];
-    const { title, thumbnail, timestamp, views, ago, url, author } = videoInfo;
-    const formattedViews = new Intl.NumberFormat().format(views);
-    const infoMessage = `
-⭐ *Titolo:* ${title}
-⏳ *Durata:* ${timestamp}
-👁️ *Visualizzazioni:* ${formattedViews}
-📺 *Canale:* ${author?.name || 'Sconosciuto'}
-📅 *Pubblicato:* ${ago}
-🔗 *Link:* ${url}`;
-    const thumb = (await conn.getFile(thumbnail))?.data;
-    await conn.sendMessage(m.chat, {
-      text: infoMessage,
-      contextInfo: {
-        externalAdReply: {
-          title: 'YouTube Downloader',
-          body: 'Scarica facilmente audio/video',
-          mediaType: 1,
-          previewType: 0,
-          mediaUrl: url,
-          sourceUrl: url,
-          thumbnail: thumb,
+const handler = async (m, { conn, text }) => {
+  if (!text) return m.reply('· · ──ID── ·𖥸· ──NA── · ·\nInserisci il nome della canzone.');
+
+  let artistRaw, titleRaw;
+
+  if (text.includes('-')) {
+    [artistRaw, titleRaw] = text.split('-').map(s => s.trim());
+  } else {
+    const parts = text.trim().split(/\s+/);
+    if (parts.length < 2) {
+      return m.reply('· · ──ID── ·𖥸· ──04── · ·\nFormato non valido. Usa: artista - titolo oppure artista titolo');
+    }
+
+    let found = false;
+    for (let i = 1; i < parts.length; i++) {
+      artistRaw = parts.slice(0, i).join('');
+      titleRaw = parts.slice(i).join('');
+      const artist = artistRaw.toLowerCase().replace(/[^a-z0-9]/gi, '');
+      const title = titleRaw.toLowerCase().replace(/[^a-z0-9]/gi, '');
+      const url = `https://www.azlyrics.com/lyrics/${artist}/${title}.html`;
+
+      try {
+        const { data: html } = await axios.get(url);
+        const $ = cheerio.load(html);
+        const lyricsDiv = $('div:not([class]):not([id])')
+          .filter(function () {
+            return $(this).text().trim().length > 0;
+          })
+          .first();
+        const lyrics = lyricsDiv.text().trim();
+        if (lyrics) {
+          await conn.sendMessage(m.chat, { text: lyrics }, { quoted: m });
+          return;
         }
+      } catch (e) {
+        continue;
       }
-    });
-    let artist = author?.name || "";
-    if (!artist) {
-      return m.reply("Artista non trovato per cercare il testo della canzone.");
     }
-    let lyrics;
-    try {
-      const lyricsResponse = await axios.get(`https://api.lyrics.ovh/v1/${encodeURIComponent(artist)}/${encodeURIComponent(title)}`);
-      lyrics = lyricsResponse.data.lyrics;
-      if (!lyrics) {
-        const cleanedTitle = title.split(" - ")[0].split("(")[0].trim();
-        const fallbackResponse = await axios.get(`https://api.lyrics.ovh/v1/${encodeURIComponent(artist)}/${encodeURIComponent(cleanedTitle)}`);
-        lyrics = fallbackResponse.data.lyrics;
-      }
-      if (!lyrics) return m.reply("Testo non trovato.");
-      await conn.sendMessage(m.chat, { text: lyrics }, { quoted: m });
-    } catch (error) {
-      return m.reply(`Errore nel recupero del testo: ${error.response?.data?.error || error.message}`);
-    }
-  } catch (error) {
-    return m.reply(`⚠︎ *Errore:* ${error.message}`);
+
+    return m.reply('· · ──ID── ·𖥸· ──03── · ·\nTesto non trovato.\n\nProva a scrivere: artista - titolo');
+  }
+
+  const artist = artistRaw.toLowerCase().replace(/[^a-z0-9]/gi, '');
+  const title = titleRaw.toLowerCase().replace(/[^a-z0-9]/gi, '');
+  const url = `https://www.azlyrics.com/lyrics/${artist}/${title}.html`;
+
+  try {
+    const { data: html } = await axios.get(url);
+    const $ = cheerio.load(html);
+
+    const lyricsDiv = $('div:not([class]):not([id])')
+      .filter(function () {
+        return $(this).text().trim().length > 0;
+      })
+      .first();
+
+    const lyrics = lyricsDiv.text().trim();
+
+    if (!lyrics) throw new Error();
+
+    await conn.sendMessage(m.chat, { text: lyrics }, { quoted: m });
+  } catch (err) {
+    await m.reply('· · ──ID── ·𖥸· ──03── · ·\nTesto non trovato.\n\nProva a invertire i due nomi o usare il formato: artista - titolo');
   }
 };
 
-handler.command = handler.help = ['testo', 'music'];
-handler.tags = ['downloader'];
+handler.help = ['lyrics <artista> - <titolo>', 'lyrics <artista> <titolo>'];
+handler.tags = ['tools'];
+handler.command = ['testo'];
+
+export default handler;
 
 export default handler;
