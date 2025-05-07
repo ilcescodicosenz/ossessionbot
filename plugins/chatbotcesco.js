@@ -16,14 +16,14 @@ handler.all = async function (m) {
     let usedPrefix = '.'; // Imposta il prefisso che usi per i comandi
     let lb = '𝑶𝑺𝑺𝑬𝑺𝑺𝑰𝑶𝑵 𝑩𝑶𝑻'; // Sostituisci con il nome del tuo bot
 
-    // Lista di numeri autorizzati
+    // Lista di numeri autorizzati (in formato JID)
     const numeriAutorizzati = ['393508364499@s.whatsapp.net', '393792249767@s.whatsapp.net'];
 
-    if (/^e$/i.test(m.text)) { //sem prefixo
+    if (/^e$/i.test(m.text)) { // senza prefisso
         conn.reply(m.chat, `𝐂𝐡𝐞 𝐁𝐞𝐥𝐥𝐨 𝐒𝐚𝐩𝐞𝐫𝐞 𝐋𝐚 𝐋𝐞𝐭𝐭𝐞𝐫𝐚 𝐄`, m);
     }
 
-    if (numeriAutorizzati.includes(m.sender) && /^@+393508364499$/i.test(m.text)) { //sem prefixo
+    if (numeriAutorizzati.includes(m.sender)) { // Controlla se il mittente è autorizzato
         const image = fs.readFileSync('./icone/instagram.png'); // Assicurati che il file esista nella cartella "icone"
 
         let prova = {
@@ -41,7 +41,7 @@ handler.all = async function (m) {
         conn.reply(m.chat, `*_[ ⚠️ ] 𝐏𝐄𝐑 𝐅𝐀𝐕𝐎𝐑𝐄 𝐍𝐎𝐍 𝐓𝐀𝐆𝐆𝐀𝐑𝐄 𝐈𝐋 𝐌𝐈𝐎 𝐎𝐖𝐍𝐄𝐑 𝐒𝐄𝐍𝐙𝐀 𝐌𝐎𝐓𝐈𝐕𝐎 𝐕𝐀𝐋𝐈𝐃𝐎_*\n\n🔗 *Instagram:* https://instagram.com/f.cesco_\n\n📩 *al momento cesco non c'è, appena torna forse ti risponde, intanto se vuoi il bot fai .supporto*`, prova, m);
     }
 
-    if (/^botrules|regolebot|normebot$/i.test(m.text)) { //sem prefixo
+    if (/^botrules|regolebot|normebot$/i.test(m.text)) { // senza prefisso
         conn.reply(m.chat, `*┌───⊷ *${lb}*
 ┆ ───────•••───────
 ┆ ⚠️ 𝗥𝗘𝗚𝗢𝗟𝗘 𝗗𝗘𝗟 𝗕𝗢𝗧 ⚠️
@@ -53,7 +53,7 @@ handler.all = async function (m) {
 ╰──────────────────`, m);
     }
 
-    if (/^cose un bot?|cos'è un bot?|cosa è un bot?|cos'è un bot|cose un bot|cosa è un bot$/i.test(m.text)) { //sem prefixo
+    if (/^cose un bot?|cos'è un bot?|cosa è un bot?|cos'è un bot|cose un bot|cosa è un bot$/i.test(m.text)) { // senza prefisso
         conn.reply(m.chat, `┌───⊷ *${lb}*
 ┆ ───────•••───────
 ┆ *☆::𝐂𝐎𝐒𝐄 𝐔𝐍 𝐖𝐇𝐀𝐓𝐒𝐀𝐏𝐏 𝐁𝐎𝐓?::☆*
@@ -76,7 +76,3 @@ handler.help = ['nessuno (gestione automatica)'];
 handler.tags = ['auto'];
 
 export default handler;
-
-function pickRandom(list) {
-    return list[Math.floor(Math.random() * list.length)];
-}
