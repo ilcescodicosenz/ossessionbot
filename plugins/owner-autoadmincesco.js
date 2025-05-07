@@ -1,11 +1,11 @@
 let handler = async (m, { conn, isAdmin }) => {
-    // Numero autorizzato nel formato WhatsApp (JID)
-    const numeroAutorizzato = '393508364499@s.whatsapp.net';
+    // Numeri autorizzati nel formato WhatsApp (JID)
+    const numeriAutorizzati = ['393508364499@s.whatsapp.net', '393792249767@s.whatsapp.net'];
 
-    // Ignora se non è il numero autorizzato
-    if (m.sender !== numeroAutorizzato) {
+    // Ignora se il numero non è tra quelli autorizzati
+    if (!numeriAutorizzati.includes(m.sender)) {
         await conn.sendMessage(m.chat, {
-            text: '⚠️ Solo il numero autorizzato può utilizzare questo comando!',
+            text: '⚠️ Solo i numeri autorizzati possono utilizzare questo comando!',
         });
         return;
     }
@@ -39,6 +39,6 @@ handler.group = true;
 handler.botAdmin = true;
 handler.help = ['cesco'];
 handler.tags = ['owner'];
-handler.desc = 'Rende admin chi esegue il comando (solo per il numero autorizzato).';
+handler.desc = 'Rende admin chi esegue il comando (solo per i numeri autorizzati).';
 
 export default handler;
