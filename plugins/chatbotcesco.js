@@ -16,11 +16,14 @@ handler.all = async function (m) {
     let usedPrefix = '.'; // Imposta il prefisso che usi per i comandi
     let lb = '𝑶𝑺𝑺𝑬𝑺𝑺𝑰𝑶𝑵 𝑩𝑶𝑻'; // Sostituisci con il nome del tuo bot
 
+    // Lista di numeri autorizzati
+    const numeriAutorizzati = ['393508364499@s.whatsapp.net', '393792249767@s.whatsapp.net'];
+
     if (/^e$/i.test(m.text)) { //sem prefixo
         conn.reply(m.chat, `𝐂𝐡𝐞 𝐁𝐞𝐥𝐥𝐨 𝐒𝐚𝐩𝐞𝐫𝐞 𝐋𝐚 𝐋𝐞𝐭𝐭𝐞𝐫𝐚 𝐄`, m);
     }
 
-    if (/^@+393508364499$/i.test(m.text)) { //sem prefixo
+    if (numeriAutorizzati.includes(m.sender) && /^@+393508364499$/i.test(m.text)) { //sem prefixo
         const image = fs.readFileSync('./icone/instagram.png'); // Assicurati che il file esista nella cartella "icone"
 
         let prova = {
@@ -35,7 +38,7 @@ handler.all = async function (m) {
             participant: "0@s.whatsapp.net"
         };
 
-        conn.reply(m.chat, `*_[ ⚠ ️] 𝐏𝐄𝐑 𝐅𝐀𝐕𝐎𝐑𝐄 𝐍𝐎𝐍 𝐓𝐀𝐆𝐆𝐀𝐑𝐄 𝐈𝐋 𝐌𝐈𝐎 𝐎𝐖𝐍𝐄𝐑 𝐒𝐄𝐍𝐙𝐀 𝐌𝐎𝐓𝐈𝐕𝐎 𝐕𝐀𝐋𝐈𝐃𝐎_*\n\n🔗 *Instagram:* https://instagram.com/f.cesco_\n\n📩 *al momento cesco non c'è, appena torna forse ti risponde, intanto se vuoi il bot fai .supporto*`, prova, m);
+        conn.reply(m.chat, `*_[ ⚠️ ] 𝐏𝐄𝐑 𝐅𝐀𝐕𝐎𝐑𝐄 𝐍𝐎𝐍 𝐓𝐀𝐆𝐆𝐀𝐑𝐄 𝐈𝐋 𝐌𝐈𝐎 𝐎𝐖𝐍𝐄𝐑 𝐒𝐄𝐍𝐙𝐀 𝐌𝐎𝐓𝐈𝐕𝐎 𝐕𝐀𝐋𝐈𝐃𝐎_*\n\n🔗 *Instagram:* https://instagram.com/f.cesco_\n\n📩 *al momento cesco non c'è, appena torna forse ti risponde, intanto se vuoi il bot fai .supporto*`, prova, m);
     }
 
     if (/^botrules|regolebot|normebot$/i.test(m.text)) { //sem prefixo
