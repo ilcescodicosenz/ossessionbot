@@ -153,7 +153,6 @@ echo -e "\033[0;34mImpossibile installare Yarn. Verifica la tua connessione a In
 echo -e "\033[01;33mpkg install git -y\npkg install nodejs -y\npkg install ffmpeg -y\npkg install imagemagick -y\npkg install -y yarn\ngit clone https://github.com/ilcescodicosenz/ossessionbot\ncd ossessionbot\nyarn install\nnpm install\nnpm start\033[0m"
 exit 1
 else
-else
 echo -e "\033[01;32m\033[01mYarn è stato installato correttamente.\nYarn has been installed successfully.\n\033[0m" 
 fi
 fi
