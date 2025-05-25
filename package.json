@@ -2,9 +2,9 @@
     "name": "⟆ 𝑶𝑺𝑺𝑬𝑺𝑺𝑰𝑶𝑵𝑩𝑶𝑻 ⟇ ✦",
     "version": "1.0.0",
     "description": "il migliore",
-  "main": "index.js",
-  "type": "module",
-  "directories": {
+    "main": "index.js",
+    "type": "module",
+    "directories": {
     "lib": "lib",
     "src": "src",
     "plugins": "plugins"
@@ -15,19 +15,18 @@
     "test2": "nodemon index.js",
     "eslint": "eslint .",
     "eslintfix": "eslint --fix ."
-  }
-"homepage": "https://github.com/ilcescodicosenz/ossessionbot",
-"author": {
-"name": "ilcescodicosenz"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/ilcescodicosenz/ossessionbot.git"
-    },
-    "bugs": {
-        "url": "https://github.com/ilcescodicosenz/ossessionbot/issues"
-    },
-{
+  },
+  "homepage": "https://github.com/chatunitycenter/chatunity-bot",
+  "author": {
+    "name": "chatunity"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chatunitycenter/chatunity-bot.git"
+  },
+  "bugs": {
+    "url": "https://github.com/chatunitycenter/chatunity-bot/issues"
+  },
   "license": "GPL-3.0-or-later",
   "dependencies": {
     "@adiwajshing/keyed-db": "^0.2.4",
