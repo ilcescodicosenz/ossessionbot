@@ -22,7 +22,7 @@ say('OSSESSION\nBot\n1.0', {
     font: 'chrome',
     align: 'center',
     gradient: ['red', 'magenta']})
-    say(`developed by cesco`, {
+    say(`developed by chatunity`, {
     font: 'console',
     align: 'center',
     gradient: ['red', 'magenta']})
