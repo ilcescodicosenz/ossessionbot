@@ -16,16 +16,16 @@
     "eslint": "eslint .",
     "eslintfix": "eslint --fix ."
   },
-  "homepage": "https://github.com/chatunitycenter/chatunity-bot",
+  "homepage": "https://github.com/ilcescodicosenz/ossessionbot",
   "author": {
     "name": "chatunity"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/chatunitycenter/chatunity-bot.git"
+    "url": "git+https://github.com/ilcescodicosenz/ossessionbot.git"
   },
   "bugs": {
-    "url": "https://github.com/chatunitycenter/chatunity-bot/issues"
+    "url": "https://github.com/ilcescodicosenz/ossessionbot/issues"
   },
   "license": "GPL-3.0-or-later",
   "dependencies": {
