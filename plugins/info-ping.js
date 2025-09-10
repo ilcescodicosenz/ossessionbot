@@ -14,7 +14,7 @@ let handler = async (m, { conn, usedPrefix }) => {
     const speed = (endTime - startTime).toFixed(4);
 
     const botName = global.db?.data?.nomedelbot || "BOT STATUS";
-    const botVersion = global.db?.data?.versione || "1.0.0";
+    const botVersion = global.db?.data?.versione || "2.0.0";
     const ossessionBot = global.db?.data?.ossessionbot || "Nessuna descrizione disponibile";
 
     const botStartTime = new Date(Date.now() - uptimeMs);
