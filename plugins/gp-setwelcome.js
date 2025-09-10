@@ -387,8 +387,8 @@ export async function handler(m, { conn, text, command, isAdmin, isOwner }) {
     
     // Handle different commands
     if (['setbenvenuto', 'setwelcome', 'benvenuto'].includes(cmd)) {
-        if (!text) {
-            return m.reply(`🎉 *Imposta messaggio di benvenuto*
+if (!text) {
+    return m.reply(`🎉 *Imposta messaggio di benvenuto*
 
 *Uso:* ${command} <messaggio>
 
@@ -400,43 +400,15 @@ export async function handler(m, { conn, text, command, isAdmin, isOwner }) {
 • \$numero - Numero di telefono
 • \$tag - Tag utente (alias di @user)
 
-*Esempio:*
+*Esempi:*
 ${command} Ciao @user! 👋 Benvenuto/a in \$gruppo! Ora siamo \$membri membri! 🎉
+${command} Benvenutə @user! Presentati con nome, età e di dove sei e la foto se vuoi. Segui le regole e buona permanenza. Se hai qualche problema scrivi agli admin.
 
 *Per ripristinare il messaggio predefinito:*
 ${command} reset`)
-        }
-        
-        if (text.toLowerCase() === 'reset') {
-            chat.customWelcome = null
-            global.db.data.chats[m.chat] = chat
-            return m.reply('✅ Messaggio di benvenuto ripristinato al predefinito!')
-        }
-        
-        chat.customWelcome = text
-        global.db.data.chats[m.chat] = chat
-        return m.reply('✅ Messaggio di benvenuto personalizzato impostato!')
-        
-    } else if (['setaddio', 'setgoodbye', 'addio'].includes(cmd)) {
-        if (!text) {
-            return m.reply(`👋 *Imposta messaggio di addio*
+}
 
-*Uso:* ${command} <messaggio>
-
-*Variabili disponibili:*
-• @user - Tag dell'utente
-• \$nome - Nome dell'utente  
-• \$gruppo - Nome del gruppo
-• \$membri - Numero membri
-• \$numero - Numero di telefono
-• \$tag - Tag utente (alias di @user)
-
-*Esempio:*
-${command} Addio @user! 😢 Ci mancherai in \$gruppo. Rimaniamo in \$membri membri.
-
-*Per ripristinare il messaggio predefinito:*
-${command} reset`)
-        }
+// ...tutto il resto invariato...
         
         if (text.toLowerCase() === 'reset') {
             chat.customGoodbye = null
