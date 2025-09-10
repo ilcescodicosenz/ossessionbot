@@ -315,7 +315,7 @@ async function createImage(title, username, groupName, profilePicBuffer, isGoodb
         ctx.shadowColor = 'rgba(255, 255, 255, 0.9)'
         ctx.shadowBlur = 25
         ctx.fillStyle = '#ffffff'
-        ctx.fillText('⭑⭒━━━✦☾⋆⁺₊✧ developed by vare ✧₊⁺⋆☽✦━━━⭒⭑', centerX, decorationY)
+        ctx.fillText('⭑⭒━━━✦☾⋆⁺₊✧ developed by cesco ✧₊⁺⋆☽✦━━━⭒⭑', centerX, decorationY)
         ctx.restore()
 
         return canvas.toBuffer('image/png')
@@ -369,7 +369,7 @@ export async function handler(m, { conn, text, command, isAdmin, isOwner }) {
         try {
             await fs.access(filePath)
         } catch {
-            return m.reply('Questo comando è disponibile solo con la base di ChatUnity.')
+            return m.reply('Questo comando è disponibile solo con la base di ossessionbot.')
         }
     }
 
@@ -401,7 +401,7 @@ export async function handler(m, { conn, text, command, isAdmin, isOwner }) {
 • \$tag - Tag utente (alias di @user)
 
 *Esempio:*
-${command} Ciao @user! 👋 Benvenuto/a in \$gruppo! Ora siamo \$membri membri! 🎉
+${command} Ciao @user! 👋 Benvenutx in \$gruppo! Ora siamo \$membri membri! 🎉
 
 *Per ripristinare il messaggio predefinito:*
 ${command} reset`)
@@ -487,7 +487,7 @@ ${goodbyeMsg}
             displayName = `Utente ${m.sender.split('@')[0]}`
         }
         
-        const defaultMsg = `*Benvenuto/a* @${m.sender.split('@')[0]} 🎉\n┊ *Gruppo:* ${groupName}\n╰► *Membri:* ${memberCount}`
+        const defaultMsg = `* ei benvenutx presentati con nome, età e di dove sei e la foto se vuoi, segui le regole e buona permanenza. Se hai qualche problema scrivi gli admin* @${m.sender.split('@')[0]} 🎉\n┊ *Gruppo:* ${groupName}\n╰► *Membri:* ${memberCount}`
         const customMsg = chat.customWelcome 
             ? replacePlaceholders(chat.customWelcome, m.sender, username, groupName, memberCount, displayName)
             : defaultMsg
@@ -504,7 +504,7 @@ ${goodbyeMsg}
             displayName = `Utente ${m.sender.split('@')[0]}`
         }
         
-        const defaultMsg = `*Arrivederci* @${m.sender.split('@')[0]} 👋\n┊ Ha lasciato il gruppo\n╰► *Membri rimasti:* ${memberCount}`
+        const defaultMsg = @${m.sender.split('@')[0]} 👋\n┊ Ha lasciato il gruppo un forcio o una puttana\n╰► *Membri rimasti:* ${memberCount}`
         const customMsg = chat.customGoodbye 
             ? replacePlaceholders(chat.customGoodbye, m.sender, username, groupName, memberCount, displayName)
             : defaultMsg
