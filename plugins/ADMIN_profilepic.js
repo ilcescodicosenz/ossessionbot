@@ -1,4 +1,3 @@
-// crediti: Onix, di Riad
 let handler = async (m, { conn, text }) => {
     let who = m.mentionedJid?.[0] || m.quoted?.sender || m.sender;
 
