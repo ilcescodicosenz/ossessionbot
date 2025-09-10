@@ -4,7 +4,7 @@ const handler = async (m, { conn }) => {
     try {
         const inviteLink = 'https://chat.whatsapp.com/' + await conn.groupInviteCode(m.chat);
         const qrImageBuffer = await QRCode.toBuffer(inviteLink);
-        await conn.sendMessage(m.chat, { image: qrImageBuffer, caption: 'Ecco il QR Code del gruppo!' });
+        await conn.sendMessage(m.chat, { image: qrImageBuffer, caption: 'Ecco il QR Code per il link del gruppo!' });
     } catch (error) {
         m.reply('Errore durante la generazione del QR Code: ' + error.message);
     }
