@@ -23,7 +23,7 @@
   },
   "repository": {
     "type": "git",
-    "url": ""git+https://github.com/ilcescodicosenz/ossessionbot.git"
+    "url": "git+https://github.com/ilcescodicosenz/ossessionbot.git"
   },
   "bugs": {
     "url": "https://github.com/ilcescodicosenz/ossessionbot/issues"
