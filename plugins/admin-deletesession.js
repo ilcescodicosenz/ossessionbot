@@ -1,112 +1,42 @@
 import { existsSync, promises as fsPromises } from 'fs';
 import path from 'path';
 
-const handler = async (message, { conn, usedPrefix }) => {
-  // Controlla che il comando sia eseguito direttamente dal numero principale del bot
+const handler = async (m, { conn, usedPrefix }) => {
   if (global.conn.user.jid !== conn.user.jid) {
-    return conn.sendMessage(
-      message.chat,
-      {
-        text: "*🚨 Utilizza questo comando direttamente nel numero principale del Bot.*"
-      },
-      { quoted: message }
-    );
+    return conn.sendMessage(message.chat, {
+      text: "*🚨 𝐔𝐭𝐢𝐥𝐢𝐳𝐳𝐢 𝐪𝐮𝐞𝐬𝐭𝐨 𝐜𝐨𝐦𝐚𝐧𝐝𝐨 𝐝𝐢𝐫𝐞𝐭𝐭𝐚𝐦𝐞𝐧𝐭𝐞 𝐧𝐞𝐥 𝐧𝐮𝐦𝐞𝐫𝐨 𝐝𝐞𝐥 𝐛𝐨𝐭.*"
+    }, { quoted: m });
   }
-
-  // Invia messaggio di avvio della procedura di eliminazione sessioni
-  await conn.sendMessage(
-    message.chat,
-    {
-      text: "ⓘ Ripristino delle sessioni in corso..."
-    },
-    { quoted: message }
-  );
 
   try {
     const sessionFolder = "./Sessioni/";
 
     if (!existsSync(sessionFolder)) {
-      return await conn.sendMessage(
-        message.chat,
-        {
-          text: "*La cartella Sessioni non esiste o è vuota.*"
-        },
-        { quoted: message }
-      );
+      return await conn.sendMessage(message.chat, {
+        text: "*❌ 𝐋𝐚 𝐜𝐚𝐫𝐭𝐞𝐥𝐥𝐚 𝐝𝐞𝐥𝐥𝐞 𝐬𝐞𝐬𝐬𝐢𝐨𝐧𝐢 𝐞̀ 𝐯𝐮𝐨𝐭𝐚 o 𝐧𝐨𝐧 𝐞𝐬𝐢𝐬𝐭𝐞.*"
+      }, { quoted: m });
     }
 
     const sessionFiles = await fsPromises.readdir(sessionFolder);
     let deletedCount = 0;
 
     for (const file of sessionFiles) {
-      // Non eliminare il file di credenziali
       if (file !== "creds.json") {
         await fsPromises.unlink(path.join(sessionFolder, file));
         deletedCount++;
       }
     }
-
-    const responseText =
-      deletedCount === 0
-        ? "❗ Le sessioni sono vuote ‼️"
-        : `ⓘ Sono stati eliminati ${deletedCount} archivi nelle sessioni`;
-
-    await conn.sendMessage(
-      message.chat,
-      { text: responseText },
-      { quoted: message }
-    );
+ 
+    await conn.sendMessage(m.chat, { text: deletedCount === 0 ? '❗ 𝐋𝐞 𝐬𝐞𝐬𝐬𝐢𝐨𝐧𝐢 𝐬𝐨𝐧𝐨 𝐯𝐮𝐨𝐭𝐞, 𝐫𝐢𝐩𝐫𝐨𝐯𝐚 𝐭𝐫𝐚 𝐩𝐨𝐜𝐨 𝐧𝐞 𝐡𝐨 𝐛𝐢𝐬𝐨𝐠𝐧𝐨 ‼️' : '🔥 𝐒𝐨𝐧𝐨 𝐬𝐭𝐚𝐭𝐢 𝐞𝐥𝐢𝐦𝐢𝐧𝐚𝐭𝐢 ' + deletedCount + ' 𝐚𝐫𝐜𝐡𝐢𝐯𝐢 𝐝𝐞𝐥𝐥𝐞 𝐬𝐞𝐬𝐬𝐢𝐨𝐧𝐢! 𝐆𝐫𝐚𝐳𝐢𝐞 𝐩𝐞𝐫 𝐚𝐯𝐞𝐫𝐦𝐢 𝐬𝐯𝐮𝐨𝐭𝐚𝐭𝐨😼'
+}, { quoted: m });
   } catch (error) {
-    console.error('⚠️ Errore:', error);
-    await conn.sendMessage(
-      message.chat,
-      { text: "❌ Errore di eliminazione!" },
-      { quoted: message }
-    );
+    await conn.sendMessage(m.chat, { text: "❌ 𝐄𝐫𝐫𝐨𝐫𝐞 𝐝𝐢 𝐞𝐥𝐢𝐦𝐢𝐧𝐚𝐳𝐢𝐨𝐧𝐞!" }, { quoted: m });
   }
-
-  // Componi e invia il messaggio finale con il "livello di lettura"
-  const botName = global.db.data.nomedelbot || "⟆ 𝑶𝑺𝑺𝑬𝑺𝑺𝑰𝑶𝑵𝑩𝑶𝑻 ⟇ ✦";
-  const quotedMessage = {
-    key: {
-      participants: "0@s.whatsapp.net",
-      fromMe: false,
-      id: 'Halo'
-    },
-    message: {
-      locationMessage: {
-        name: botName,
-        // Scarica la miniatura da URL e convertila in buffer
-        jpegThumbnail: await (await fetch("https://raw.githubusercontent.com/ilcescodicosenz/ossessionbot/main/ossessionbot.png")).buffer(),
-        vcard: 
-          "BEGIN:VCARD\n" +
-          "VERSION:3.0\n" +
-          "N:;Unlimited;;;\n" +
-          "FN:Unlimited\n" +
-          "ORG:Unlimited\n" +
-          "TITLE:\n" +
-          "item1.TEL;waid=19709001746:+1 (970) 900-1746\n" +
-          "item1.X-ABLabel:Unlimited\n" +
-          "X-WA-BIZ-DESCRIPTION:ofc\n" +
-          "X-WA-BIZ-NAME:Unlimited\n" +
-          "END:VCARD"
-      }
-    },
-    participant: '0@s.whatsapp.net'
-  };
-
-  await conn.sendMessage(
-    message.chat,
-    {
-      text: "ⓘ Ora sara in grado di leggere i messaggi del bot"
-    },
-    { quoted: quotedMessage }
-  );
 };
 
 handler.help = ['del_reg_in_session_owner'];
 handler.tags = ["owner"];
-handler.command = /^(deletession|ds|clearallsession)$/i;
+handler.command = /^(deletession|ds)$/i;
 handler.admin = true;
 
 export default handler;
