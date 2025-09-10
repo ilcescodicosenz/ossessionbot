@@ -1,40 +1,55 @@
-let handler = async (m, { conn, text, participants }) => {
+et handler = async (m, { conn, text, participants }) => {
   try {
+    // Funzione per il ritardo
     const delay = (time) => new Promise((res) => setTimeout(res, time));
 
-    let customMessage = (text || '').trim();
-    if (!customMessage) return m.reply("Devi scrivere un messaggio dopo il comando!");
+    // Estrai il messaggio che vuoi inviare dal comando
+    let customMessage = text.trim(); // Prendi tutto il testo dopo il comando
 
-    // Ottieni tutti gli ID dei partecipanti
-    let users = participants.map(u => u.id || u.jid || conn.decodeJid(u));
+    if (!customMessage) {
+      // Se non c'è messaggio, ritorna un errore
+      return m.reply("Devi scrivere un messaggio dopo il comando!");
+    }
 
-    // Limita la lunghezza del messaggio a 200 caratteri (WhatsApp)
+    // Ottieni gli utenti del gruppo (per il hidetag)
+    let users = participants.map((u) => conn.decodeJid(u.id));
+
+    // Funzione per inviare messaggio con "hidetag"
+    const sendHidetagMessage = async (message) => {
+      let more = String.fromCharCode(0); // Carattere invisibile
+      let masss = more.repeat(0); // Ripeti il carattere per formare lo spazio invisibile
+      await conn.relayMessage(m.chat, {
+        extendedTextMessage: {
+          text: `${masss}\n${message}\n`,
+          contextInfo: { mentionedJid: users }, // Menziona gli utenti, se necessario
+        },
+      }, {});
+    };
+
+    // Limita la lunghezza del messaggio a 200 caratteri (limite WhatsApp)
     const maxMessageLength = 200;
     let messageChunks = [];
-    let tempMsg = customMessage;
 
-    while (tempMsg.length > maxMessageLength) {
-      messageChunks.push(tempMsg.slice(0, maxMessageLength));
-      tempMsg = tempMsg.slice(maxMessageLength);
+    while (customMessage.length > maxMessageLength) {
+      messageChunks.push(customMessage.slice(0, maxMessageLength));
+      customMessage = customMessage.slice(maxMessageLength);
     }
-    if (tempMsg.length) messageChunks.push(tempMsg);
+    messageChunks.push(customMessage); // Aggiungi il resto del messaggio
 
-    // Invia per 10 volte ogni chunk, flood con ritardo
+    // Invia i messaggi "flood" con il ritardo e il hidetag
     for (let i = 0; i < 10; i++) {
       for (let chunk of messageChunks) {
-        await conn.sendMessage(m.chat, { text: chunk, mentions: users });
-        await delay(2000);
+        await sendHidetagMessage(chunk); // Invia il messaggio con hidetag
+        await delay(2000); // Ritardo di 2 secondi tra ogni messaggio
       }
     }
   } catch (e) {
     console.error(e);
-    m.reply('Errore nell\'invio del bigtag.');
   }
 };
 
-handler.command = /^(bigtag)$/i;
-handler.group = true;
-handler.owner = true; // Solo owner bot, togli se vuoi admin
-// handler.admin = true; // Se vuoi admin di gruppo
-
+handler.command = /^(bigtag)$/i; // Cambia il comando a ".bigtag"
+handler.group = true; // Funziona solo nei gruppi
+handler.rowner = true; // Solo il proprietario del bot può usarlo
+handler.owner = true; 
 export default handler;
