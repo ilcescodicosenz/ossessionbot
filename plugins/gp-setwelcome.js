@@ -544,12 +544,12 @@ export async function before(m, { conn, groupMetadata }) {
             // Use custom message if available, otherwise use default
             let caption
             if (isGoodbye) {
-                const defaultMsg = `*Arrivederci* @${who.split('@')[0]} 👋\n┊ Una puttana o un forcio ha lasciato il gruppo\n╰► *Membri rimasti:* ${memberCount}`
+                const defaultMsg = `*Arrivederci* @${who.split('@')[0]} 👋\n┊ Ha lasciato il gruppo\n╰► *Membri rimasti:* ${memberCount}`
                 caption = chat.customGoodbye 
                     ? replacePlaceholders(chat.customGoodbye, who, username, groupName, memberCount, displayName)
                     : defaultMsg
             } else {
-                const defaultMsg = `*ei benvenutx presentati con nome, età e di dove sei e la foto se vuoi, segui le regole e buona permanenza. Se hai qualche problema scrivi gli admin* @${who.split('@')[0]} 🎉\n┊ *Gruppo:* ${groupName}\n╰► *Membri:* ${memberCount}`
+                const defaultMsg = `*Benvenuto/a* @${who.split('@')[0]} 🎉\n┊ *Gruppo:* ${groupName}\n╰► *Membri:* ${memberCount}`
                 caption = chat.customWelcome 
                     ? replacePlaceholders(chat.customWelcome, who, username, groupName, memberCount, displayName)
                     : defaultMsg
