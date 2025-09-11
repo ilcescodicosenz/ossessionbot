@@ -68,7 +68,7 @@ function _0x2086() {
         '\x0a╰━━━━━━━━━━━━━┈·๏\x0a',
         'group',
         'BEGIN:VCARD...',
-        'Questo\x20comando\x20è\x20disponibile\x20solo\x20con\x20la\x20base\x20di\x20ChatUnity.',
+        'Questo\x20comando\x20è\x20disponibile\x20solo\x20con\x20la\x20base\x20di\x20ossessionbot.',
         'uZcFO',
         'PVeQS',
         'help',
@@ -380,7 +380,7 @@ let handler = async (_0x36ca14, {
                     if (_0x3aa3b5[_0x596870(0x1fa)](_0x3aa3b5[_0x596870(0x228)], _0x3aa3b5['leijO']))
                         _0x5d6202 = _0x14da0b[_0x5b922[_0x596870(0x1ee)]];
                     else
-                        return _0x4b612f['reply']('Questo\x20comando\x20è\x20disponibile\x20solo\x20con\x20la\x20base\x20di\x20ChatUnity.');
+                        return _0x4b612f['reply']('Questo\x20comando\x20è\x20disponibile\x20solo\x20con\x20la\x20base\x20di\x20ossessionbot.');
                 }
             }
             let _0x4575ba = _0x5d6202 ? '🟢' : '🔴', _0x24f57e = _0x5b922[_0x596870(0x209)] ? _0x3aa3b5['vDiZd'] : '';
