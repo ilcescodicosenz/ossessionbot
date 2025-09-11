@@ -15,8 +15,8 @@ const handler = async (m, { conn, args, command }) => {
   if (command === 'offscript') {
     if (content.includes('/*') && content.includes('*/')) return m.reply('Script è già spento.')
     const lines = content.split('\n')
-    const preservedLine = lines.find(line => line.includes('Plugin fatto da Gabs & 333 Staff'))
-    const rest = lines.filter(line => !line.includes('Plugin fatto da Gabs & 333 Staff'))
+    const preservedLine = lines.find(line => line.includes('Plugin fatto da cesco'))
+    const rest = lines.filter(line => !line.includes('Plugin fatto da cesco'))
     const newContent = `${preservedLine || ''}\n/*\n${rest.join('\n')}\n*/`
     fs.writeFileSync(filePath, newContent)
     return m.reply(`Script ${file} spento.`)
