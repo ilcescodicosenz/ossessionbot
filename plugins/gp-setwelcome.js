@@ -370,7 +370,6 @@ export async function handler(m, { conn, text, command, isAdmin, isOwner }) {
     //     try {
     //         await fs.access(filePath)
     //     } catch {
-    //         return m.reply('Questo comando è disponibile solo con la base di ChatUnity.')
     //     }
     // }
     // ---------------------------------
